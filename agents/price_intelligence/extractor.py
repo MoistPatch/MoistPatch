@@ -4,6 +4,7 @@ import json
 import re
 from decimal import Decimal, InvalidOperation
 from typing import Optional
+from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup, Tag
 
@@ -297,3 +298,134 @@ def extract_price(html: str, sku: Sku) -> PricePoint:
         )
 
     raise ExtractionError(last_error)
+
+
+# ============================================================================
+#  Discovery extraction (no known SKU)
+# ============================================================================
+
+
+class DiscoveredProductInfo(dict):
+    """Lightweight dict-with-attrs for discovered products.
+
+    Returned by extract_product_info(). Keys:
+      name, external_id, price, currency, in_stock,
+      extractor_method, confidence
+    """
+
+
+def _slug_from_url(url: str) -> str:
+    parsed = urlparse(url)
+    last = parsed.path.rstrip("/").rsplit("/", 1)[-1]
+    return last or parsed.netloc or "unknown"
+
+
+def extract_product_info(
+    html: str,
+    url: str,
+    *,
+    default_currency: str = "AUD",
+    price_min: Decimal = Decimal("1.00"),
+    price_max: Decimal = Decimal("50000.00"),
+) -> Optional[DiscoveredProductInfo]:
+    """Extract structured product info from a candidate product page.
+
+    Returns None if the page contains no JSON-LD Product schema.
+    Raises ExtractionError if a Product is found but its price violates
+    sanity bounds or declares a non-matching currency.
+
+    JSON-LD only by design. Without a known SKU we cannot afford the
+    regex-fallback path (it would grab the wrong number on related-
+    products carousels).
+    """
+    soup = BeautifulSoup(html, "lxml")
+
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(script.string or "")
+        except (json.JSONDecodeError, TypeError):
+            continue
+
+        nodes = data if isinstance(data, list) else [data]
+        for entry in nodes:
+            if not isinstance(entry, dict):
+                continue
+            graph = entry.get("@graph", [entry])
+            if not isinstance(graph, list):
+                graph = [graph]
+
+            for node in graph:
+                if not isinstance(node, dict):
+                    continue
+                t = node.get("@type", "")
+                if isinstance(t, list):
+                    is_product = "Product" in t
+                else:
+                    is_product = t == "Product"
+                if not is_product:
+                    continue
+
+                name = (node.get("name") or "").strip()
+                if not name:
+                    continue
+
+                external_id = (
+                    node.get("sku")
+                    or node.get("mpn")
+                    or node.get("productID")
+                    or node.get("gtin13")
+                    or node.get("gtin12")
+                    or node.get("gtin")
+                    or _slug_from_url(url)
+                )
+                external_id = str(external_id).strip()[:100] or _slug_from_url(url)
+
+                offers = node.get("offers", {})
+                offers_list = offers if isinstance(offers, list) else [offers]
+                for offer in offers_list:
+                    if not isinstance(offer, dict):
+                        continue
+                    raw_price = (
+                        offer.get("price")
+                        or offer.get("lowPrice")
+                        or offer.get("highPrice")
+                    )
+                    if raw_price is None:
+                        continue
+                    try:
+                        price = _normalise_amount(raw_price)
+                    except ExtractionError:
+                        continue
+
+                    currency = (offer.get("priceCurrency") or default_currency).upper()
+                    if currency != default_currency.upper():
+                        raise ExtractionError(
+                            f"product declares currency {currency!r}, "
+                            f"expected {default_currency!r}"
+                        )
+                    if price < price_min or price > price_max:
+                        raise ExtractionError(
+                            f"price ${price} outside sanity range "
+                            f"[{price_min}, {price_max}]"
+                        )
+
+                    availability = offer.get("availability", "")
+                    in_stock = None
+                    if isinstance(availability, str):
+                        a = availability.lower()
+                        if "instock" in a:
+                            in_stock = True
+                        elif "outofstock" in a or "soldout" in a:
+                            in_stock = False
+
+                    return DiscoveredProductInfo(
+                        name=name[:200],
+                        external_id=external_id,
+                        price=price,
+                        currency=currency,
+                        in_stock=in_stock,
+                        extractor_method="jsonld",
+                        confidence=0.98,
+                    )
+
+    return None

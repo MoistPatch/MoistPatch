@@ -7,7 +7,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Iterator, Optional
 
-from .models import PriceChange, PricePoint
+from .models import DiscoveredProduct, PriceChange, PricePoint
 
 
 SCHEMA = """
@@ -49,6 +49,23 @@ CREATE TABLE IF NOT EXISTS scrape_failures (
     error           TEXT,
     failed_at       TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS discovered_products (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    competitor      TEXT NOT NULL,
+    external_id     TEXT NOT NULL,
+    our_sku         TEXT NOT NULL,
+    product_name    TEXT NOT NULL,
+    category        TEXT,
+    url             TEXT NOT NULL,
+    first_seen      TEXT NOT NULL,
+    last_seen       TEXT NOT NULL,
+    UNIQUE(competitor, external_id)
+);
+CREATE INDEX IF NOT EXISTS idx_discovered_competitor
+    ON discovered_products(competitor, last_seen);
+CREATE INDEX IF NOT EXISTS idx_discovered_our_sku
+    ON discovered_products(our_sku);
 """
 
 
@@ -134,6 +151,67 @@ class PriceStore:
                     datetime.now(timezone.utc).isoformat(),
                 ),
             )
+
+    def upsert_discovered(self, dp: DiscoveredProduct) -> None:
+        """Insert a new discovered product or refresh its last_seen."""
+        with self._conn() as conn:
+            existing = conn.execute(
+                "SELECT id FROM discovered_products WHERE competitor = ? AND external_id = ?",
+                (dp.competitor, dp.external_id),
+            ).fetchone()
+            if existing:
+                conn.execute(
+                    """UPDATE discovered_products
+                       SET last_seen = ?, product_name = ?, url = ?, category = ?
+                       WHERE id = ?""",
+                    (dp.last_seen.isoformat(), dp.product_name, dp.url, dp.category, existing["id"]),
+                )
+            else:
+                conn.execute(
+                    """INSERT INTO discovered_products
+                       (competitor, external_id, our_sku, product_name, category,
+                        url, first_seen, last_seen)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                    (
+                        dp.competitor, dp.external_id, dp.our_sku, dp.product_name,
+                        dp.category, dp.url,
+                        dp.first_seen.isoformat(), dp.last_seen.isoformat(),
+                    ),
+                )
+
+    def list_discovered(
+        self,
+        competitor: Optional[str] = None,
+        limit: int = 200,
+    ) -> list[dict]:
+        with self._conn() as conn:
+            if competitor:
+                rows = conn.execute(
+                    """SELECT * FROM discovered_products
+                       WHERE competitor = ?
+                       ORDER BY last_seen DESC LIMIT ?""",
+                    (competitor, limit),
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    """SELECT * FROM discovered_products
+                       ORDER BY last_seen DESC LIMIT ?""",
+                    (limit,),
+                ).fetchall()
+        return [dict(r) for r in rows]
+
+    def count_discovered(self, competitor: Optional[str] = None) -> int:
+        with self._conn() as conn:
+            if competitor:
+                row = conn.execute(
+                    "SELECT COUNT(*) FROM discovered_products WHERE competitor = ?",
+                    (competitor,),
+                ).fetchone()
+            else:
+                row = conn.execute(
+                    "SELECT COUNT(*) FROM discovered_products"
+                ).fetchone()
+        return row[0]
 
     def latest_point(self, our_sku: str, competitor: str) -> Optional[PricePoint]:
         with self._conn() as conn:

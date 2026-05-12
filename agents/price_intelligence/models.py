@@ -26,6 +26,21 @@ class Competitor(BaseModel):
     renderer: Renderer = "http"
     enabled: bool = True
 
+    # ----- Discovery / crawl config (Phase 1) -----
+    sitemap_url: Optional[HttpUrl] = Field(
+        default=None,
+        description="Override for sitemap URL. Falls back to robots.txt then /sitemap.xml.",
+    )
+    product_url_patterns: list[str] = Field(
+        default_factory=list,
+        description="fnmatch globs for URLs that look like product pages (e.g. '*/product/*'). "
+                    "Empty = accept all URLs from the sitemap.",
+    )
+    crawl_default_currency: str = "AUD"
+    crawl_price_min: Decimal = Decimal("1.00")
+    crawl_price_max: Decimal = Decimal("50000.00")
+    crawl_max_products: int = Field(default=500, ge=1, le=5000)
+
     @field_validator("rate_limit_max_s")
     @classmethod
     def _max_gt_min(cls, v: float, info) -> float:
@@ -140,3 +155,34 @@ class ScrapeResult(BaseModel):
     error: Optional[str] = None
     http_status: Optional[int] = None
     fetched_at: datetime = Field(default_factory=utcnow)
+
+
+class DiscoveredProduct(BaseModel):
+    """A product found by crawling, with no pre-existing internal SKU.
+
+    `external_id` is the most stable identifier we could extract from the
+    page (JSON-LD `sku` / `mpn` / `gtin` / `productID`, falling back to the
+    URL slug). `our_sku` is synthesised as `EXT-{COMP}-{external_id}` so
+    discovered products share the same `price_points` table as tracked SKUs.
+    """
+
+    competitor: str
+    external_id: str
+    product_name: str
+    url: str
+    category: str = "discovered"
+    our_sku: str  # synthesised; see synthesise_our_sku()
+    first_seen: datetime = Field(default_factory=utcnow)
+    last_seen: datetime = Field(default_factory=utcnow)
+
+
+def synthesise_our_sku(competitor: str, external_id: str) -> str:
+    """Build a stable internal SKU for a discovered product.
+
+    Format: EXT-{COMP-INITIALS}-{slugified-id}
+    Example: ("Centre Com", "RTX5090-MSI") -> "EXT-CC-RTX5090-MSI"
+    """
+    initials = "".join(w[0] for w in competitor.split() if w)[:6].upper() or "X"
+    clean = "".join(c if (c.isalnum() or c in "-_") else "-" for c in external_id)
+    clean = clean.strip("-").upper()[:60] or "UNKNOWN"
+    return f"EXT-{initials}-{clean}"

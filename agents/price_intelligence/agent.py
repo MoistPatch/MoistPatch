@@ -4,12 +4,27 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any, Optional
 
 import yaml
 
+import httpx
+
 from .anomaly import detect_anomaly
 from .audit import AuditLog
-from .models import Anomaly, Competitor, PriceChange, ScrapeResult, Sku
+from .discovery import discover_product_urls
+from .extractor import ExtractionError, extract_product_info
+from .models import (
+    Anomaly,
+    Competitor,
+    DiscoveredProduct,
+    PriceChange,
+    PricePoint,
+    ScrapeResult,
+    Sku,
+    synthesise_our_sku,
+    utcnow,
+)
 from .scraper import HttpScraper
 from .storage import PriceStore
 
@@ -33,6 +48,25 @@ class ScanReport:
             f"{self.failed} failed · "
             f"{len(self.changes)} price changes · "
             f"{len(self.anomalies)} anomalies"
+        )
+
+
+@dataclass
+class CrawlReport:
+    competitor: str
+    urls_discovered: int = 0
+    products_extracted: int = 0
+    products_skipped: int = 0   # no Product schema on page
+    products_failed: int = 0    # fetched but extraction error
+    errors: list[tuple[str, str]] = field(default_factory=list)  # (url, error)
+
+    def summary(self) -> str:
+        return (
+            f"crawled {self.competitor}: "
+            f"{self.urls_discovered} URLs discovered · "
+            f"{self.products_extracted} products priced · "
+            f"{self.products_skipped} skipped (no schema) · "
+            f"{self.products_failed} failed"
         )
 
 
@@ -211,8 +245,212 @@ class PriceIntelligenceAgent:
                 },
             )
 
+    # ----------------------------------------------------------------
+    # Discovery / crawl
+    # ----------------------------------------------------------------
+    async def crawl_competitor(
+        self,
+        competitor_name: str,
+        *,
+        limit: Optional[int] = None,
+        progress: Optional[Any] = None,
+    ) -> CrawlReport:
+        """Discover and price every product on one competitor's site.
+
+        Discovery: sitemap.xml (config override → robots.txt → defaults).
+        Extraction: JSON-LD Product schema only (no regex fallback).
+        Persistence: writes to discovered_products and price_points.
+        """
+        if competitor_name not in self.competitors:
+            raise KeyError(f"unknown competitor: {competitor_name!r}")
+        competitor = self.competitors[competitor_name]
+        max_products = min(limit or competitor.crawl_max_products,
+                           competitor.crawl_max_products)
+
+        report = CrawlReport(competitor=competitor.name)
+
+        self.audit.append(
+            agent=self.AGENT_ID,
+            action="crawl_started",
+            params={
+                "competitor": competitor.name,
+                "limit": max_products,
+                "patterns": competitor.product_url_patterns,
+            },
+        )
+
+        async with HttpScraper(competitor) as scraper:
+            # Discovery uses the same httpx client (with the polite UA) but
+            # bypasses the per-fetch jitter — sitemap fetches don't need that
+            # since there are only a handful of XML files.
+            assert scraper._client is not None
+            urls = await discover_product_urls(
+                scraper._client,
+                str(competitor.base_url),
+                sitemap_url=str(competitor.sitemap_url) if competitor.sitemap_url else None,
+                include_patterns=competitor.product_url_patterns,
+                max_urls=max_products,
+            )
+            report.urls_discovered = len(urls)
+            log.info(
+                "discovered %d candidate URLs for %s (limit %d)",
+                len(urls), competitor.name, max_products,
+            )
+
+            self.audit.append(
+                agent=self.AGENT_ID,
+                action="crawl_discovered",
+                params={
+                    "competitor": competitor.name,
+                    "url_count": len(urls),
+                },
+            )
+
+            for idx, url in enumerate(urls, start=1):
+                if progress:
+                    progress(idx, len(urls), url)
+                await self._crawl_one(scraper, competitor, url, report)
+
+        self.audit.append(
+            agent=self.AGENT_ID,
+            action="crawl_finished",
+            result={
+                "competitor": competitor.name,
+                "discovered": report.urls_discovered,
+                "extracted": report.products_extracted,
+                "skipped": report.products_skipped,
+                "failed": report.products_failed,
+            },
+        )
+        return report
+
+    async def _crawl_one(
+        self,
+        scraper: HttpScraper,
+        competitor: Competitor,
+        url: str,
+        report: CrawlReport,
+    ) -> None:
+        # Reuse the scraper's polite-fetch machinery but call _get_with_retries
+        # directly (we don't have a Sku object yet — discovery hasn't run on this URL).
+        import asyncio
+        import random
+        from .scraper import RobotsCache  # already exists
+
+        try:
+            allowed = await scraper._robots.allowed(scraper._client, url)
+        except Exception as exc:
+            report.products_failed += 1
+            report.errors.append((url, f"robots check failed: {exc}"))
+            return
+        if not allowed:
+            report.products_failed += 1
+            report.errors.append((url, "robots.txt disallows"))
+            self.store.record_failure(
+                our_sku="EXT-UNKNOWN",
+                competitor=competitor.name,
+                url=url,
+                http_status=None,
+                error="robots.txt disallows",
+            )
+            return
+
+        await asyncio.sleep(
+            random.uniform(competitor.rate_limit_min_s, competitor.rate_limit_max_s)
+        )
+
+        html, status, err = await scraper._get_with_retries(url)
+        if html is None:
+            report.products_failed += 1
+            report.errors.append((url, err or f"http {status}"))
+            self.store.record_failure(
+                our_sku="EXT-UNKNOWN",
+                competitor=competitor.name,
+                url=url,
+                http_status=status,
+                error=err or f"http {status}",
+            )
+            return
+
+        try:
+            info = extract_product_info(
+                html, url,
+                default_currency=competitor.crawl_default_currency,
+                price_min=competitor.crawl_price_min,
+                price_max=competitor.crawl_price_max,
+            )
+        except ExtractionError as exc:
+            report.products_failed += 1
+            report.errors.append((url, f"extract: {exc}"))
+            self.store.record_failure(
+                our_sku="EXT-UNKNOWN",
+                competitor=competitor.name,
+                url=url,
+                http_status=status,
+                error=f"extract: {exc}",
+            )
+            return
+
+        if info is None:
+            # Page didn't have JSON-LD Product schema — that's expected for
+            # category pages, blog posts, etc. Don't treat as a failure.
+            report.products_skipped += 1
+            return
+
+        our_sku = synthesise_our_sku(competitor.name, info["external_id"])
+        now = utcnow()
+
+        self.store.upsert_discovered(
+            DiscoveredProduct(
+                competitor=competitor.name,
+                external_id=info["external_id"],
+                our_sku=our_sku,
+                product_name=info["name"],
+                url=url,
+                first_seen=now,
+                last_seen=now,
+            )
+        )
+
+        point = PricePoint(
+            our_sku=our_sku,
+            competitor=competitor.name,
+            url=url,
+            price=info["price"],
+            currency=info["currency"],
+            in_stock=info["in_stock"],
+            captured_at=now,
+            extractor_method=info["extractor_method"],
+            confidence=info["confidence"],
+            raw_html_excerpt="",
+        )
+
+        previous = self.store.latest_point(our_sku, competitor.name)
+        self.store.record_point(point)
+        report.products_extracted += 1
+
+        if previous is not None and previous.price != point.price:
+            change = PriceChange.from_points(previous, point)
+            self.store.record_change(change)
+            self.audit.append(
+                agent=self.AGENT_ID,
+                action="price_change_discovered",
+                params={
+                    "our_sku": our_sku,
+                    "competitor": competitor.name,
+                    "old": str(change.old_price),
+                    "new": str(change.new_price),
+                    "pct": round(change.change_percent, 2),
+                },
+            )
+
     def list_skus(self) -> list[Sku]:
         return list(self.skus)
 
     def list_competitors(self) -> list[Competitor]:
         return list(self.competitors.values())
+
+    def list_discovered(
+        self, competitor: Optional[str] = None, limit: int = 200
+    ) -> list[dict]:
+        return self.store.list_discovered(competitor=competitor, limit=limit)

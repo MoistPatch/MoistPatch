@@ -43,22 +43,43 @@ For each (competitor, SKU) pair in `config/competitors.yaml`:
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# 1. Edit config/competitors.yaml — set real product URLs, then `enabled: true`
-# 2. List what's configured:
-python3 -m agents.price_intelligence list
+# Two modes:
+#   - scan   = check pre-defined SKUs (use `skus:` in competitors.yaml)
+#   - crawl  = sitemap-driven discovery of *every* product on a competitor
 
-# 3. Run a one-shot scan:
+# === MODE A: targeted scan of known SKUs ===
+python3 -m agents.price_intelligence list
 python3 -m agents.price_intelligence scan
 
-# 4. Show recent changes:
+# === MODE B: wide crawl of one competitor (the new headline feature) ===
+python3 -m agents.price_intelligence crawl "Centre Com"
+python3 -m agents.price_intelligence crawl "Centre Com" --limit 20   # for testing
+python3 -m agents.price_intelligence discovered --competitor "Centre Com"
+
+# Common to both modes:
 python3 -m agents.price_intelligence changes --hours 24
-
-# 5. Inspect history for one SKU:
 python3 -m agents.price_intelligence history NH-RTX5090 Mwave --days 30
-
-# 6. Verify the audit log is untampered:
+python3 -m agents.price_intelligence history EXT-CC-GPU-5090 "Centre Com"
 python3 -m agents.price_intelligence verify-audit
 ```
+
+### How `crawl` discovers products
+
+1. Sitemap location: `competitor.sitemap_url` (config) → `Sitemap:` directives
+   in `/robots.txt` → `/sitemap.xml` → `/sitemap_index.xml`.
+2. Recurses one level into `<sitemapindex>` entries; transparently handles
+   gzipped `.xml.gz` sitemaps.
+3. Filters URLs by `competitor.product_url_patterns` (fnmatch globs like
+   `*/product/*`). Without patterns every sitemap URL is accepted.
+4. Per-fetch politeness: same `rate_limit_min_s`..`rate_limit_max_s` random
+   delay and `robots.txt` check as targeted scanning.
+5. Extracts via JSON-LD `Product` schema only — pages without it are
+   logged as "skipped (no schema)", not as failures.
+6. Stores discovered products under synthesised SKUs:
+   `EXT-{COMP-INITIALS}-{external_id}` (where external_id is the
+   JSON-LD `sku`/`mpn`/`gtin` field, falling back to URL slug).
+7. Hard cap: `crawl_max_products` per competitor; `--limit` CLI flag
+   can lower it. Maximum allowed by the code is 5000.
 
 ## Run on a schedule
 

@@ -90,6 +90,51 @@ def cmd_changes(agent: PriceIntelligenceAgent, hours: int) -> int:
     return 0
 
 
+def cmd_crawl(agent: PriceIntelligenceAgent, competitor: str, limit: int | None) -> int:
+    def progress(i: int, n: int, url: str) -> None:
+        # Show progress to stderr so stdout stays clean for piping
+        sys.stderr.write(f"\r  [{i:>4}/{n}] {url[:80]:<80}")
+        sys.stderr.flush()
+    try:
+        report = asyncio.run(
+            agent.crawl_competitor(competitor, limit=limit, progress=progress)
+        )
+    except KeyError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    sys.stderr.write("\n")
+    print()
+    print("=" * 70)
+    print(f"  {report.summary()}")
+    print("=" * 70)
+    if report.errors:
+        print(f"\nFAILURES (first 10 of {len(report.errors)}):")
+        for url, err in report.errors[:10]:
+            print(f"  ✗ {url[:80]}")
+            print(f"     {err[:120]}")
+    return 0
+
+
+def cmd_discovered(
+    agent: PriceIntelligenceAgent, competitor: str | None, limit: int
+) -> int:
+    rows = agent.list_discovered(competitor=competitor, limit=limit)
+    if not rows:
+        scope = f" for {competitor}" if competitor else ""
+        print(f"no discovered products{scope}")
+        return 0
+    label = f"{competitor}" if competitor else "all competitors"
+    print(f"Discovered products ({label}) — showing {len(rows)} most recent:")
+    for r in rows:
+        print(
+            f"  {r['last_seen'][:19]}  "
+            f"{r['competitor']:14}  "
+            f"{r['our_sku']:32}  "
+            f"{r['product_name'][:60]}"
+        )
+    return 0
+
+
 def cmd_verify_audit(agent: PriceIntelligenceAgent) -> int:
     ok, n, bad = agent.audit.verify()
     if ok:
@@ -122,6 +167,22 @@ def main(argv: list[str] | None = None) -> int:
     p_chg = sub.add_parser("changes", help="show recent price changes")
     p_chg.add_argument("--hours", type=int, default=24)
 
+    p_crawl = sub.add_parser(
+        "crawl",
+        help="discover and price every product on one competitor's site (via sitemap)",
+    )
+    p_crawl.add_argument("competitor", help="competitor name as it appears in the config")
+    p_crawl.add_argument(
+        "--limit", type=int, default=None,
+        help="max products to scrape this run (default: competitor's crawl_max_products)",
+    )
+
+    p_disc = sub.add_parser(
+        "discovered", help="list products discovered by previous crawls"
+    )
+    p_disc.add_argument("--competitor", default=None)
+    p_disc.add_argument("--limit", type=int, default=50)
+
     sub.add_parser("verify-audit", help="verify the audit log hash chain")
 
     args = parser.parse_args(argv)
@@ -142,6 +203,10 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_history(agent, args.our_sku, args.competitor, args.days)
         case "changes":
             return cmd_changes(agent, args.hours)
+        case "crawl":
+            return cmd_crawl(agent, args.competitor, args.limit)
+        case "discovered":
+            return cmd_discovered(agent, args.competitor, args.limit)
         case "verify-audit":
             return cmd_verify_audit(agent)
         case _:
