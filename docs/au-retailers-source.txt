@@ -1,0 +1,91 @@
+# Australian Computing & Hardware Retailers — URL List for Pricing Agent
+# Neural Hardware Pty Ltd — Compiled May 2026
+# Format: Name | URL | Notes
+# ============================================================
+#
+# This is the verbatim source document supplied by the user.
+# The machine-readable, structured version lives at:
+#   config/au_retailers.yaml
+# Active scrape targets live at:
+#   config/competitors.yaml
+# Per-tier work queue lives at:
+#   docs/BACKLOG.md
+
+## TIER 1 — MAJOR NATIONAL RETAILERS (High volume, broad range)
+
+JB Hi-Fi                    | https://www.jbhifi.com.au                        | Largest AU consumer electronics retailer, laptops/desktops/peripherals
+Harvey Norman               | https://www.harveynorman.com.au                   | Major franchise retailer, broad computing range
+Officeworks                 | https://www.officeworks.com.au                    | Wesfarmers-owned, strong laptop/peripheral range, competitive pricing
+The Good Guys               | https://www.thegoodguys.com.au                   | JB Hi-Fi subsidiary, consumer electronics incl. computing
+Amazon Australia            | https://www.amazon.com.au                         | Broad range, competitive pricing, third-party sellers — use with caution on grey imports
+
+## TIER 2 — SPECIALIST PC/COMPONENT RETAILERS (Primary targets for parts pricing)
+
+Scorptec                    | https://www.scorptec.com.au                       | VIC/NSW/QLD stores + national shipping, enthusiast components, strong stock
+Umart                       | https://www.umart.com.au                          | QLD/NSW/SA/WA stores, No.1 for components, 20+ locations, click & collect
+MSY Technology              | https://www.msy.com.au                            | Lowest prices on many components, stores in all capitals, limited service
+PC Case Gear (PCCG)         | https://www.pccasegear.com                        | Enthusiast-focused, cases/cooling/components, highly regarded
+Centre Com                  | https://www.centrecom.com.au                      | VIC/NSW/SA stores, 25+ years, strong peripheral and component range
+PLE Computers               | https://www.ple.com.au                            | WA/VIC, strong GPU/component stock incl. RTX 50 series, enthusiast focus
+Computer Alliance           | https://www.computeralliance.com.au               | QLD-based, strong gaming PC and components, national shipping
+MegaBuy                     | https://www.megabuy.com.au                        | Brisbane-based, 20,000+ items, price-match policy
+Mwave                       | https://www.mwave.com.au                          | Now under DigiDirect Group (acquired June 2025), still trading, PC/gaming
+CPL Online (Computer & Parts Land) | https://www.cplonline.com.au              | VIC-based, broad component range incl. RTX 50 series
+Techbuy                     | https://www.techbuy.com.au                        | Sydney/Auburn, operating since 2000, broad hardware range
+Shopping Express            | https://www.shoppingexpress.com.au                | NSW-based, broad IT/component range
+Skycomp                     | https://www.skycomp.com.au                        | Online-focused, same-day dispatch, nationwide
+JW Computers                | https://www.jw.com.au                             | Sydney (4 locations), 20+ years, gaming PCs and parts
+Austin Computers            | https://www.austin.net.au                         | WA-based (Cannington/Osborne Park/Rockingham), ships nationally
+Dcomp                       | https://dcomp.com.au                              | NSW (2 locations), components and custom builds
+CCPU Computers              | https://www.ccpu.com.au                           | NSW/Carlingford, components including RTX 50 series
+Storm Computers             | https://www.stormcomputers.com.au                 | WA-based, components and systems
+Zotim                       | https://zotim.com.au                              | Online, laptops/desktops, no grey imports, AU warranties
+
+## TIER 3 — ELECTRONICS / MIXED RETAIL (Relevant for monitors, peripherals, NAS, networking)
+
+digiDirect                  | https://www.digidirect.com.au                     | Cameras + computers/monitors/storage, price match guarantee
+Device Deal                 | https://www.devicedeal.com.au                     | Melbourne (Vermont), NAS/networking/storage focus (QNAP, Synology, Seagate)
+Kogan                       | https://www.kogan.com.au                          | Online-only, budget to mid-range, own-brand + major brands
+Bing Lee                    | https://www.binglee.com.au                        | NSW/ACT-focused, consumer electronics incl. computing
+Dick Smith (via Kogan)      | https://www.dicksmith.com.au                     | Kogan-owned brand, online only
+
+## TIER 4 — MANUFACTURER DIRECT (For RTX cards, CPUs, systems — check against reseller pricing)
+
+ASUS Australia              | https://www.asus.com/au                           | ROG, ProArt, motherboards, GPUs, laptops — direct store
+MSI Australia               | https://au.msi.com                                | GPUs, motherboards, laptops — direct store
+Gigabyte Australia          | https://www.gigabyte.com/au                       | GPUs, motherboards — direct store
+NVIDIA (GeForce)            | https://www.nvidia.com/en-au/shop                 | FE cards direct — limited availability AU
+AMD Australia               | https://www.amd.com/en/direct-buy/au              | Ryzen CPUs, Radeon GPUs — direct (limited stock)
+Intel                       | https://www.intel.com.au/content/www/au/en/shop   | CPU direct store
+Dell Australia              | https://www.dell.com/en-au                        | Desktops, laptops, workstations, monitors — direct
+HP Australia                | https://www.hp.com/au-en/shop                     | Laptops, desktops, workstations, printers
+Lenovo Australia            | https://www.lenovo.com/au/en/shop                 | ThinkPad, IdeaPad, Legion gaming — direct
+Apple Australia             | https://www.apple.com/au/shop                     | Mac, MacBook, iPad — direct store
+
+## TIER 5 — REFURBISHED / SECONDARY MARKET
+
+Australian Computer Traders | https://www.australiancomputertraders.com.au      | Ex-government refurbished Dell/HP/Lenovo/Microsoft/Apple
+EMPR Australia              | https://store.emprgroup.com.au                    | Authorised replacement parts (HP, Dell, Lenovo, Lexmark) — 15,000+ parts
+PC Hardware Refresh         | https://pchardwarerefresh.com.au                  | Perth-based, ex-corporate refurbished, ships nationally
+eBay Australia (Computing)  | https://www.ebay.com.au/b/Computers-Tablets-Networking/58058/bn_1643457 | Secondary market, new & used
+
+## TIER 6 — PRICE COMPARISON / AGGREGATORS (For agent cross-referencing)
+
+StaticICE                   | https://www.staticice.com.au                      | Best AU price comparison for PC hardware, indexes small local vendors
+Google Shopping (AU)        | https://shopping.google.com.au                    | Broad aggregator
+GetPrice                    | https://www.getprice.com.au                       | AU price comparison, electronics focus
+ShopBot                     | https://www.shopbot.com.au                        | General AU comparison engine, computing category
+MyShopping                  | https://www.myshopping.com.au                     | AU price comparison
+PriceSpy                    | https://pricespy.com.au                           | AU/NZ price tracker with history graphs
+
+# ============================================================
+# NOTES FOR PRICING AGENT:
+# - Mwave (mwave.com.au) is operational under DigiDirect Group as of June 2025 — include but flag as transitional
+# - Mwave service quality reviews mixed post-acquisition (slow fulfilment reported) — treat price data as valid, stock availability less reliable
+# - StaticICE is the most comprehensive AU hardware price index — use as cross-reference
+# - Manufacturer direct stores (Tier 4) often have higher RRP than resellers but confirm availability of exclusive SKUs
+# - EMPR and Australian Computer Traders are parts/refurb only — exclude from new hardware pricing comparisons
+# - eBay AU pricing is secondary market — discount accordingly unless listing is from verified AU retailer storefront
+# ============================================================
+# Total retailers indexed: 47
+# Last verified: May 2026

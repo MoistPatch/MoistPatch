@@ -1,0 +1,114 @@
+# Australian Computing & Hardware Retailers — canonical catalogue
+# ----------------------------------------------------------------------
+# Source: AU_Computing_Retailers_URL_List.txt (May 2026, 47 retailers).
+# Stored here so it survives sessions and is machine-readable.
+#
+# This file is the REFERENCE catalogue. It does NOT drive the crawler
+# directly — that's `config/competitors.yaml`. Retailers are promoted
+# from here into competitors.yaml when ready to scan.
+#
+# Fields:
+#   tier             1-6 (see README at bottom)
+#   name             display name
+#   url              homepage
+#   notes            description from the source document
+#   crawl_priority   high | medium | low — guidance for which to enable next
+#   strategy         reseller | manufacturer | refurb | aggregator
+#   active           true if currently wired into competitors.yaml
+
+retailers:
+
+  # =========================================================
+  # TIER 1 — MAJOR NATIONAL RETAILERS
+  # =========================================================
+  - { tier: 1, name: JB Hi-Fi,        url: https://www.jbhifi.com.au,         notes: "Largest AU consumer electronics retailer, laptops/desktops/peripherals.",                          crawl_priority: medium, strategy: reseller, active: false }
+  - { tier: 1, name: Harvey Norman,   url: https://www.harveynorman.com.au,   notes: "Major franchise retailer, broad computing range.",                                                crawl_priority: medium, strategy: reseller, active: false }
+  - { tier: 1, name: Officeworks,     url: https://www.officeworks.com.au,    notes: "Wesfarmers-owned, strong laptop/peripheral range, competitive pricing.",                          crawl_priority: medium, strategy: reseller, active: false }
+  - { tier: 1, name: The Good Guys,   url: https://www.thegoodguys.com.au,    notes: "JB Hi-Fi subsidiary, consumer electronics incl. computing.",                                       crawl_priority: low,    strategy: reseller, active: false }
+  - { tier: 1, name: Amazon Australia, url: https://www.amazon.com.au,        notes: "Broad range; use with caution on grey imports from third-party sellers.",                          crawl_priority: low,    strategy: reseller, active: false }
+
+  # =========================================================
+  # TIER 2 — SPECIALIST PC / COMPONENT RETAILERS (primary targets)
+  # =========================================================
+  - { tier: 2, name: Scorptec,        url: https://www.scorptec.com.au,       notes: "VIC/NSW/QLD stores + national shipping, enthusiast components, strong stock.",                     crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: Umart,           url: https://www.umart.com.au,          notes: "QLD/NSW/SA/WA, 20+ locations, click & collect, #1 for components.",                                 crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: MSY Technology,  url: https://www.msy.com.au,            notes: "Lowest prices on many components, stores in all capitals, limited service.",                        crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: PC Case Gear,    url: https://www.pccasegear.com,        notes: "Enthusiast-focused; cases/cooling/components, highly regarded.",                                    crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: Centre Com,      url: https://www.centrecom.com.au,      notes: "VIC/NSW/SA, 25+ years, strong peripheral and component range.",                                     crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: PLE Computers,   url: https://www.ple.com.au,            notes: "WA/VIC; strong GPU/component stock incl. RTX 50 series.",                                          crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: Computer Alliance, url: https://www.computeralliance.com.au, notes: "QLD-based, strong gaming PC and components, national shipping.",                              crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: MegaBuy,         url: https://www.megabuy.com.au,        notes: "Brisbane-based, 20,000+ items, price-match policy.",                                                crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: Mwave,           url: https://www.mwave.com.au,          notes: "Under DigiDirect Group since June 2025. Pricing data valid; stock data less reliable.",            crawl_priority: high, strategy: reseller, active: true }
+  - { tier: 2, name: CPL Online,      url: https://www.cplonline.com.au,      notes: "VIC-based, broad component range incl. RTX 50 series.",                                            crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: Techbuy,         url: https://www.techbuy.com.au,        notes: "Sydney/Auburn, operating since 2000, broad hardware range.",                                       crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: Shopping Express, url: https://www.shoppingexpress.com.au, notes: "NSW-based, broad IT/component range.",                                                            crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: Skycomp,         url: https://www.skycomp.com.au,        notes: "Online-focused, same-day dispatch, nationwide.",                                                   crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: JW Computers,    url: https://www.jw.com.au,             notes: "Sydney (4 locations), 20+ years, gaming PCs and parts.",                                           crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: Austin Computers, url: https://www.austin.net.au,        notes: "WA-based (Cannington/Osborne Park/Rockingham), ships nationally.",                                 crawl_priority: medium, strategy: reseller, active: true }
+  - { tier: 2, name: Dcomp,           url: https://dcomp.com.au,              notes: "NSW (2 locations), components and custom builds.",                                                  crawl_priority: low, strategy: reseller, active: true }
+  - { tier: 2, name: CCPU Computers,  url: https://www.ccpu.com.au,           notes: "NSW/Carlingford, components including RTX 50 series.",                                              crawl_priority: low, strategy: reseller, active: true }
+  - { tier: 2, name: Storm Computers, url: https://www.stormcomputers.com.au, notes: "WA-based, components and systems.",                                                                 crawl_priority: low, strategy: reseller, active: true }
+  - { tier: 2, name: Zotim,           url: https://zotim.com.au,              notes: "Online, laptops/desktops, no grey imports, AU warranties.",                                         crawl_priority: low, strategy: reseller, active: true }
+
+  # =========================================================
+  # TIER 3 — ELECTRONICS / MIXED RETAIL
+  # =========================================================
+  - { tier: 3, name: digiDirect,      url: https://www.digidirect.com.au,     notes: "Cameras + computers/monitors/storage, price match guarantee.",                                      crawl_priority: medium, strategy: reseller, active: false }
+  - { tier: 3, name: Device Deal,     url: https://www.devicedeal.com.au,     notes: "Melbourne (Vermont). NAS/networking/storage focus (QNAP, Synology, Seagate).",                       crawl_priority: low, strategy: reseller, active: false }
+  - { tier: 3, name: Kogan,           url: https://www.kogan.com.au,          notes: "Online-only, budget to mid-range, own-brand + major brands.",                                       crawl_priority: low, strategy: reseller, active: false }
+  - { tier: 3, name: Bing Lee,        url: https://www.binglee.com.au,        notes: "NSW/ACT-focused, consumer electronics incl. computing.",                                            crawl_priority: low, strategy: reseller, active: false }
+  - { tier: 3, name: Dick Smith,      url: https://www.dicksmith.com.au,      notes: "Kogan-owned brand, online only.",                                                                   crawl_priority: low, strategy: reseller, active: false }
+
+  # =========================================================
+  # TIER 4 — MANUFACTURER DIRECT (for MSRP cross-reference)
+  # =========================================================
+  - { tier: 4, name: ASUS Australia,  url: https://www.asus.com/au,           notes: "ROG, ProArt, motherboards, GPUs, laptops — direct store.",                                          crawl_priority: medium, strategy: manufacturer, active: false }
+  - { tier: 4, name: MSI Australia,   url: https://au.msi.com,                notes: "GPUs, motherboards, laptops — direct store.",                                                       crawl_priority: medium, strategy: manufacturer, active: false }
+  - { tier: 4, name: Gigabyte Australia, url: https://www.gigabyte.com/au,    notes: "GPUs, motherboards — direct store.",                                                                crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: NVIDIA GeForce,  url: https://www.nvidia.com/en-au/shop, notes: "FE cards direct — limited availability AU.",                                                        crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: AMD Australia,   url: https://www.amd.com/en/direct-buy/au, notes: "Ryzen CPUs, Radeon GPUs — direct (limited stock).",                                              crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: Intel,           url: https://www.intel.com.au/content/www/au/en/shop, notes: "CPU direct store.",                                                                    crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: Dell Australia,  url: https://www.dell.com/en-au,        notes: "Desktops, laptops, workstations, monitors — direct.",                                               crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: HP Australia,    url: https://www.hp.com/au-en/shop,     notes: "Laptops, desktops, workstations, printers.",                                                        crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: Lenovo Australia, url: https://www.lenovo.com/au/en/shop, notes: "ThinkPad, IdeaPad, Legion gaming — direct.",                                                       crawl_priority: low, strategy: manufacturer, active: false }
+  - { tier: 4, name: Apple Australia, url: https://www.apple.com/au/shop,     notes: "Mac, MacBook, iPad — direct store.",                                                                crawl_priority: low, strategy: manufacturer, active: false }
+
+  # =========================================================
+  # TIER 5 — REFURBISHED / SECONDARY MARKET
+  # =========================================================
+  - { tier: 5, name: Australian Computer Traders, url: https://www.australiancomputertraders.com.au, notes: "Ex-government refurbished Dell/HP/Lenovo/Microsoft/Apple.",                   crawl_priority: low, strategy: refurb, active: false }
+  - { tier: 5, name: EMPR Australia,  url: https://store.emprgroup.com.au,    notes: "Authorised replacement parts (HP, Dell, Lenovo, Lexmark) — 15,000+ parts. Exclude from new pricing.", crawl_priority: low, strategy: refurb, active: false }
+  - { tier: 5, name: PC Hardware Refresh, url: https://pchardwarerefresh.com.au, notes: "Perth-based, ex-corporate refurbished, ships nationally.",                                       crawl_priority: low, strategy: refurb, active: false }
+  - { tier: 5, name: eBay Australia,  url: https://www.ebay.com.au/b/Computers-Tablets-Networking/58058/bn_1643457, notes: "Secondary market new & used. Discount unless verified storefront.", crawl_priority: low, strategy: refurb, active: false }
+
+  # =========================================================
+  # TIER 6 — PRICE COMPARISON / AGGREGATORS (cross-reference)
+  # =========================================================
+  - { tier: 6, name: StaticICE,       url: https://www.staticice.com.au,      notes: "Most comprehensive AU PC-hardware price index. Indexes small local vendors. High-value adapter target.", crawl_priority: high, strategy: aggregator, active: false }
+  - { tier: 6, name: Google Shopping AU, url: https://shopping.google.com.au, notes: "Broad aggregator. Anti-bot heavy; needs custom adapter.",                                            crawl_priority: medium, strategy: aggregator, active: false }
+  - { tier: 6, name: GetPrice,        url: https://www.getprice.com.au,       notes: "AU price comparison, electronics focus.",                                                            crawl_priority: medium, strategy: aggregator, active: false }
+  - { tier: 6, name: ShopBot,         url: https://www.shopbot.com.au,        notes: "General AU comparison engine, computing category.",                                                  crawl_priority: low, strategy: aggregator, active: false }
+  - { tier: 6, name: MyShopping,      url: https://www.myshopping.com.au,     notes: "AU price comparison.",                                                                               crawl_priority: low, strategy: aggregator, active: false }
+  - { tier: 6, name: PriceSpy,        url: https://pricespy.com.au,           notes: "AU/NZ price tracker with history graphs. Useful historical depth.",                                  crawl_priority: high, strategy: aggregator, active: false }
+
+# ============================================================
+# Tier legend
+# ============================================================
+# 1: Major national retailers          — broad range, less hardware-focused
+# 2: Specialist PC/component retailers — primary scrape targets
+# 3: Electronics/mixed retail          — peripherals, monitors, NAS
+# 4: Manufacturer direct               — MSRP cross-reference
+# 5: Refurbished/secondary market      — exclude from new-price comparison
+# 6: Price comparison/aggregators      — potential shortcut for broad coverage
+
+# Document notes preserved verbatim:
+#   - Mwave under DigiDirect Group since June 2025 — pricing valid, stock unreliable.
+#   - StaticICE is the most comprehensive AU price index — prioritise an adapter.
+#   - Manufacturer direct (Tier 4) often has higher RRP than resellers.
+#   - EMPR / ACT are parts/refurb only — exclude from new-hardware pricing.
+#   - eBay AU pricing is secondary market — discount unless verified storefront.
+
+meta:
+  total_retailers: 47
+  source: AU_Computing_Retailers_URL_List.txt
+  last_verified: 2026-05

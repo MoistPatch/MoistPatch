@@ -66,6 +66,35 @@ e-commerce brand. You play three roles, in this order of priority:
 
 ---
 
+## 3.5. Retailer catalogue (persistent, do not lose)
+
+The pricing agent's universe of competitors is the **47-retailer
+Australian catalogue** at `config/au_retailers.yaml`. It is organised
+into 6 tiers:
+
+| Tier | Category | Count | Status |
+|------|----------|-------|--------|
+| 1 | Major national retailers (JB Hi-Fi, Officeworks, Harvey Norman, The Good Guys, Amazon AU) | 5 | catalogue only |
+| 2 | **Specialist PC/component retailers** (Centre Com, PLE, Scorptec, Mwave, Umart, MSY, PC Case Gear, Computer Alliance, MegaBuy, CPL Online, Techbuy, Shopping Express, Skycomp, JW Computers, Austin Computers, Dcomp, CCPU, Storm Computers, Zotim) | **19** | **all wired into `competitors.yaml`** |
+| 3 | Electronics/mixed retail (digiDirect, Device Deal, Kogan, Bing Lee, Dick Smith) | 5 | catalogue only |
+| 4 | Manufacturer direct (ASUS, MSI, Gigabyte, NVIDIA, AMD, Intel, Dell, HP, Lenovo, Apple AU) | 10 | catalogue only |
+| 5 | Refurbished/secondary (ACT, EMPR, PC Hardware Refresh, eBay AU) | 4 | catalogue only |
+| 6 | Aggregators (StaticICE, Google Shopping AU, GetPrice, ShopBot, MyShopping, PriceSpy) | 6 | catalogue only |
+
+**Source**: `AU_Computing_Retailers_URL_List.txt` (May 2026, user-supplied).
+Saved verbatim with classification metadata so it's never lost.
+
+**Backlog and per-tier follow-up work**: `docs/BACKLOG.md`. Read it before
+deciding which retailer to bring online next. Includes notable gotchas
+(Mwave post-DigiDirect acquisition, manufacturer-direct vs MSRP, exclude
+refurb from new-price comparison, etc.).
+
+**Highest-leverage future work** flagged in BACKLOG: a **StaticICE
+adapter** would give us competitor coverage across thousands of SKUs in
+one query, including small/regional vendors not in `competitors.yaml`.
+
+---
+
 ## 4. Current repo state
 
 ```
@@ -77,14 +106,21 @@ MoistPatch/                                       (branch: claude/build-ai-agent
 ├── requirements.txt                              httpx, bs4, lxml, pydantic, PyYAML, Jinja2
 ├── .gitignore                                    excludes data/, .venv, __pycache__
 ├── config/
-│   └── competitors.yaml                          5 AU retailers — URLs are PLACEHOLDERS,
-│                                                 all SKUs are disabled until real product
-│                                                 URLs are filled in
+│   ├── competitors.yaml                          19 Tier-2 AU specialists wired in for the
+│   │                                             `crawl` command (sitemap-driven discovery).
+│   │                                             Targeted `scan` SKUs still disabled until
+│   │                                             real product URLs are filled in.
+│   └── au_retailers.yaml                         FULL 47-retailer catalogue from the May 2026
+│                                                 source doc. Reference data; promote into
+│                                                 competitors.yaml when ready to scan.
 ├── docs/
 │   ├── business-operations.md                    4-week timeline, 10 checklists,
 │   │                                             daily/weekly cheat sheet, 30-day Gantt
 │   ├── platform-setup-guide.md                   field-by-field for eBay/Shopify/Woo/
 │   │                                             Instagram/Facebook/TikTok
+│   ├── BACKLOG.md                                pricing-agent work queue, tier by tier;
+│   │                                             includes Tier 1/3/4/5/6 retailers waiting
+│   │                                             to be promoted into competitors.yaml
 │   └── sample-report.html                        rendered Agent 11 demo email
 ├── agents/
 │   ├── price_intelligence/                       Agent 1C — BUILT, tested, runnable

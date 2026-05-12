@@ -1,109 +1,272 @@
-# Competitor and SKU configuration for Agent 1C (Price Intelligence).
+# Active competitor configuration for Agent 1C (Price Intelligence).
+# ----------------------------------------------------------------------
+# Source of truth for what the crawler will actually fetch.
+# The full 47-retailer catalogue (with tier/notes/priority metadata) is
+# in `config/au_retailers.yaml` — promote retailers from there to here
+# as you bring them online.
 #
-# Two modes of operation:
+# Modes:
+#   scan  — uses `skus:` list; pre-defined products with validation bounds
+#   crawl — uses each competitor's sitemap + product_url_patterns
 #
-#  1) Targeted SCAN — uses the `skus:` list below. Best for products you
-#     specifically want to track (your hero SKUs). Validates against
-#     `expected_price_min/max` per SKU.
-#
-#  2) Wide CRAWL — uses the per-competitor `sitemap_url` and
-#     `product_url_patterns` fields. Discovers every product the site
-#     publishes in its sitemap. Validates against the competitor-level
-#     `crawl_price_min/max` sanity bounds.
-#
-# A SKU not present in `skus:` but discovered via crawl will be stored
-# under a synthesised internal SKU: EXT-{COMPETITOR-INITIALS}-{external_id}.
+# All 19 Tier 2 specialists below are wired in with reasonable defaults.
+# Patterns are educated guesses; test each with --limit 5 first and
+# tune product_url_patterns if needed.
 
 competitors:
+
+  # ---------- already-tuned originals ----------
   - name: Centre Com
     domain: centrecom.com.au
     base_url: https://www.centrecom.com.au
-    renderer: http
+    sitemap_url: https://www.centrecom.com.au/sitemap.xml
+    product_url_patterns: ["*/Product/*", "*/product/*", "*/products/*"]
     rate_limit_min_s: 6
     rate_limit_max_s: 15
-    enabled: true
-    # Discovery
-    sitemap_url: https://www.centrecom.com.au/sitemap.xml
-    product_url_patterns:
-      - "*/Product/*"
-      - "*/product/*"
-      - "*/products/*"
     crawl_default_currency: AUD
     crawl_price_min: 1
     crawl_price_max: 50000
     crawl_max_products: 200
+    enabled: true
 
   - name: PLE Computers
     domain: ple.com.au
     base_url: https://www.ple.com.au
-    renderer: http
+    sitemap_url: https://www.ple.com.au/sitemap.xml
+    product_url_patterns: ["*/Products/*", "*/products/*", "*/PartDetail/*"]
     rate_limit_min_s: 6
     rate_limit_max_s: 15
-    enabled: true
-    sitemap_url: https://www.ple.com.au/sitemap.xml
-    product_url_patterns:
-      - "*/Products/*"
-      - "*/products/*"
-      - "*/PartDetail/*"
     crawl_default_currency: AUD
     crawl_price_min: 1
     crawl_price_max: 50000
     crawl_max_products: 200
+    enabled: true
 
   - name: Scorptec
     domain: scorptec.com.au
     base_url: https://www.scorptec.com.au
-    renderer: http
+    sitemap_url: https://www.scorptec.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*"]
     rate_limit_min_s: 8
     rate_limit_max_s: 18
-    enabled: true
-    # Scorptec uses Cloudflare; sitemap may or may not be reachable.
-    # If sitemap_url returns 403/503 the crawler logs the failure cleanly
-    # — that's still useful diagnostic data.
-    sitemap_url: https://www.scorptec.com.au/sitemap.xml
-    product_url_patterns:
-      - "*/product/*"
     crawl_default_currency: AUD
     crawl_price_min: 1
     crawl_price_max: 50000
     crawl_max_products: 200
+    enabled: true
 
   - name: Mwave
     domain: mwave.com.au
     base_url: https://www.mwave.com.au
-    renderer: http
+    sitemap_url: https://www.mwave.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/au-en/product/*"]
     rate_limit_min_s: 8
     rate_limit_max_s: 18
-    enabled: true
-    sitemap_url: https://www.mwave.com.au/sitemap.xml
-    product_url_patterns:
-      - "*/product/*"
-      - "*/au-en/product/*"
     crawl_default_currency: AUD
     crawl_price_min: 1
     crawl_price_max: 50000
     crawl_max_products: 200
+    enabled: true
 
   - name: Umart
     domain: umart.com.au
     base_url: https://www.umart.com.au
-    renderer: http
+    sitemap_url: https://www.umart.com.au/sitemap.xml
+    product_url_patterns: ["*/pro/*", "*/product/*"]
     rate_limit_min_s: 6
     rate_limit_max_s: 15
-    enabled: true
-    sitemap_url: https://www.umart.com.au/sitemap.xml
-    product_url_patterns:
-      - "*/pro/*"
-      - "*/product/*"
     crawl_default_currency: AUD
     crawl_price_min: 1
     crawl_price_max: 50000
     crawl_max_products: 200
+    enabled: true
+
+  # ---------- Tier 2 additions from the May 2026 catalogue ----------
+  - name: MSY Technology
+    domain: msy.com.au
+    base_url: https://www.msy.com.au
+    sitemap_url: https://www.msy.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: PC Case Gear
+    domain: pccasegear.com
+    base_url: https://www.pccasegear.com
+    sitemap_url: https://www.pccasegear.com/sitemap.xml
+    product_url_patterns: ["*/products/*", "*/product/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Computer Alliance
+    domain: computeralliance.com.au
+    base_url: https://www.computeralliance.com.au
+    sitemap_url: https://www.computeralliance.com.au/sitemap.xml
+    product_url_patterns: ["*/products/*", "*/product/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: MegaBuy
+    domain: megabuy.com.au
+    base_url: https://www.megabuy.com.au
+    sitemap_url: https://www.megabuy.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*", "*/p/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: CPL Online
+    domain: cplonline.com.au
+    base_url: https://www.cplonline.com.au
+    sitemap_url: https://www.cplonline.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Techbuy
+    domain: techbuy.com.au
+    base_url: https://www.techbuy.com.au
+    sitemap_url: https://www.techbuy.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Shopping Express
+    domain: shoppingexpress.com.au
+    base_url: https://www.shoppingexpress.com.au
+    sitemap_url: https://www.shoppingexpress.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/shop/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Skycomp
+    domain: skycomp.com.au
+    base_url: https://www.skycomp.com.au
+    sitemap_url: https://www.skycomp.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: JW Computers
+    domain: jw.com.au
+    base_url: https://www.jw.com.au
+    sitemap_url: https://www.jw.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Austin Computers
+    domain: austin.net.au
+    base_url: https://www.austin.net.au
+    sitemap_url: https://www.austin.net.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Dcomp
+    domain: dcomp.com.au
+    base_url: https://dcomp.com.au
+    sitemap_url: https://dcomp.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: CCPU Computers
+    domain: ccpu.com.au
+    base_url: https://www.ccpu.com.au
+    sitemap_url: https://www.ccpu.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Storm Computers
+    domain: stormcomputers.com.au
+    base_url: https://www.stormcomputers.com.au
+    sitemap_url: https://www.stormcomputers.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
+
+  - name: Zotim
+    domain: zotim.com.au
+    base_url: https://zotim.com.au
+    sitemap_url: https://zotim.com.au/sitemap.xml
+    product_url_patterns: ["*/product/*", "*/products/*"]
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    crawl_default_currency: AUD
+    crawl_price_min: 1
+    crawl_price_max: 50000
+    crawl_max_products: 200
+    enabled: true
 
 # ------------------------------------------------------------------
-# Targeted SKUs — optional. Used by `scan`, not by `crawl`.
-# Replace each url with an actual product page URL on that competitor
-# before flipping enabled: true.
+# Targeted SKUs (mode A) — optional. Replace each url with the
+# actual product page URL on that competitor before flipping enabled.
 # ------------------------------------------------------------------
 skus:
   - our_sku: NH-RTX5090
