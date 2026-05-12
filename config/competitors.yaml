@@ -1,0 +1,99 @@
+# Competitor and SKU configuration for Agent 1C (Price Intelligence).
+#
+# IMPORTANT: The URLs below are PLACEHOLDERS that point at each competitor's
+# search page rather than a specific product. You MUST replace them with the
+# actual product URLs for the SKU you want to track before enabling the SKU.
+#
+# Most Australian electronics retailers publish schema.org JSON-LD on their
+# product pages, so the agent will work without selectors. Add a CSS
+# selector under 'selectors.price' as a fallback if JSON-LD/OpenGraph fail.
+
+competitors:
+  - name: Centre Com
+    domain: centrecom.com.au
+    base_url: https://www.centrecom.com.au
+    renderer: http
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    enabled: true
+
+  - name: PLE Computers
+    domain: ple.com.au
+    base_url: https://www.ple.com.au
+    renderer: http
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    enabled: true
+
+  - name: Scorptec
+    domain: scorptec.com.au
+    base_url: https://www.scorptec.com.au
+    renderer: http
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    enabled: true
+
+  - name: Mwave
+    domain: mwave.com.au
+    base_url: https://www.mwave.com.au
+    renderer: http
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    enabled: true
+
+  - name: Umart
+    domain: umart.com.au
+    base_url: https://www.umart.com.au
+    renderer: http
+    rate_limit_min_s: 6
+    rate_limit_max_s: 15
+    enabled: true
+
+skus:
+  # Replace each url with the actual product page URL on that competitor.
+  # Enable a SKU (enabled: true) once its url is real.
+
+  - our_sku: NH-RTX5090
+    competitor: Centre Com
+    product_name: NVIDIA GeForce RTX 5090 24GB
+    category: gpu
+    url: https://www.centrecom.com.au/search?q=rtx+5090
+    expected_price_min: 2500
+    expected_price_max: 5500
+    enabled: false
+
+  - our_sku: NH-RTX5090
+    competitor: Mwave
+    product_name: NVIDIA GeForce RTX 5090 24GB
+    category: gpu
+    url: https://www.mwave.com.au/search?keywords=rtx+5090
+    expected_price_min: 2500
+    expected_price_max: 5500
+    enabled: false
+
+  - our_sku: NH-RX9070XT
+    competitor: Scorptec
+    product_name: AMD Radeon RX 9070 XT 16GB
+    category: gpu
+    url: https://www.scorptec.com.au/search?q=rx+9070+xt
+    expected_price_min: 800
+    expected_price_max: 1800
+    enabled: false
+
+  - our_sku: NH-ARCTIC360
+    competitor: PLE Computers
+    product_name: Arctic Liquid Freezer III 360 AIO
+    category: cooling
+    url: https://www.ple.com.au/Search?query=liquid+freezer+iii+360
+    expected_price_min: 100
+    expected_price_max: 250
+    enabled: false
+
+  - our_sku: NH-990PRO4TB
+    competitor: Umart
+    product_name: Samsung 990 Pro 4TB NVMe SSD
+    category: storage
+    url: https://www.umart.com.au/search?q=990+pro+4tb
+    expected_price_min: 250
+    expected_price_max: 550
+    enabled: false
