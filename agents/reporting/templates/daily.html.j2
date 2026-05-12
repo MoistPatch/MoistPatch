@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ subject }}</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f7;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a2e;">
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f3f4f7;padding:24px 0;">
+<tr><td align="center">
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="640" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+
+  {% if report.is_demo %}
+  <tr><td style="background:#fff3cd;border-bottom:1px solid #ffe69c;padding:12px 24px;font-size:13px;color:#664d03;">
+    <strong>⚠️ DEMO DATA</strong> — This report was generated from fixture data, not from live scraping of real competitors. Do not act on these figures.
+  </td></tr>
+  {% endif %}
+
+  <!-- Header -->
+  <tr><td style="background:linear-gradient(135deg,#00d4ff,#7b2fff);padding:24px 28px;color:#ffffff;">
+    <div style="font-size:13px;letter-spacing:2px;opacity:0.85;text-transform:uppercase;">Neural Hardware · Agent 11</div>
+    <div style="font-size:24px;font-weight:700;margin-top:4px;">Daily Price Intelligence Report</div>
+    <div style="font-size:13px;opacity:0.9;margin-top:6px;">
+      Window: {{ report.period_start.strftime('%Y-%m-%d %H:%M') }} → {{ report.period_end.strftime('%Y-%m-%d %H:%M') }} UTC
+    </div>
+  </td></tr>
+
+  <!-- KPIs -->
+  <tr><td style="padding:24px 28px;background:#fafbfd;border-bottom:1px solid #e8eaf0;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+      <tr>
+        <td width="20%" style="padding:8px;text-align:center;">
+          <div style="font-size:11px;color:#6c7a93;letter-spacing:1px;text-transform:uppercase;">SKUs tracked</div>
+          <div style="font-size:24px;font-weight:700;color:#1a1a2e;margin-top:4px;">{{ report.skus_tracked }}</div>
+        </td>
+        <td width="20%" style="padding:8px;text-align:center;">
+          <div style="font-size:11px;color:#6c7a93;letter-spacing:1px;text-transform:uppercase;">Competitors</div>
+          <div style="font-size:24px;font-weight:700;color:#1a1a2e;margin-top:4px;">{{ report.competitors_tracked }}</div>
+        </td>
+        <td width="20%" style="padding:8px;text-align:center;">
+          <div style="font-size:11px;color:#6c7a93;letter-spacing:1px;text-transform:uppercase;">Scans OK</div>
+          <div style="font-size:24px;font-weight:700;color:#00a86b;margin-top:4px;">{{ report.scans_succeeded }}</div>
+        </td>
+        <td width="20%" style="padding:8px;text-align:center;">
+          <div style="font-size:11px;color:#6c7a93;letter-spacing:1px;text-transform:uppercase;">Scans Failed</div>
+          <div style="font-size:24px;font-weight:700;color:{% if report.scans_failed %}#d62828{% else %}#6c7a93{% endif %};margin-top:4px;">{{ report.scans_failed }}</div>
+        </td>
+        <td width="20%" style="padding:8px;text-align:center;">
+          <div style="font-size:11px;color:#6c7a93;letter-spacing:1px;text-transform:uppercase;">Success Rate</div>
+          <div style="font-size:24px;font-weight:700;color:#1a1a2e;margin-top:4px;">{{ '%.1f' % report.success_rate }}%</div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- Price comparisons -->
+  {% if report.comparisons %}
+  <tr><td style="padding:24px 28px;">
+    <h2 style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#6c7a93;margin:0 0 12px 0;">Current Prices by SKU</h2>
+
+    {% for cmp in report.comparisons %}
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom:18px;border:1px solid #e8eaf0;border-radius:8px;overflow:hidden;">
+      <tr><td style="background:#0e0e1a;color:#ffffff;padding:10px 14px;font-size:13px;">
+        <strong style="font-size:14px;">{{ cmp.our_sku }}</strong>
+        {% if cmp.cheapest %}
+          <span style="float:right;color:#00d4ff;font-size:12px;">
+            Cheapest: ${{ '%.2f' % cmp.cheapest.price }} @ {{ cmp.cheapest.competitor }}
+            {% if cmp.spread_pct is not none %}· spread {{ '%.1f' % cmp.spread_pct }}%{% endif %}
+          </span>
+        {% endif %}
+      </td></tr>
+      <tr><td style="padding:0;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:13px;">
+          <tr style="background:#fafbfd;color:#6c7a93;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;">
+            <td style="padding:8px 14px;">Competitor</td>
+            <td style="padding:8px 14px;">Price</td>
+            <td style="padding:8px 14px;">Stock</td>
+            <td style="padding:8px 14px;">Captured</td>
+            <td style="padding:8px 14px;">Method</td>
+            <td style="padding:8px 14px;text-align:right;">Conf.</td>
+          </tr>
+          {% for p in cmp.prices %}
+          <tr style="border-top:1px solid #e8eaf0;">
+            <td style="padding:10px 14px;font-weight:600;">{{ p.competitor }}</td>
+            <td style="padding:10px 14px;font-weight:700;{% if cmp.cheapest and p.competitor == cmp.cheapest.competitor %}color:#00a86b;{% endif %}">
+              ${{ '%.2f' % p.price }} {{ p.currency }}
+            </td>
+            <td style="padding:10px 14px;">
+              {% if p.in_stock is none %}<span style="color:#6c7a93;">—</span>
+              {% elif p.in_stock %}<span style="color:#00a86b;">● in stock</span>
+              {% else %}<span style="color:#d62828;">● out</span>{% endif %}
+            </td>
+            <td style="padding:10px 14px;color:#6c7a93;font-size:12px;">{{ p.captured_at.strftime('%m-%d %H:%M') }} UTC</td>
+            <td style="padding:10px 14px;color:#6c7a93;font-size:12px;">{{ p.extractor_method }}</td>
+            <td style="padding:10px 14px;color:#6c7a93;text-align:right;font-size:12px;">{{ '%.2f' % p.confidence }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </td></tr>
+    </table>
+    {% endfor %}
+  </td></tr>
+  {% endif %}
+
+  <!-- Recent changes -->
+  {% if report.changes %}
+  <tr><td style="padding:0 28px 24px 28px;">
+    <h2 style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#6c7a93;margin:0 0 12px 0;">Price Changes (last {{ window_hours }}h)</h2>
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:13px;border:1px solid #e8eaf0;border-radius:8px;overflow:hidden;">
+      <tr style="background:#fafbfd;color:#6c7a93;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;">
+        <td style="padding:8px 14px;">SKU</td>
+        <td style="padding:8px 14px;">Competitor</td>
+        <td style="padding:8px 14px;">From</td>
+        <td style="padding:8px 14px;">To</td>
+        <td style="padding:8px 14px;text-align:right;">Change</td>
+        <td style="padding:8px 14px;">When</td>
+      </tr>
+      {% for c in report.changes %}
+      <tr style="border-top:1px solid #e8eaf0;">
+        <td style="padding:10px 14px;font-weight:600;">{{ c.our_sku }}</td>
+        <td style="padding:10px 14px;">{{ c.competitor }}</td>
+        <td style="padding:10px 14px;color:#6c7a93;">${{ '%.2f' % c.old_price }}</td>
+        <td style="padding:10px 14px;font-weight:700;">${{ '%.2f' % c.new_price }}</td>
+        <td style="padding:10px 14px;text-align:right;font-weight:700;color:{% if c.change_percent < 0 %}#00a86b{% else %}#d62828{% endif %};">
+          {{ '%+.1f' % c.change_percent }}%
+        </td>
+        <td style="padding:10px 14px;color:#6c7a93;font-size:12px;">{{ c.detected_at.strftime('%m-%d %H:%M') }} UTC</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </td></tr>
+  {% endif %}
+
+  <!-- Anomalies -->
+  {% if report.anomalies %}
+  <tr><td style="padding:0 28px 24px 28px;">
+    <h2 style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#6c7a93;margin:0 0 12px 0;">Anomalies</h2>
+    {% for a in report.anomalies %}
+    <div style="background:#fff5f5;border-left:4px solid #d62828;border-radius:6px;padding:12px 14px;margin-bottom:8px;font-size:13px;">
+      <strong>[{{ a.severity|upper }}]</strong> {{ a.our_sku }} @ {{ a.competitor }} — ${{ '%.2f' % a.price }}<br>
+      <span style="color:#6c7a93;font-size:12px;">{{ a.reason }}</span>
+    </div>
+    {% endfor %}
+  </td></tr>
+  {% endif %}
+
+  <!-- Failures -->
+  {% if report.failures %}
+  <tr><td style="padding:0 28px 24px 28px;">
+    <h2 style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#6c7a93;margin:0 0 12px 0;">Scrape Failures</h2>
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:13px;border:1px solid #e8eaf0;border-radius:8px;">
+      {% for f in report.failures %}
+      <tr style="border-top:1px solid #e8eaf0;">
+        <td style="padding:8px 14px;font-weight:600;">{{ f.competitor }}</td>
+        <td style="padding:8px 14px;text-align:right;color:#d62828;font-weight:700;">{{ f.count }} fail{{ 's' if f.count != 1 else '' }}</td>
+        <td style="padding:8px 14px;color:#6c7a93;font-size:12px;">{{ f.last_error }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </td></tr>
+  {% endif %}
+
+  <!-- Trust / quality -->
+  <tr><td style="padding:0 28px 24px 28px;">
+    <h2 style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#6c7a93;margin:0 0 12px 0;">Data Quality</h2>
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size:13px;background:#fafbfd;border-radius:8px;padding:0;">
+      <tr><td style="padding:10px 14px;border-bottom:1px solid #e8eaf0;">
+        Avg. extractor confidence: <strong>{{ '%.2f' % report.avg_confidence }}</strong>
+        <span style="color:#6c7a93;">(hallucination risk: <strong>{{ report.hallucination_risk }}</strong>)</span>
+      </td></tr>
+      {% if report.audit_chain_ok is not none %}
+      <tr><td style="padding:10px 14px;">
+        Audit log:
+        {% if report.audit_chain_ok %}
+          <strong style="color:#00a86b;">✓ verified</strong>
+        {% else %}
+          <strong style="color:#d62828;">✗ TAMPERED</strong>
+        {% endif %}
+        <span style="color:#6c7a93;">({{ report.audit_entries }} entries)</span>
+      </td></tr>
+      {% endif %}
+    </table>
+    <p style="color:#6c7a93;font-size:11px;margin-top:12px;line-height:1.5;">
+      Generated by Agent 11 (price-reporter-11). Confidence is a proxy for
+      hallucination risk until Agent 2C (LLM-as-judge) is online. Audit log
+      uses a SHA-256 hash chain; verify with
+      <code>python -m agents.price_intelligence verify-audit</code>.
+    </p>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td style="background:#0e0e1a;padding:18px 28px;color:#8888aa;font-size:11px;">
+    <strong style="color:#ffffff;">Neural Hardware</strong> · Multi-agent system ·
+    Agent 11 · This message is automated. Reply to your own address — Agent 11 does not read replies.
+  </td></tr>
+
+</table>
+
+</td></tr></table>
+</body>
+</html>
