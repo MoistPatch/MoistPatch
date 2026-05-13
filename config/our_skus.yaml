@@ -1,0 +1,77 @@
+# Neural Hardware — internal SKU catalogue for Agent 3 (Pricing Optimisation).
+#
+# This file declares OUR products with COGS, MSRP, current price, and the
+# pricing strategy + margin floor for each. Agent 3 combines this with
+# competitor prices (from Agent 1C's data/prices.db) to recommend prices.
+#
+# Fields:
+#   our_sku           internal identifier (e.g. NH-RTX5090)
+#   product_name      human-readable
+#   cogs              cost of goods sold (incl. inbound landed cost, AUD)
+#   msrp              optional MSRP ceiling (won't recommend above this)
+#   current_price     current Shopify list price — keep this synced manually
+#                     until the Shopify Admin API integration ships
+#   min_margin_pct    margin floor; pricing never goes below COGS / (1 - this/100)
+#   strategy          competitive_floor | match_cheapest | margin_target
+#   enabled           false to skip this SKU
+#
+# Example: with COGS $2850, min_margin_pct 20:
+#   floor price = 2850 / (1 - 0.20) = $3562.50
+# The agent will never recommend below $3562.50 for this SKU even if a
+# competitor drops to $3000.
+
+skus:
+
+  - our_sku: NH-RTX5090
+    product_name: NVIDIA GeForce RTX 5090 24GB GDDR7
+    cogs: 2850.00
+    msrp: 3999.00
+    current_price: 3499.00
+    min_margin_pct: 18         # lower floor on GPUs; they're competitive
+    strategy: competitive_floor
+    enabled: true
+
+  - our_sku: NH-RX9070XT
+    product_name: AMD Radeon RX 9070 XT 16GB
+    cogs: 880.00
+    msrp: 1299.00
+    current_price: 1099.00
+    min_margin_pct: 18
+    strategy: competitive_floor
+    enabled: true
+
+  - our_sku: NH-RTX4000ADA
+    product_name: NVIDIA RTX 4000 Ada 20GB
+    cogs: 1850.00
+    msrp: 2499.00
+    current_price: 2199.00
+    min_margin_pct: 20
+    strategy: competitive_floor
+    enabled: true
+
+  - our_sku: NH-ARCTIC360
+    product_name: Arctic Liquid Freezer III 360 AIO
+    cogs: 95.00
+    msrp: 199.00
+    current_price: 149.00
+    min_margin_pct: 30        # accessories are the profit engine — hold margin
+    strategy: margin_target
+    enabled: true
+
+  - our_sku: NH-KRYOEXT
+    product_name: Thermal Grizzly Kryonaut Extreme 2g
+    cogs: 11.00
+    msrp: 29.00
+    current_price: 22.00
+    min_margin_pct: 40
+    strategy: margin_target
+    enabled: true
+
+  - our_sku: NH-990PRO4TB
+    product_name: Samsung 990 Pro 4TB NVMe SSD
+    cogs: 245.00
+    msrp: 449.00
+    current_price: 349.00
+    min_margin_pct: 22
+    strategy: competitive_floor
+    enabled: true

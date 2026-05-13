@@ -128,18 +128,30 @@ MoistPatch/                                       (branch: claude/build-ai-agent
 │   └── sample-report.html                        rendered Agent 11 demo email
 ├── agents/
 │   ├── price_intelligence/                       Agent 1C — BUILT, tested, runnable
-│   │   ├── agent.py                              orchestration
+│   │   ├── agent.py                              orchestration (scan + crawl)
 │   │   ├── scraper.py                            async httpx, robots.txt, 5-15s jitter,
 │   │   │                                         429/5xx backoff, NO credentials sent
+│   │   ├── discovery.py                          sitemap-driven URL discovery
 │   │   ├── extractor.py                          JSON-LD → OpenGraph → microdata →
 │   │   │                                         selector → regex, hard validation
 │   │   ├── anomaly.py                            z-score + rapid-change detection
 │   │   ├── storage.py                            SQLite WAL: price_points, price_changes,
-│   │   │                                         scrape_failures
+│   │   │                                         scrape_failures, discovered_products
 │   │   ├── audit.py                              SHA-256 hash-chained JSONL, tamper-
 │   │   │                                         evident, actor_type tagged
 │   │   ├── models.py                             Pydantic v2 with hard validation
-│   │   ├── __main__.py                           CLI: list/scan/changes/history/verify-audit
+│   │   ├── __main__.py                           CLI: list/scan/crawl/discovered/changes/
+│   │   │                                              history/verify-audit
+│   │   └── README.md
+│   ├── pricing_optimisation/                     Agent 3 — BUILT, tested, runnable
+│   │   ├── agent.py                              read 1C prices → strategy → guardrails
+│   │   │                                         → approval queue → audit
+│   │   ├── strategy.py                           competitive_floor | match_cheapest |
+│   │   │                                         margin_target
+│   │   ├── storage.py                            SQLite: pricing_decisions
+│   │   ├── models.py                             OurSku + PricingDecision pydantic models
+│   │   ├── __main__.py                           CLI: recommend/propose/pending/approve/
+│   │   │                                              reject/export-csv
 │   │   └── README.md
 │   └── reporting/                                Agent 11 — BUILT, tested, email-ready
 │       ├── agent.py                              compile → render → SMTP
@@ -151,10 +163,12 @@ MoistPatch/                                       (branch: claude/build-ai-agent
 │       └── README.md
 └── tests/
     ├── test_price_intelligence.py                13 tests, all passing
+    ├── test_discovery.py                         19 tests, all passing
+    ├── test_pricing.py                           20 tests, all passing
     └── test_reporting.py                         10 tests, all passing
 ```
 
-**Test suite: 23/23 passing.**
+**Test suite: 62/62 passing.**
 
 ---
 
@@ -166,7 +180,8 @@ MoistPatch/                                       (branch: claude/build-ai-agent
 |---|---|
 | Storefront `index.html` | 16 SVG products · cart/GST/free-shipping bar · ACL footer · 4K-ready vector logo and product illustrations |
 | Business ops docs | platform setup, 30-day Gantt, missing-pieces checklists |
-| **Agent 1C** Price Intelligence | scrapes product pages, hard-validates prices, detects changes + anomalies, hash-chain audit log |
+| **Agent 1C** Price Intelligence | scrapes product pages (scan + sitemap crawl), hard-validates prices, detects changes + anomalies, hash-chain audit log |
+| **Agent 3** Pricing Optimisation | reads 1C prices, applies competitive_floor / margin_target strategy, enforces margin floor + MSRP guardrails, approval queue for changes >5%, Shopify-compatible CSV export |
 | **Agent 11** Daily Reporting | compiles 1C's DB into HTML+text email, Gmail SMTP, refuses to send DEMO data |
 
 ### Not built yet (in spec but unimplemented)
@@ -179,7 +194,6 @@ MoistPatch/                                       (branch: claude/build-ai-agent
 | 1D | Industrial AI & Manufacturing News |
 | 1E | Credential Vault Interface (HashiCorp Vault, JWT, rotation) |
 | 2A-D | Noise cleaning, dedup, LLM-as-judge, hallucination prevention |
-| 3 | Pricing & Margin Optimisation (writes to Shopify) |
 | 4 | Bundling Optimisation |
 | 5 | Social Media & Marketing Campaign |
 | 6 | Customer Activity & Analytics |
