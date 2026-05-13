@@ -315,6 +315,11 @@ Recommended next builds, by ROI:
 
 ## 11. How to verify the build right now
 
+> ⚠️ The Claude Code sandbox has an **egress allowlist** — external
+> retailer URLs return HTTP 403. Live crawls of real competitors must
+> run from your own machine. The fixture and unit tests below run
+> anywhere.
+
 ```bash
 git checkout claude/build-ai-agent-zGcUz
 git pull
@@ -327,7 +332,10 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 # Tests
-python3 -m unittest discover tests -v       # expect: Ran 23 tests in <1s OK
+python3 -m unittest discover tests -v       # expect: Ran 42 tests in <1s OK
+
+# Real crawl (only from a machine with normal outbound HTTPS):
+python3 -m agents.price_intelligence crawl "PC Case Gear" --limit 5
 
 # Render demo email in your browser
 python3 -m agents.reporting demo-data

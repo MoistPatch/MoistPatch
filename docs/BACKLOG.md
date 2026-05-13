@@ -12,6 +12,13 @@ All 19 specialist PC retailers are configured. Before relying on any of
 them, run a small test crawl to verify the sitemap URL and product URL
 patterns are correct, then tune as needed.
 
+> ⚠️ **Sandbox note (May 2026):** The Claude Code sandbox where this repo
+> was built has an **egress allowlist** — external retailer domains
+> (`pccasegear.com`, `centrecom.com.au`, etc.) return `HTTP 403
+> "Host not in allowlist"`. The agent itself is verified end-to-end
+> against local fixtures; the real-network smoke test in this section
+> **must be run from your own machine**, not from a Claude session.
+
 ```bash
 # Test each retailer with a tiny budget, in priority order
 python -m agents.price_intelligence crawl "Centre Com"   --limit 5
