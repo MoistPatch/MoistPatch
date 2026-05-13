@@ -118,9 +118,13 @@ MoistPatch/                                       (branch: claude/build-ai-agent
 │   │                                             daily/weekly cheat sheet, 30-day Gantt
 │   ├── platform-setup-guide.md                   field-by-field for eBay/Shopify/Woo/
 │   │                                             Instagram/Facebook/TikTok
+│   ├── DEPLOY.md                                 deploy storefront → Cloudflare Pages,
+│   │                                             agents → DigitalOcean SYD droplet
+│   │                                             with systemd timers + Gmail SMTP
 │   ├── BACKLOG.md                                pricing-agent work queue, tier by tier;
 │   │                                             includes Tier 1/3/4/5/6 retailers waiting
 │   │                                             to be promoted into competitors.yaml
+│   ├── au-retailers-source.txt                   verbatim retailer list source doc
 │   └── sample-report.html                        rendered Agent 11 demo email
 ├── agents/
 │   ├── price_intelligence/                       Agent 1C — BUILT, tested, runnable
