@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vantyx Pty Ltd — International Fertiliser Trader | Importer & Exporter</title>
+  <meta name="description" content="Vantyx Pty Ltd is an Australian international commodity trader and importer/exporter specialising in the global sourcing and supply of all agricultural fertiliser types. Melbourne, Victoria." />
+  <meta name="keywords" content="fertiliser importer Australia, urea supply, DAP MAP fertiliser, NPK blends, commodity trader Melbourne, agricultural fertiliser exporter" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ═══════════════════════════════════════════════════
+       RESET & TOKENS
+    ═══════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --g0: #061a0d;
+      --g1: #0a3320;
+      --g2: #145232;
+      --g3: #1b6b3a;
+      --g4: #237a45;
+      --g5: #2d9a58;
+      --g6: #3dbf6e;
+      --gpale: #d4edda;
+      --gbg:  #f2f8f3;
+      --gold:      #b8860b;
+      --gold-lt:   #d4a017;
+      --gold-pale: #fdf3d0;
+      --cream: #f9f7f1;
+      --white: #ffffff;
+      --txt:   #0f2119;
+      --txt2:  #3a5040;
+      --txt3:  #6b7c68;
+      --txt4:  #9aad96;
+      --bdr:   #c5dcc9;
+      --bdr2:  #8db394;
+      --r:     14px;
+      --rsm:   8px;
+      --sh:    0 4px 24px rgba(10,51,32,.12);
+      --shmd:  0 8px 40px rgba(10,51,32,.18);
+      --tr:    .22s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--txt); background: var(--cream); overflow-x: hidden; line-height: 1.65; }
+    a { color: var(--g3); text-decoration: none; }
+    a:hover { color: var(--g5); }
+    img { max-width: 100%; display: block; }
+    ::selection { background: var(--g5); color: #fff; }
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: var(--g1); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+    /* ═══════════════════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════════════════ */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 88px 0; }
+    .section-sm { padding: 56px 0; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--gpale); border: 1px solid var(--bdr);
+      border-radius: 40px; padding: 5px 14px;
+      font-size: 12px; font-weight: 600; color: var(--g3);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      margin-bottom: 18px;
+    }
+    .tag i { color: var(--gold); }
+    .section-title {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700; line-height: 1.2;
+      color: var(--g1); margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--txt2);
+      max-width: 620px; line-height: 1.7;
+    }
+    .divider { width: 52px; height: 3px; background: var(--gold); border-radius: 2px; margin: 22px 0; }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin: 0 auto; }
+    .text-center .divider { margin: 22px auto; }
+
+    /* ═══════════════════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      border-radius: 10px; padding: 13px 28px;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+      cursor: pointer; border: none; transition: transform var(--tr), box-shadow var(--tr), background var(--tr);
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--g4), var(--g2));
+      color: #fff; box-shadow: 0 4px 18px rgba(27,107,58,.32);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 28px rgba(27,107,58,.42); color: #fff; }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-lt), var(--gold));
+      color: #fff; box-shadow: 0 4px 18px rgba(184,134,11,.3);
+    }
+    .btn-gold:hover { box-shadow: 0 8px 28px rgba(184,134,11,.4); color: #fff; }
+    .btn-outline {
+      background: transparent; color: var(--g3);
+      border: 2px solid var(--bdr2);
+    }
+    .btn-outline:hover { background: var(--gpale); }
+    .btn-outline-white {
+      background: transparent; color: #fff;
+      border: 2px solid rgba(255,255,255,.4);
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .btn-lg { padding: 16px 36px; font-size: 16px; border-radius: 12px; }
+    .btn-sm { padding: 9px 18px; font-size: 13px; border-radius: 8px; }
+
+    /* ═══════════════════════════════════════════════════
+       ANNOUNCEMENT BAR
+    ═══════════════════════════════════════════════════ */
+    .ann-bar {
+      background: var(--g1);
+      padding: 9px 24px; text-align: center;
+      font-size: 13px; color: rgba(255,255,255,.75);
+      display: flex; align-items: center; justify-content: center; gap: 28px;
+      flex-wrap: wrap;
+    }
+    .ann-bar span { display: flex; align-items: center; gap: 7px; }
+    .ann-bar i { color: var(--gold-lt); font-size: 12px; }
+    .ann-bar a { color: var(--gold-lt); }
+
+    /* ═══════════════════════════════════════════════════
+       HEADER / NAV
+    ═══════════════════════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(6,26,13,.96);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      transition: box-shadow var(--tr);
+    }
+    header.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.4); }
+    .nav-inner {
+      max-width: 1140px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; gap: 32px; height: 70px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Merriweather', serif;
+      font-size: 20px; font-weight: 700; color: #fff;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .logo-mark {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--g4), var(--gold));
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 26px; height: 26px; }
+    .logo sub { font-size: 10px; font-weight: 400; color: rgba(255,255,255,.45); display: block; letter-spacing: .6px; font-family: 'Inter', sans-serif; }
+    nav { display: flex; align-items: center; gap: 4px; flex: 1; }
+    nav a {
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 14px; font-weight: 500; color: rgba(255,255,255,.7);
+      transition: background var(--tr), color var(--tr);
+    }
+    nav a:hover, nav a.active { background: rgba(255,255,255,.08); color: #fff; }
+    .nav-cta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .mobile-toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      color: #fff; font-size: 20px; padding: 4px 8px;
+    }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 190;
+      background: rgba(6,26,13,.97);
+      flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 22px; font-weight: 600; color: rgba(255,255,255,.85);
+      padding: 14px 40px; border-radius: 12px;
+      transition: background var(--tr), color var(--tr);
+    }
+    .mobile-menu a:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .mobile-close {
+      position: absolute; top: 20px; right: 24px;
+      background: none; border: none; color: rgba(255,255,255,.6);
+      font-size: 24px; cursor: pointer;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════ */
+    .hero {
+      min-height: 91vh;
+      background: linear-gradient(155deg, var(--g0) 0%, var(--g1) 40%, #0d2e18 100%);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 80px 24px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    /* Subtle grid pattern */
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(45,154,88,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,154,88,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    /* Glow orb */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(35,122,69,.28) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1140px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 40px; padding: 6px 16px;
+      font-size: 12px; font-weight: 600; color: var(--gold-lt);
+      text-transform: uppercase; letter-spacing: 1.3px;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow i { font-size: 11px; }
+    .hero h1 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700; color: #fff; line-height: 1.15;
+      margin-bottom: 22px;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold-lt); }
+    .hero-sub {
+      font-size: 17px; color: rgba(255,255,255,.68);
+      line-height: 1.75; margin-bottom: 36px; max-width: 520px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+    .hero-trust {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: rgba(255,255,255,.55);
+    }
+    .trust-item i { color: var(--gold-lt); font-size: 13px; }
+    /* Hero visual */
+    .hero-visual {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-card-stack { position: relative; width: 100%; max-width: 420px; margin: 0 auto; }
+    .hero-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      padding: 28px;
+    }
+    .hero-card-main { position: relative; z-index: 2; }
+    .hero-card-float {
+      position: absolute;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+      padding: 14px 18px;
+    }
+    .hero-card-float.f1 { bottom: -40px; left: -40px; z-index: 3; }
+    .hero-card-float.f2 { top: -28px; right: -28px; z-index: 3; }
+    .hcf-label { font-size: 11px; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .hcf-value { font-size: 18px; font-weight: 700; color: #fff; }
+    .hcf-value.gold { color: var(--gold-lt); }
+    .product-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .pill {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px; padding: 5px 12px;
+      font-size: 12px; color: rgba(255,255,255,.75);
+    }
+    .pill.active { background: rgba(45,154,88,.25); border-color: rgba(45,154,88,.4); color: #6ee89e; }
+    .card-label { font-size: 12px; color: var(--gold-lt); font-weight: 600; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .card-sub { font-size: 13px; color: rgba(255,255,255,.5); }
+
+    /* ═══════════════════════════════════════════════════
+       STATS BAR
+    ═══════════════════════════════════════════════════ */
+    .stats-bar {
+      background: var(--g2);
+      padding: 32px 24px;
+    }
+    .stats-inner {
+      max-width: 1140px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; text-align: center;
+    }
+    .stat-item { padding: 12px; }
+    .stat-num {
+      font-family: 'Merriweather', serif;
+      font-size: 34px; font-weight: 700; color: #fff;
+      line-height: 1;
+    }
+    .stat-num span { color: var(--gold-lt); }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 6px; }
+    .stat-divider {
+      width: 1px; background: rgba(255,255,255,.12);
+      align-self: stretch; margin: 8px 0;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       PRODUCTS GRID
+    ═══════════════════════════════════════════════════ */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 20px; margin-top: 48px;
+    }
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 28px 24px;
+      transition: transform var(--tr), box-shadow var(--tr), border-color var(--tr);
+      cursor: default;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shmd);
+      border-color: var(--bdr2);
+    }
+    .product-icon {
+      width: 52px; height: 52px;
+      background: var(--gbg);
+      border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .product-icon i { color: var(--g3); font-size: 22px; }
+    .product-icon.gold-bg { background: var(--gold-pale); }
+    .product-icon.gold-bg i { color: var(--gold); }
+    .product-name { font-size: 16px; font-weight: 700; color: var(--g1); margin-bottom: 4px; }
+    .product-formula { font-size: 12px; color: var(--txt3); font-weight: 600; letter-spacing: .5px; margin-bottom: 10px; }
+    .product-desc { font-size: 13px; color: var(--txt2); line-height: 1.55; }
+    .product-badge {
+      display: inline-block; margin-top: 12px;
+      background: var(--gpale); color: var(--g3);
+      font-size: 11px; font-weight: 600;
+      border-radius: 20px; padding: 3px 10px;
+      letter-spacing: .5px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════════════ */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+    }
+    .about-img {
+      background: linear-gradient(145deg, var(--g2), var(--g1));
+      border-radius: 20px;
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .about-img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(45,154,88,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,154,88,.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .about-img-inner { position: relative; z-index: 1; text-align: center; }
+    .about-img-inner i { font-size: 80px; color: rgba(255,255,255,.15); display: block; margin-bottom: 16px; }
+    .about-img-badge {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 40px; padding: 8px 20px;
+      font-size: 13px; font-weight: 600; color: var(--gold-lt);
+    }
+    .about-highlights { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+    .about-highlight {
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .ah-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: var(--gpale); border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ah-icon i { color: var(--g3); font-size: 16px; }
+    .ah-title { font-size: 14px; font-weight: 700; color: var(--g1); margin-bottom: 3px; }
+    .ah-text { font-size: 13px; color: var(--txt2); line-height: 1.55; }
+
+    /* ═══════════════════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════════════════ */
+    .hiw-section { background: var(--g1); }
+    .hiw-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; margin-top: 52px; position: relative;
+    }
+    .hiw-connector {
+      position: absolute; top: 40px; left: 12.5%; right: 12.5%;
+      height: 2px; background: rgba(255,255,255,.1);
+      z-index: 0;
+    }
+    .hiw-step {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r);
+      padding: 32px 24px; text-align: center;
+      position: relative; z-index: 1;
+      transition: background var(--tr), border-color var(--tr);
+      margin: 1px;
+    }
+    .hiw-step:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.15); }
+    .step-num {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--g4), var(--gold));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; color: #fff;
+      margin: 0 auto 20px;
+    }
+    .hiw-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .hiw-text { font-size: 13px; color: rgba(255,255,255,.55); line-height: 1.65; }
+    .hiw-icon { font-size: 24px; color: var(--gold-lt); margin-bottom: 16px; }
+
+    /* ═══════════════════════════════════════════════════
+       SOURCING REGIONS
+    ═══════════════════════════════════════════════════ */
+    .regions-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .region-card {
+      background: var(--white);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 24px;
+      transition: transform var(--tr), box-shadow var(--tr);
+    }
+    .region-card:hover { transform: translateY(-3px); box-shadow: var(--sh); }
+    .region-flag { font-size: 28px; margin-bottom: 12px; }
+    .region-name { font-size: 15px; font-weight: 700; color: var(--g1); margin-bottom: 6px; }
+    .region-products { font-size: 13px; color: var(--txt2); line-height: 1.55; }
+    .region-badge {
+      margin-top: 12px; display: inline-block;
+      background: var(--gpale); color: var(--g3);
+      font-size: 11px; font-weight: 600;
+      border-radius: 20px; padding: 3px 10px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       WHY VANTYX
+    ═══════════════════════════════════════════════════ */
+    .why-section { background: var(--gbg); }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 48px;
+    }
+    .why-card {
+      background: var(--white);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 32px 28px;
+      text-align: center;
+      transition: transform var(--tr), box-shadow var(--tr);
+    }
+    .why-card:hover { transform: translateY(-4px); box-shadow: var(--shmd); }
+    .why-icon-wrap {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--g4), var(--g2));
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .why-icon-wrap i { color: #fff; font-size: 24px; }
+    .why-title { font-size: 16px; font-weight: 700; color: var(--g1); margin-bottom: 10px; }
+    .why-text { font-size: 14px; color: var(--txt2); line-height: 1.65; }
+
+    /* ═══════════════════════════════════════════════════
+       LOI CTA BANNER
+    ═══════════════════════════════════════════════════ */
+    .cta-section {
+      background: linear-gradient(135deg, var(--g0) 0%, var(--g2) 60%, var(--g1) 100%);
+      padding: 96px 24px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(45,154,88,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,154,88,.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+    .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .cta-section .tag { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); color: var(--gold-lt); }
+    .cta-section h2 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700; color: #fff; line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .cta-section h2 em { font-style: italic; color: var(--gold-lt); }
+    .cta-section p { font-size: 17px; color: rgba(255,255,255,.65); line-height: 1.75; margin-bottom: 36px; }
+    .cta-points {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px;
+      margin-bottom: 40px;
+    }
+    .cta-point { font-size: 14px; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 7px; }
+    .cta-point i { color: var(--gold-lt); }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ═══════════════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════════════ */
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; align-items: start; margin-top: 52px;
+    }
+    .contact-details { display: flex; flex-direction: column; gap: 20px; }
+    .contact-item {
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .ci-icon {
+      width: 46px; height: 46px; flex-shrink: 0;
+      background: var(--gpale); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ci-icon i { color: var(--g3); font-size: 18px; }
+    .ci-label { font-size: 12px; font-weight: 600; color: var(--txt3); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 3px; }
+    .ci-value { font-size: 16px; font-weight: 600; color: var(--g1); }
+    .ci-value a { color: var(--g3); }
+    .ci-value a:hover { color: var(--g5); }
+    .ci-sub { font-size: 13px; color: var(--txt3); margin-top: 2px; }
+    /* Quick contact form */
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .cf-field { display: flex; flex-direction: column; gap: 5px; }
+    .cf-field label { font-size: 13px; font-weight: 600; color: var(--txt2); }
+    .cf-field input, .cf-field select, .cf-field textarea {
+      padding: 11px 14px;
+      border: 1.5px solid var(--bdr);
+      border-radius: var(--rsm);
+      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--txt);
+      background: var(--white);
+      outline: none;
+      transition: border-color var(--tr), box-shadow var(--tr);
+      appearance: none; -webkit-appearance: none;
+    }
+    .cf-field input:focus, .cf-field select:focus, .cf-field textarea:focus {
+      border-color: var(--g5); box-shadow: 0 0 0 3px rgba(45,154,88,.12);
+    }
+    .cf-field input::placeholder, .cf-field textarea::placeholder { color: var(--txt4); }
+    .cf-field textarea { resize: vertical; min-height: 110px; }
+    #contactStatus { margin-top: 6px; font-size: 13px; }
+
+    /* ═══════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════ */
+    footer { background: var(--g0); padding: 60px 24px 28px; color: rgba(255,255,255,.55); }
+    .footer-grid {
+      max-width: 1140px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 52px;
+    }
+    .footer-brand .logo { margin-bottom: 16px; }
+    .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,.8);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 13px; color: rgba(255,255,255,.5); transition: color var(--tr); }
+    .footer-col ul a:hover { color: var(--gold-lt); }
+    .footer-bottom {
+      max-width: 1140px; margin: 0 auto;
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      font-size: 12px;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.4); }
+    .footer-bottom a:hover { color: var(--gold-lt); }
+
+    /* ═══════════════════════════════════════════════════
+       SCROLL-TO-TOP
+    ═══════════════════════════════════════════════════ */
+    #scrollTop {
+      position: fixed; bottom: 28px; right: 28px; z-index: 99;
+      width: 44px; height: 44px;
+      background: var(--g3); color: #fff;
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; opacity: 0; pointer-events: none;
+      transition: opacity var(--tr), transform var(--tr);
+      box-shadow: var(--sh);
+    }
+    #scrollTop.visible { opacity: 1; pointer-events: auto; }
+    #scrollTop:hover { transform: translateY(-3px); }
+
+    /* ═══════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-img { max-width: 480px; }
+      .hiw-grid { grid-template-columns: 1fr 1fr; }
+      .hiw-connector { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 64px 0; }
+      nav { display: none; }
+      .mobile-toggle { display: block; }
+      .nav-cta .btn:not(.btn-gold) { display: none; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat-divider { display: none; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .regions-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+      .cf-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .ann-bar { gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 28px; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .products-grid { grid-template-columns: 1fr; }
+      .regions-grid { grid-template-columns: 1fr; }
+      .hiw-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ ANNOUNCEMENT BAR ══════════════════ -->
+<div class="ann-bar">
+  <span><i class="fa-solid fa-globe"></i> Global Sourcing — All Fertiliser Types</span>
+  <span><i class="fa-solid fa-shield-halved"></i> Non-Binding LOI — No Deposit Required</span>
+  <span><i class="fa-solid fa-envelope"></i> <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a></span>
+</div>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header id="header">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 23V8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M13 18c-3 0-5.5-2.5-5.5-5.5S10 7 13 7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M13 18c3 0 5.5-2.5 5.5-5.5S16 7 13 7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="13" cy="5" r="2" fill="white" opacity="0.85"/>
+        </svg>
+      </div>
+      <div>VANTYX<sub>PTY LTD</sub></div>
+    </a>
+    <nav>
+      <a href="#products" class="active">Products</a>
+      <a href="#about">About</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#sourcing">Sourcing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="../loi.html" class="btn btn-gold btn-sm">
+        <i class="fa-solid fa-file-signature"></i> Submit LOI
+      </a>
+    </div>
+    <button class="mobile-toggle" onclick="openMenu()" aria-label="Open menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════ MOBILE MENU ══════════════════ -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>
+  <a href="#products" onclick="closeMenu()">Products</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#how-it-works" onclick="closeMenu()">How It Works</a>
+  <a href="#sourcing" onclick="closeMenu()">Sourcing</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="../loi.html" style="color:var(--gold-lt);">Submit Letter of Intent</a>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <i class="fa-solid fa-globe"></i>
+        International Commodity Trader &amp; Importer / Exporter
+      </div>
+      <h1>Sourcing the World's<br><em>Finest Fertilisers.</em><br>Supplying Australia.</h1>
+      <p class="hero-sub">
+        Vantyx Pty Ltd specialises in the global procurement and importation of all agricultural fertiliser types — from Urea and DAP to NPK blends and specialty products. Melbourne-based, globally connected.
+      </p>
+      <div class="hero-actions">
+        <a href="../loi.html" class="btn btn-gold btn-lg">
+          <i class="fa-solid fa-file-signature"></i> Submit Letter of Intent
+        </a>
+        <a href="#products" class="btn btn-outline-white btn-lg">
+          <i class="fa-solid fa-seedling"></i> Our Products
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><i class="fa-solid fa-check-circle"></i> ABN 84 544 119 830</div>
+        <div class="trust-item"><i class="fa-solid fa-check-circle"></i> Melbourne, Victoria</div>
+        <div class="trust-item"><i class="fa-solid fa-check-circle"></i> Non-Binding LOI</div>
+        <div class="trust-item"><i class="fa-solid fa-check-circle"></i> All Fertiliser Types</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hero-card hero-card-main">
+          <div class="card-label">Current Enquiry Portfolio</div>
+          <div class="card-title">All Fertiliser Types</div>
+          <div class="card-sub">Globally sourced · Australian delivery</div>
+          <div class="product-pills">
+            <span class="pill active">Urea 46-0-0</span>
+            <span class="pill active">DAP 18-46-0</span>
+            <span class="pill">MAP 12-52-0</span>
+            <span class="pill active">NPK Blends</span>
+            <span class="pill">MOP</span>
+            <span class="pill">SSP</span>
+            <span class="pill active">Gypsum</span>
+            <span class="pill">Ag Lime</span>
+          </div>
+        </div>
+        <div class="hero-card-float f1">
+          <div class="hcf-label">Non-Binding</div>
+          <div class="hcf-value gold">LOI Based</div>
+        </div>
+        <div class="hero-card-float f2">
+          <div class="hcf-label">Location</div>
+          <div class="hcf-value">Melbourne AU</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ STATS BAR ══════════════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">12<span>+</span></div>
+      <div class="stat-label">Fertiliser Product Types</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6<span>+</span></div>
+      <div class="stat-label">Global Sourcing Regions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">AU</div>
+      <div class="stat-label">Registered Pty Ltd · ABN Verified</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><span>$</span>0</div>
+      <div class="stat-label">Deposit to Register Interest</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PRODUCTS ══════════════════ -->
+<section class="section" id="products">
+  <div class="container">
+    <div class="tag"><i class="fa-solid fa-seedling"></i> What We Supply</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;">
+      <div>
+        <h2 class="section-title">All Agricultural<br>Fertiliser Types</h2>
+        <div class="divider"></div>
+      </div>
+      <p class="section-sub">
+        Vantyx sources and imports the full spectrum of agricultural fertiliser products from leading global production markets. Whether you need a single product or a complex multi-nutrient program, we can facilitate the supply.
+      </p>
+    </div>
+    <div class="products-grid">
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-atom"></i></div>
+        <div class="product-name">Urea</div>
+        <div class="product-formula">46-0-0 | Nitrogen</div>
+        <div class="product-desc">The world's most widely used solid nitrogen fertiliser. High nitrogen concentration for broadacre cropping, pasture, and horticulture.</div>
+        <span class="product-badge">High Volume</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-flask"></i></div>
+        <div class="product-name">DAP</div>
+        <div class="product-formula">18-46-0 | Nitrogen + Phosphorus</div>
+        <div class="product-desc">Di-Ammonium Phosphate — a premium starter fertiliser widely used at planting for grains, canola, and horticulture crops.</div>
+        <span class="product-badge">Popular</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-vial"></i></div>
+        <div class="product-name">MAP</div>
+        <div class="product-formula">12-52-0 | Mono-Ammonium Phosphate</div>
+        <div class="product-desc">High-phosphorus source ideal for acidic soils. Excellent starter fertiliser with strong compatibility for blending.</div>
+        <span class="product-badge">Acidic Soils</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon gold-bg"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="product-name">NPK Blends</div>
+        <div class="product-formula">Custom Formulations</div>
+        <div class="product-desc">Custom NPK compound and blend formulations tailored to your soil test results and crop nutrition programme requirements.</div>
+        <span class="product-badge">Custom</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-fire"></i></div>
+        <div class="product-name">Muriate of Potash</div>
+        <div class="product-formula">0-0-60 | MOP | Potassium Chloride</div>
+        <div class="product-desc">Primary potassium source for broadacre and horticultural crops. Supports yield formation, disease resistance, and water uptake.</div>
+        <span class="product-badge">Potassium</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-wind"></i></div>
+        <div class="product-name">Sulphate of Ammonia</div>
+        <div class="product-formula">21-0-0-24S | Nitrogen + Sulphur</div>
+        <div class="product-desc">Provides both nitrogen and sulphur in a single application. Ideal for canola, legumes, and sulphur-deficient soils.</div>
+        <span class="product-badge">Dual Nutrient</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-circle-nodes"></i></div>
+        <div class="product-name">Single Super Phosphate</div>
+        <div class="product-formula">0-9-0-11S | SSP</div>
+        <div class="product-desc">Australia's traditional phosphate fertiliser providing both phosphorus and sulphur. Widely used for pasture and cropping programs.</div>
+        <span class="product-badge">Traditional</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-droplet"></i></div>
+        <div class="product-name">Triple Super Phosphate</div>
+        <div class="product-formula">0-20-0 | TSP | High Phosphorus</div>
+        <div class="product-desc">Concentrated phosphate fertiliser with three times the P content of SSP. Ideal where sulphur is not limiting.</div>
+        <span class="product-badge">Concentrated</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon gold-bg"><i class="fa-solid fa-mountain"></i></div>
+        <div class="product-name">Gypsum</div>
+        <div class="product-formula">Calcium Sulphate | Soil Amendment</div>
+        <div class="product-desc">Improves soil structure, reduces sodicity, and provides calcium and sulphur. Essential for heavy clay soils and irrigation areas.</div>
+        <span class="product-badge">Soil Health</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-water"></i></div>
+        <div class="product-name">Agricultural Lime</div>
+        <div class="product-formula">CaCO₃ | pH Correction</div>
+        <div class="product-desc">Raises soil pH in acidic soils, improves nutrient availability, and provides calcium. Critical for sustainable long-term productivity.</div>
+        <span class="product-badge">pH Management</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="product-name">Zinc Sulphate</div>
+        <div class="product-formula">Micronutrient | Zn 23%</div>
+        <div class="product-desc">Addresses zinc deficiency common in alkaline and sandy soils. Essential for grain fill, enzyme function, and plant immunity.</div>
+        <span class="product-badge">Micronutrient</span>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon gold-bg"><i class="fa-solid fa-sliders"></i></div>
+        <div class="product-name">Custom &amp; Specialty</div>
+        <div class="product-formula">Bespoke Formulations</div>
+        <div class="product-desc">Liquid fertilisers, chelated micronutrients, inhibitor-treated urea (NBPT), controlled-release, and other specialty products.</div>
+        <span class="product-badge">On Request</span>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="../loi.html" class="btn btn-primary btn-lg">
+        <i class="fa-solid fa-file-signature"></i> Register Interest via LOI
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<section class="section" id="about" style="background:var(--white);">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img">
+        <div class="about-img-inner">
+          <i class="fa-solid fa-globe"></i>
+          <div class="about-img-badge">Melbourne, Victoria · Est. 2024</div>
+        </div>
+      </div>
+      <div>
+        <div class="tag"><i class="fa-solid fa-building"></i> Who We Are</div>
+        <h2 class="section-title">Australia's International<br>Fertiliser Commodity Trader</h2>
+        <div class="divider"></div>
+        <p style="font-size:16px;color:var(--txt2);line-height:1.8;margin-bottom:20px;">
+          Vantyx Pty Ltd is an Australian-registered international commodity trader and importer/exporter specialising in the procurement and supply of agricultural fertiliser products from global markets.
+        </p>
+        <p style="font-size:15px;color:var(--txt2);line-height:1.8;margin-bottom:28px;">
+          Operating from Melbourne, Victoria, we connect Australian farmers, co-operatives, and distributors with competitive, quality-assured fertiliser supply from the world's leading production regions — including the Middle East, North Africa, Eastern Europe, and Asia.
+        </p>
+        <p style="font-size:15px;color:var(--txt2);line-height:1.8;margin-bottom:32px;">
+          Our Letter of Intent process is designed to be straightforward and non-binding, allowing buyers to register their interest and intended volumes to help us secure competitive pricing and allocations from international suppliers on your behalf.
+        </p>
+        <div class="about-highlights">
+          <div class="about-highlight">
+            <div class="ah-icon"><i class="fa-solid fa-ship"></i></div>
+            <div>
+              <div class="ah-title">Import &amp; Export Capability</div>
+              <div class="ah-text">Direct relationships with international producers and shipping agents across multiple production regions.</div>
+            </div>
+          </div>
+          <div class="about-highlight">
+            <div class="ah-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div>
+              <div class="ah-title">Australian Registered — ABN 84 544 119 830</div>
+              <div class="ah-text">Fully compliant Australian Proprietary Limited company operating under Australian law.</div>
+            </div>
+          </div>
+          <div class="about-highlight">
+            <div class="ah-icon"><i class="fa-solid fa-handshake"></i></div>
+            <div>
+              <div class="ah-title">Non-Binding Enquiry Process</div>
+              <div class="ah-text">Our LOI is a statement of intent only. No deposit, payment, or legal obligation is created at enquiry stage.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
+<section class="section hiw-section" id="how-it-works">
+  <div class="container">
+    <div class="tag" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:var(--gold-lt);">
+      <i class="fa-solid fa-route"></i> The Process
+    </div>
+    <h2 class="section-title text-center" style="color:#fff;margin:0 auto 12px;">How to Work With Vantyx</h2>
+    <div class="divider" style="margin:12px auto 0;"></div>
+    <div class="hiw-grid">
+      <div class="hiw-connector"></div>
+      <div class="hiw-step">
+        <div class="step-num">1</div>
+        <div class="hiw-icon"><i class="fa-solid fa-file-signature"></i></div>
+        <div class="hiw-title">Submit a Letter of Intent</div>
+        <div class="hiw-text">Complete our simple online LOI form with your product type, estimated annual volume, delivery address, and preferred schedule. Non-binding — takes 2 minutes.</div>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">2</div>
+        <div class="hiw-icon"><i class="fa-solid fa-comments"></i></div>
+        <div class="hiw-title">Consultation</div>
+        <div class="hiw-text">Sam will contact you within one business day to discuss your specific requirements, application program, and sourcing options from our global supplier network.</div>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">3</div>
+        <div class="hiw-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <div class="hiw-title">Supply Agreement</div>
+        <div class="hiw-text">Once pricing, delivery, and payment terms are agreed, a formal purchase agreement is put in place. No obligation arises until this stage.</div>
+      </div>
+      <div class="hiw-step">
+        <div class="step-num">4</div>
+        <div class="hiw-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+        <div class="hiw-title">Delivery</div>
+        <div class="hiw-text">Product is sourced, shipped, and delivered to your nominated location on your agreed schedule. Bulk, bagged, or custom packaging available.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SOURCING REGIONS ══════════════════ -->
+<section class="section" id="sourcing" style="background:var(--gbg);">
+  <div class="container">
+    <div class="tag"><i class="fa-solid fa-map-location-dot"></i> Global Reach</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;">
+      <div>
+        <h2 class="section-title">Sourcing Directly From<br>Global Production Regions</h2>
+        <div class="divider"></div>
+      </div>
+      <p class="section-sub">
+        Vantyx maintains sourcing relationships across the world's major fertiliser producing regions, enabling competitive pricing and supply security for Australian buyers.
+      </p>
+    </div>
+    <div class="regions-grid">
+      <div class="region-card">
+        <div class="region-flag">🌍</div>
+        <div class="region-name">Middle East &amp; North Africa</div>
+        <div class="region-products">Saudi Arabia, Egypt, Qatar — Major Urea, Ammonia, and DAP production hubs. Some of the world's lowest-cost fertiliser production.</div>
+        <span class="region-badge">Urea · DAP · Ammonia</span>
+      </div>
+      <div class="region-card">
+        <div class="region-flag">🌏</div>
+        <div class="region-name">China</div>
+        <div class="region-products">World's largest fertiliser producer. Major source of Urea, DAP, MAP, NPK, phosphate rock, and a wide range of specialty products.</div>
+        <span class="region-badge">Urea · DAP · MAP · NPK</span>
+      </div>
+      <div class="region-card">
+        <div class="region-flag">🌍</div>
+        <div class="region-name">Eastern Europe &amp; Russia</div>
+        <div class="region-products">Major exporter of Urea, Ammonium Nitrate, and potassium products. Significant production capacity and competitive export pricing.</div>
+        <span class="region-badge">Urea · AN · Potash</span>
+      </div>
+      <div class="region-card">
+        <div class="region-flag">🌎</div>
+        <div class="region-name">North &amp; South America</div>
+        <div class="region-products">USA, Canada, Brazil — significant Potash (MOP, SOP), phosphate, and nitrogen production for global commodity markets.</div>
+        <span class="region-badge">MOP · SOP · Phosphate</span>
+      </div>
+      <div class="region-card">
+        <div class="region-flag">🌏</div>
+        <div class="region-name">Southeast Asia</div>
+        <div class="region-products">Indonesia, Malaysia, Vietnam — growing production capacity for specialty fertilisers, blending, and secondary nutrients.</div>
+        <span class="region-badge">Specialty · Blends</span>
+      </div>
+      <div class="region-card">
+        <div class="region-flag">🌍</div>
+        <div class="region-name">Europe — Western</div>
+        <div class="region-products">Norway, Netherlands, Germany — premium-grade, inhibitor-treated, and controlled-release specialty products for high-value applications.</div>
+        <span class="region-badge">Specialty · Inhibited</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ WHY VANTYX ══════════════════ -->
+<section class="section why-section" id="why">
+  <div class="container">
+    <div class="text-center">
+      <div class="tag"><i class="fa-solid fa-star"></i> Why Choose Us</div>
+      <h2 class="section-title">Why Work With Vantyx</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fa-solid fa-globe"></i></div>
+        <div class="why-title">Direct Global Sourcing</div>
+        <div class="why-text">We source directly from international producers and traders across multiple regions, cutting out unnecessary intermediaries to deliver competitive pricing to Australian buyers.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="why-title">All Product Types</div>
+        <div class="why-text">From commodity nitrogen products to specialty micronutrients and custom NPK blends — Vantyx handles the full spectrum of agricultural fertiliser products in one relationship.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="why-title">No Risk Enquiry</div>
+        <div class="why-text">Our Letter of Intent process carries zero financial risk. No deposit, no commitment, no legal obligation — just a statement of intent that helps us lock in supply and pricing on your behalf.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fa-solid fa-calendar-check"></i></div>
+        <div class="why-title">Flexible Delivery Schedules</div>
+        <div class="why-text">Monthly, quarterly, seasonal pre-plant, or single annual bulk delivery — we structure supply agreements around your cropping calendar and storage capacity.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="why-title">Australian Registered</div>
+        <div class="why-text">Vantyx Pty Ltd is a fully registered Australian company (ABN 84 544 119 830) operating under Australian law, providing the compliance framework Australian buyers require.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fa-solid fa-headset"></i></div>
+        <div class="why-title">Personal Service</div>
+        <div class="why-text">You deal directly with Sam — no call centres or offshore support. Fast responses, honest advice, and a straightforward process from enquiry to delivery.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ LOI CTA ══════════════════ -->
+<section class="cta-section" id="loi">
+  <div class="cta-inner">
+    <div class="tag"><i class="fa-solid fa-file-signature"></i> Register Your Interest</div>
+    <h2>Ready to Secure Your<br><em>Fertiliser Supply?</em></h2>
+    <p>Submit a non-binding Letter of Intent today. It takes 2 minutes, costs nothing, and gives us what we need to source competitive pricing and allocations from our global supply network on your behalf.</p>
+    <div class="cta-points">
+      <div class="cta-point"><i class="fa-solid fa-check"></i> Non-binding — no obligation</div>
+      <div class="cta-point"><i class="fa-solid fa-check"></i> No deposit required</div>
+      <div class="cta-point"><i class="fa-solid fa-check"></i> Response within 1 business day</div>
+      <div class="cta-point"><i class="fa-solid fa-check"></i> All fertiliser types covered</div>
+      <div class="cta-point"><i class="fa-solid fa-check"></i> All Australian delivery locations</div>
+    </div>
+    <div class="cta-buttons">
+      <a href="../loi.html" class="btn btn-gold btn-lg">
+        <i class="fa-solid fa-file-signature"></i> Submit Letter of Intent
+      </a>
+      <a href="#contact" class="btn btn-outline-white btn-lg">
+        <i class="fa-solid fa-phone"></i> Talk to Sam First
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<section class="section" id="contact" style="background:var(--white);">
+  <div class="container">
+    <div class="tag"><i class="fa-solid fa-envelope"></i> Get in Touch</div>
+    <h2 class="section-title">Contact Vantyx</h2>
+    <div class="divider"></div>
+    <div class="contact-grid">
+
+      <div>
+        <p style="font-size:16px;color:var(--txt2);line-height:1.8;margin-bottom:32px;">
+          Whether you have a specific product requirement, want to understand our supply process, or simply want to have a conversation about fertiliser pricing — Sam is available to help.
+        </p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div>
+              <div class="ci-label">Email</div>
+              <div class="ci-value"><a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a></div>
+              <div class="ci-sub">Typically responds within 1 business day</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <div class="ci-label">Mobile</div>
+              <div class="ci-value"><a href="tel:0431367255">0431 367 255</a></div>
+              <div class="ci-sub">Mon–Fri, 8am–6pm AEST</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div>
+              <div class="ci-label">Location</div>
+              <div class="ci-value">Melbourne, Victoria</div>
+              <div class="ci-sub">Australia · ABN 84 544 119 830</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fa-solid fa-globe"></i></div>
+            <div>
+              <div class="ci-label">Website</div>
+              <div class="ci-value"><a href="https://www.vantyx.com.au" target="_blank" rel="noopener">www.vantyx.com.au</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:14px;font-weight:600;color:var(--txt2);margin-bottom:18px;">Send a quick enquiry</p>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="cf-row">
+            <div class="cf-field">
+              <label for="cName">Full Name *</label>
+              <input type="text" id="cName" placeholder="John Smith" required />
+            </div>
+            <div class="cf-field">
+              <label for="cEmail">Email *</label>
+              <input type="email" id="cEmail" placeholder="you@farm.com.au" required />
+            </div>
+          </div>
+          <div class="cf-field">
+            <label for="cSubject">Subject</label>
+            <select id="cSubject">
+              <option value="General enquiry">General enquiry</option>
+              <option value="Product pricing">Product pricing</option>
+              <option value="Supply availability">Supply availability</option>
+              <option value="LOI question">LOI / Letter of Intent question</option>
+              <option value="Delivery logistics">Delivery logistics</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="cf-field">
+            <label for="cMessage">Message *</label>
+            <textarea id="cMessage" placeholder="Tell us about your requirements…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
+            <i class="fa-solid fa-paper-plane"></i> Send Enquiry
+          </button>
+          <div id="contactStatus"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="margin-bottom:16px;">
+        <div class="logo-mark">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 23V8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M13 18c-3 0-5.5-2.5-5.5-5.5S10 7 13 7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M13 18c3 0 5.5-2.5 5.5-5.5S16 7 13 7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="13" cy="5" r="2" fill="white" opacity="0.85"/>
+          </svg>
+        </div>
+        <div>VANTYX<sub>PTY LTD</sub></div>
+      </a>
+      <p>International commodity trader and importer/exporter of agricultural fertiliser products. Melbourne, Victoria, Australia.</p>
+      <p style="margin-top:12px;">ABN 84 544 119 830</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#products">Urea (46-0-0)</a></li>
+        <li><a href="#products">DAP (18-46-0)</a></li>
+        <li><a href="#products">MAP (12-52-0)</a></li>
+        <li><a href="#products">NPK Blends</a></li>
+        <li><a href="#products">Potash (MOP)</a></li>
+        <li><a href="#products">Gypsum &amp; Lime</a></li>
+        <li><a href="#products">Specialty Products</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Vantyx</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#sourcing">Sourcing Regions</a></li>
+        <li><a href="#why">Why Vantyx</a></li>
+        <li><a href="../loi.html">Submit LOI</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a></li>
+        <li><a href="tel:0431367255">0431 367 255</a></li>
+        <li><a href="https://www.vantyx.com.au" target="_blank" rel="noopener">www.vantyx.com.au</a></li>
+        <li style="color:rgba(255,255,255,.3);font-size:13px;">Melbourne, Victoria</li>
+        <li style="color:rgba(255,255,255,.3);font-size:13px;">Mon–Fri 8am–6pm AEST</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>
+      &copy; <span id="fyear"></span> Vantyx Pty Ltd · ABN 84 544 119 830 · Melbourne, Victoria, Australia ·
+      International Commodity Trader &amp; Importer/Exporter of Agricultural Fertiliser Products
+    </div>
+    <div style="display:flex;gap:20px;">
+      <a href="#home">Back to Top</a>
+      <a href="../loi.html">Submit LOI</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════ SCROLL-TO-TOP ══════════════════ -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<script>
+/* ── Footer year ── */
+document.getElementById('fyear').textContent = new Date().getFullYear();
+
+/* ── Header shadow on scroll ── */
+const header = document.getElementById('header');
+const scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+  scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+}, { passive: true });
+
+/* ── Mobile menu ── */
+function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+
+/* ── Active nav on scroll ── */
+const sections = document.querySelectorAll('section[id], div.stats-bar');
+const navLinks = document.querySelectorAll('nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.35 });
+document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+
+/* ── Contact form — mailto fallback ── */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name    = document.getElementById('cName').value.trim();
+  const email   = document.getElementById('cEmail').value.trim();
+  const subject = document.getElementById('cSubject').value;
+  const message = document.getElementById('cMessage').value.trim();
+  const status  = document.getElementById('contactStatus');
+
+  if (!name || !email || !message) {
+    status.innerHTML = '<span style="color:#c0392b;">Please fill in all required fields.</span>';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.innerHTML = '<span style="color:#c0392b;">Please enter a valid email address.</span>';
+    return;
+  }
+
+  const body = `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`;
+  const mailto = `mailto:sam@vantyx.com.au?subject=${encodeURIComponent(`Vantyx Enquiry: ${subject} — ${name}`)}&body=${encodeURIComponent(body)}`;
+
+  const a = document.createElement('a');
+  a.href = mailto; a.style.display = 'none';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => document.body.removeChild(a), 500);
+
+  status.innerHTML = '<span style="color:var(--g3);font-weight:600;"><i class="fa-solid fa-check" style="margin-right:6px;"></i>Email client opened — please send the message to complete your enquiry.</span>';
+  this.reset();
+});
+</script>
+</body>
+</html>
