@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Letter of Intent – Fertiliser Supply | Vantyx Pty Ltd</title>
-  <meta name="description" content="Submit a non-binding Letter of Intent for fertiliser supply with Vantyx Pty Ltd. Express your interest in establishing a regular supply relationship." />
+  <meta name="description" content="Submit a non-binding Letter of Intent for fertiliser supply with Vantyx Pty Ltd — international commodity trader and importer/exporter of agricultural fertiliser products." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -411,7 +411,7 @@
       </div>
       <div class="logo-text">
         <div class="logo-name">VANTYX PTY LTD</div>
-        <div class="logo-tagline">Agricultural Fertiliser Supply</div>
+        <div class="logo-tagline">International Commodity Trader · Agricultural Products</div>
       </div>
     </div>
     <div class="header-contact">
@@ -430,16 +430,16 @@
 <!-- =================== HERO =================== -->
 <section class="hero">
   <div class="hero-badge">
-    <i class="fa-solid fa-seedling"></i>
-    Non-Binding Expression of Interest
+    <i class="fa-solid fa-globe"></i>
+    International Commodity Trader &amp; Importer / Exporter
   </div>
   <h1>Letter of Intent<br>Fertiliser Supply</h1>
-  <p>Express your interest in establishing a regular fertiliser supply relationship with Vantyx Pty Ltd. This is a non-binding statement of intent — no payment or obligation is created.</p>
+  <p>Vantyx Pty Ltd is an international commodity trader and importer/exporter specialising in the global sourcing and supply of all types of agricultural fertiliser products. Register your interest below — this is a non-binding expression only, no payment or obligation is created.</p>
   <div class="hero-chips">
+    <span class="chip"><i class="fa-solid fa-ship"></i> Global Sourcing</span>
     <span class="chip"><i class="fa-solid fa-shield-halved"></i> Non-Binding</span>
     <span class="chip"><i class="fa-solid fa-dollar-sign"></i> No Deposit Required</span>
     <span class="chip"><i class="fa-solid fa-lock"></i> Confidential</span>
-    <span class="chip"><i class="fa-solid fa-clock"></i> 2 Minutes to Complete</span>
   </div>
 </section>
 
@@ -450,10 +450,10 @@
     <!-- Info strip -->
     <div class="info-strip">
       <div class="info-item">
-        <div class="info-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <div class="info-icon"><i class="fa-solid fa-globe"></i></div>
         <div>
-          <h4>What is an LOI?</h4>
-          <p>A non-binding statement of interest used to facilitate supplier & logistics relationships.</p>
+          <h4>Global Sourcing</h4>
+          <p>Vantyx sources and imports all types of fertiliser products from international commodity markets worldwide.</p>
         </div>
       </div>
       <div class="info-item">
@@ -714,6 +714,7 @@
 <!-- =================== FOOTER =================== -->
 <footer>
   <strong>Vantyx Pty Ltd</strong> &nbsp;&middot;&nbsp; ABN 84 544 119 830 &nbsp;&middot;&nbsp; Melbourne, Victoria<br>
+  International Commodity Trader &amp; Importer / Exporter of Agricultural Fertiliser Products<br>
   <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>
   &nbsp;&middot;&nbsp;
   <a href="tel:0431367255">0431 367 255</a>
@@ -798,60 +799,48 @@ function validateForm(form) {
 }
 
 /* ============================================================
-   BUILD FORMATTED EMAIL BODY
+   BUILD COMPACT EMAIL BODY (kept short for mailto: URL limits)
    ============================================================ */
-function buildEmailBody(data) {
-  const date = new Date(data.loiDate).toLocaleDateString('en-AU', {
-    day: 'numeric', month: 'long', year: 'numeric'
-  });
-
-  return `LETTER OF INTENT — FERTILISER SUPPLY
-============================================================
-FROM:  Vantyx Pty Ltd (ABN 84 544 119 830)
-TO:    ${data.businessName}
-DATE:  ${date}
-============================================================
-
-1. BUYER DETAILS
-   Name / Title:        ${data.fullName}
-   Farm / Business:     ${data.businessName}
-   ABN:                 ${data.abn || 'N/A'}
-   Email:               ${data.email}
-   Phone:               ${data.phone || 'N/A'}
-
-2. PROPOSED ANNUAL COMMITMENT (NON-BINDING)
-   Product Type:        ${data.productType}${data.otherProduct ? ` — ${data.otherProduct}` : ''}
-   Annual Volume:       ${data.annualVolume} Tonnes (Metric) per year
-   Delivery Address:    ${data.deliveryAddress}
-   Primary Application: ${data.primaryApplication}
-   Farm Size:           ${data.farmSize ? data.farmSize + ' Ha' : 'N/A'}
-   Delivery Schedule:   ${data.deliverySchedule}
-
-3. ADDITIONAL NOTES
-   ${data.additionalNotes || 'None provided.'}
-
-4. ACKNOWLEDGMENTS
-   [✓] Non-binding nature acknowledged
-   [✓] No financial commitment acknowledged
-   [✓] LOI usage by Vantyx acknowledged
-   [✓] Confidentiality agreed
-
-============================================================
-DISCLAIMER: This LOI is a non-binding statement of intent
-only. No financial obligation arises. Individual orders
-subject to separate purchase agreements.
-============================================================
-Submitted via vantyx.com.au/loi`;
+function buildMailtoBody(data) {
+  const product = data.productType + (data.otherProduct ? ` (${data.otherProduct})` : '');
+  const farm    = data.farmSize ? `${data.farmSize} Ha` : 'N/A';
+  const notes   = data.additionalNotes || 'None';
+  return [
+    `LETTER OF INTENT — FERTILISER SUPPLY`,
+    `Date:        ${data.loiDate}`,
+    ``,
+    `BUYER`,
+    `Name:        ${data.fullName}`,
+    `Business:    ${data.businessName}`,
+    `ABN:         ${data.abn || 'N/A'}`,
+    `Email:       ${data.email}`,
+    `Phone:       ${data.phone || 'N/A'}`,
+    ``,
+    `SUPPLY REQUIREMENTS (NON-BINDING)`,
+    `Product:     ${product}`,
+    `Volume:      ${data.annualVolume} T/yr`,
+    `Delivery:    ${data.deliveryAddress}`,
+    `Application: ${data.primaryApplication}`,
+    `Farm size:   ${farm}`,
+    `Schedule:    ${data.deliverySchedule}`,
+    ``,
+    `Notes: ${notes}`,
+    ``,
+    `[Non-binding LOI — no financial obligation arises]`,
+    `Submitted via vantyx.com.au/loi`,
+  ].join('\n');
 }
 
 /* ============================================================
-   FORM SUBMIT — POST TO /submit-loi (Python handler)
-   Falls back to mailto: if no handler is running.
+   FORM SUBMIT
+   1. Try Python backend (/submit-loi) with 5 s timeout.
+   2. If unavailable, open mailto: with pre-filled LOI body.
+   3. If both fail, show direct contact link.
    ============================================================ */
 document.getElementById('loiForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
-  const btn = document.getElementById('submitBtn');
+  const btn      = document.getElementById('submitBtn');
   const statusEl = document.getElementById('formStatus');
   statusEl.innerHTML = '';
 
@@ -872,59 +861,68 @@ document.getElementById('loiForm').addEventListener('submit', async function (e)
 
   // Collect data
   const formData = {
-    fullName:         document.getElementById('fullName').value.trim(),
-    businessName:     document.getElementById('businessName').value.trim(),
-    email:            document.getElementById('email').value.trim(),
-    phone:            document.getElementById('phone').value.trim(),
-    abn:              document.getElementById('abn').value.trim(),
-    loiDate:          document.getElementById('loiDate').value,
-    productType:      document.getElementById('productType').value,
-    otherProduct:     document.getElementById('otherProduct').value.trim(),
-    annualVolume:     document.getElementById('annualVolume').value,
-    deliverySchedule: document.getElementById('deliverySchedule').value,
-    deliveryAddress:  document.getElementById('deliveryAddress').value.trim(),
+    fullName:           document.getElementById('fullName').value.trim(),
+    businessName:       document.getElementById('businessName').value.trim(),
+    email:              document.getElementById('email').value.trim(),
+    phone:              document.getElementById('phone').value.trim(),
+    abn:                document.getElementById('abn').value.trim(),
+    loiDate:            document.getElementById('loiDate').value,
+    productType:        document.getElementById('productType').value,
+    otherProduct:       document.getElementById('otherProduct').value.trim(),
+    annualVolume:       document.getElementById('annualVolume').value,
+    deliverySchedule:   document.getElementById('deliverySchedule').value,
+    deliveryAddress:    document.getElementById('deliveryAddress').value.trim(),
     primaryApplication: document.getElementById('primaryApplication').value,
-    farmSize:         document.getElementById('farmSize').value,
-    additionalNotes:  document.getElementById('additionalNotes').value.trim(),
+    farmSize:           document.getElementById('farmSize').value,
+    additionalNotes:    document.getElementById('additionalNotes').value.trim(),
   };
 
   // Loading state
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Submitting…';
 
-  // Try the Python backend first
-  let submitted = false;
+  // ── 1. Try Python backend ──────────────────────────────────
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 5000);
+
   try {
     const resp = await fetch('/submit-loi', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
-      signal: AbortSignal.timeout(8000),
+      signal: controller.signal,
     });
+    clearTimeout(timer);
 
     if (resp.ok) {
-      submitted = true;
       showSuccess(formData);
-    } else {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error(err.message || `Server error ${resp.status}`);
+      return;
     }
-  } catch (fetchErr) {
-    // Backend not available — fall back to mailto:
-    console.warn('[LOI] Backend unavailable, falling back to mailto:', fetchErr.message);
-    const subject = encodeURIComponent(`LOI – Fertiliser Supply – ${formData.businessName}`);
-    const body    = encodeURIComponent(buildEmailBody(formData));
-    const mailto  = `mailto:sam@vantyx.com.au?subject=${subject}&body=${body}`;
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.message || `Server error ${resp.status}`);
 
-    // Open mailto in same window (opens email client)
-    window.location.href = mailto;
-    submitted = true;
-    showMailtoSuccess(formData);
+  } catch (fetchErr) {
+    clearTimeout(timer);
+    console.warn('[LOI] Backend unavailable:', fetchErr.message);
   }
 
-  if (!submitted) {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Letter of Intent';
+  // ── 2. Fall back to mailto: ────────────────────────────────
+  const subject = encodeURIComponent(`LOI – Fertiliser Supply – ${formData.businessName}`);
+  const body    = encodeURIComponent(buildMailtoBody(formData));
+  const mailto  = `mailto:sam@vantyx.com.au?subject=${subject}&body=${body}`;
+
+  // Use a temporary anchor to trigger mailto (more reliable than location.href)
+  try {
+    const a = document.createElement('a');
+    a.href = mailto;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 500);
+    showMailtoSuccess(formData);
+  } catch (_) {
+    // ── 3. Last resort: show manual contact ──────────────────
+    showManualContact(formData);
   }
 });
 
@@ -937,13 +935,13 @@ function showSuccess(data) {
     <div class="status-box success">
       <i class="fa-solid fa-circle-check"></i>
       <div>
-        <h3>Your LOI has been submitted successfully!</h3>
+        <h3>LOI submitted — Vantyx has been notified</h3>
         <p>
           Thank you, <strong>${escHtml(data.fullName)}</strong>. Your Letter of Intent for
           <strong>${escHtml(data.businessName)}</strong> has been received by Vantyx Pty Ltd.<br><br>
-          Sam will be in touch at <strong>${escHtml(data.email)}</strong> within one business day to discuss
-          fertiliser supply options for your operation. In the meantime, feel free to call
-          <a href="tel:0431367255">0431 367 255</a> or email
+          Sam will be in touch at <strong>${escHtml(data.email)}</strong> within one business day.
+          You can also reach us at
+          <a href="tel:0431367255">0431 367 255</a> or
           <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>.
         </p>
       </div>
@@ -955,16 +953,36 @@ function showMailtoSuccess(data) {
   const btn = document.getElementById('submitBtn');
   const statusEl = document.getElementById('formStatus');
   btn.innerHTML = '<i class="fa-solid fa-envelope"></i> Email Client Opened';
-  btn.style.background = 'linear-gradient(135deg, #e67e22, #d35400)';
+  btn.style.background = 'linear-gradient(135deg, #237a45, #145232)';
   statusEl.innerHTML = `
     <div class="status-box success">
       <i class="fa-solid fa-envelope-open-text"></i>
       <div>
-        <h3>Your email client has opened with your LOI pre-filled</h3>
+        <h3>Your LOI has been pre-filled in your email app</h3>
         <p>
-          Please <strong>send the email</strong> that just opened in your email app to complete your submission.
-          If nothing opened, please email <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a> directly
+          <strong>Click Send</strong> in the email that just opened to complete your submission.
+          If nothing opened, email us directly at
+          <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>
           or call <a href="tel:0431367255">0431 367 255</a>.
+        </p>
+      </div>
+    </div>`;
+  statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showManualContact(data) {
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Letter of Intent';
+  statusEl.innerHTML = `
+    <div class="status-box error">
+      <i class="fa-solid fa-circle-info"></i>
+      <div>
+        <h3>Please contact us directly</h3>
+        <p>
+          Email your LOI to <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>
+          or call <a href="tel:0431367255">0431 367 255</a> and we'll get it sorted right away.
         </p>
       </div>
     </div>`;

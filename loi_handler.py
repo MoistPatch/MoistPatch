@@ -51,10 +51,11 @@ logging.basicConfig(
 )
 log = logging.getLogger("loi_handler")
 
-LOI_RECIPIENT = os.environ.get("LOI_RECIPIENT", "sam@vantyx.com.au")
-VANTYX_ABN    = "84 544 119 830"
-VANTYX_PHONE  = "0431 367 255"
-VANTYX_SITE   = "www.vantyx.com.au"
+LOI_RECIPIENT  = os.environ.get("LOI_RECIPIENT", "sam@vantyx.com.au")
+VANTYX_ABN     = "84 544 119 830"
+VANTYX_PHONE   = "0431 367 255"
+VANTYX_SITE    = "www.vantyx.com.au"
+VANTYX_BIO     = "International Commodity Trader & Importer/Exporter of Agricultural Fertiliser Products"
 
 
 # ---------------------------------------------------------------------------
@@ -157,6 +158,9 @@ def build_html_body(d: dict[str, Any]) -> str:
     <p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:0.5px;">
       ABN {VANTYX_ABN} &nbsp;|&nbsp; Melbourne, Victoria &nbsp;|&nbsp;
       sam@vantyx.com.au &nbsp;|&nbsp; {VANTYX_PHONE}
+    </p>
+    <p style="margin:4px 0 0;font-size:11px;color:rgba(255,255,255,0.45);">
+      {VANTYX_BIO}
     </p>
     <p style="margin:16px 0 0;font-size:20px;font-weight:700;color:#d4a017;
       font-family:Georgia,serif;letter-spacing:1px;">LETTER OF INTENT</p>
@@ -335,20 +339,22 @@ def build_confirmation_html(d: dict[str, Any]) -> str:
 # ---------------------------------------------------------------------------
 
 def _smtp_config() -> dict[str, Any]:
-    missing = [k for k in ("SMTP_USER", "SMTP_PASS") if not os.environ.get(k)]
-    if missing:
+    # Default SMTP_USER to the recipient address (works for Google Workspace / Gmail)
+    default_user = os.environ.get("SMTP_USER", LOI_RECIPIENT)
+    if not os.environ.get("SMTP_PASS"):
         raise RuntimeError(
-            f"Missing env vars: {missing}. "
-            "Set SMTP_USER (Gmail address) and SMTP_PASS (Gmail App Password)."
+            "SMTP_PASS is not set. "
+            "Generate a Gmail App Password at https://myaccount.google.com/apppasswords "
+            "and export it as SMTP_PASS."
         )
-    user = os.environ["SMTP_USER"]
+    user = default_user
     return {
         "host":      os.environ.get("SMTP_HOST", "smtp.gmail.com"),
         "port":      int(os.environ.get("SMTP_PORT", "587")),
         "user":      user,
         "password":  os.environ["SMTP_PASS"],
-        "from_addr": os.environ.get("SMTP_FROM_ADDR", user),
-        "from_name": os.environ.get("SMTP_FROM_NAME", "Vantyx LOI System"),
+        "from_addr": os.environ.get("SMTP_FROM_ADDR", LOI_RECIPIENT),
+        "from_name": os.environ.get("SMTP_FROM_NAME", "Vantyx Pty Ltd"),
     }
 
 
