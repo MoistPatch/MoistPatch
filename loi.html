@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letter of Intent – Fertiliser Supply | Vantyx Pty Ltd</title>
+  <meta name="description" content="Submit a non-binding Letter of Intent for fertiliser supply with Vantyx Pty Ltd. Express your interest in establishing a regular supply relationship." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green-darkest: #0a3320;
+      --green-dark:    #145232;
+      --green:         #1b6b3a;
+      --green-mid:     #237a45;
+      --green-light:   #2d9a58;
+      --green-pale:    #d4edda;
+      --gold:          #b8860b;
+      --gold-light:    #d4a017;
+      --gold-pale:     #fdf3d0;
+      --cream:         #f9f7f1;
+      --white:         #ffffff;
+      --text-dark:     #1a2214;
+      --text-mid:      #3d4f3a;
+      --text-light:    #6b7c68;
+      --text-muted:    #9aad96;
+      --border:        #c8dcc4;
+      --border-dark:   #8aad85;
+      --shadow-sm:     0 2px 8px rgba(10,51,32,0.08);
+      --shadow-md:     0 4px 20px rgba(10,51,32,0.12);
+      --shadow-lg:     0 8px 40px rgba(10,51,32,0.18);
+      --radius:        14px;
+      --radius-sm:     8px;
+      --transition:    0.22s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { color: var(--green-light); text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+
+    /* ===================== HEADER ===================== */
+    header {
+      background: var(--green-darkest);
+      padding: 0 24px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+    }
+    .header-inner {
+      max-width: 960px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .logo-wrap {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .logo-emblem {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--green-mid), var(--gold));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-emblem svg { width: 26px; height: 26px; }
+    .logo-text { line-height: 1.15; }
+    .logo-name {
+      font-family: 'Merriweather', serif;
+      font-size: 17px; font-weight: 700;
+      color: #fff; letter-spacing: 0.3px;
+    }
+    .logo-tagline { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.5px; }
+    .header-contact {
+      font-size: 13px; color: rgba(255,255,255,0.7);
+      text-align: right; line-height: 1.5;
+    }
+    .header-contact a { color: var(--gold-light); }
+    .header-contact a:hover { color: #fff; }
+
+    /* ===================== HERO BANNER ===================== */
+    .hero {
+      background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-darkest) 100%);
+      padding: 56px 24px 52px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 40px; padding: 6px 16px;
+      font-size: 12px; font-weight: 600; color: var(--gold-light);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 700; color: #fff;
+      margin-bottom: 16px; line-height: 1.25;
+    }
+    .hero p {
+      font-size: 16px; color: rgba(255,255,255,0.72);
+      max-width: 600px; margin: 0 auto 28px;
+    }
+    .hero-chips {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px; padding: 5px 14px;
+      font-size: 13px; color: rgba(255,255,255,0.8);
+    }
+    .chip i { color: var(--gold-light); font-size: 12px; }
+
+    /* ===================== LAYOUT ===================== */
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    main { padding: 48px 24px 64px; }
+
+    /* ===================== NOTICE BOX ===================== */
+    .notice {
+      background: var(--gold-pale);
+      border: 1.5px solid #e8c96a;
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      margin-bottom: 36px;
+      display: flex; gap: 14px; align-items: flex-start;
+      font-size: 14px; color: #7a5a00; line-height: 1.6;
+    }
+    .notice i { color: var(--gold); font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ===================== FORM CARD ===================== */
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .form-card-header {
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+      padding: 20px 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .form-card-header .section-num {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .form-card-header h2 {
+      font-size: 16px; font-weight: 700; color: #fff;
+    }
+    .form-card-header p { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .form-card-body { padding: 28px; }
+
+    /* ===================== FORM ELEMENTS ===================== */
+    .form-row { display: grid; gap: 20px; margin-bottom: 20px; }
+    .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-mid);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .field label .req { color: #c0392b; font-size: 14px; }
+    .field label .opt {
+      font-size: 11px; font-weight: 400; color: var(--text-muted);
+      background: #f0f4ef; border-radius: 4px; padding: 1px 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: #fafcfa;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7c68' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green-light);
+      box-shadow: 0 0 0 3px rgba(45,154,88,0.12);
+      background: #fff;
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+    textarea { resize: vertical; min-height: 100px; }
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { opacity: 0; }
+
+    .input-unit-wrap {
+      position: relative;
+    }
+    .input-unit-wrap input { padding-right: 80px; }
+    .input-unit {
+      position: absolute; right: 0; top: 0; bottom: 0;
+      display: flex; align-items: center;
+      padding: 0 14px;
+      background: #f0f4ef;
+      border: 1.5px solid var(--border);
+      border-left: none;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 13px; font-weight: 600; color: var(--text-light);
+      pointer-events: none;
+    }
+
+    .field-hint {
+      font-size: 12px; color: var(--text-muted); line-height: 1.4;
+    }
+
+    /* ===================== CHECKBOXES ===================== */
+    .checkbox-group { display: flex; flex-direction: column; gap: 14px; }
+    .checkbox-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      cursor: pointer;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;
+      border: 2px solid var(--border-dark);
+      border-radius: 4px; cursor: pointer;
+      accent-color: var(--green);
+    }
+    .checkbox-item .cb-label {
+      font-size: 14px; color: var(--text-mid); line-height: 1.5; cursor: pointer;
+    }
+    .checkbox-item .cb-label strong { color: var(--text-dark); }
+
+    /* ===================== SIGNATURE BLOCK ===================== */
+    .sig-block {
+      background: var(--green-pale);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      margin-top: 4px;
+    }
+    .sig-block p {
+      font-size: 13px; color: var(--text-mid);
+      margin-bottom: 16px; line-height: 1.6;
+    }
+
+    /* ===================== SUBMIT SECTION ===================== */
+    .submit-section {
+      text-align: center; padding: 8px 0 4px;
+    }
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+      color: #fff;
+      border: none; border-radius: var(--radius);
+      padding: 16px 44px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.3px;
+      box-shadow: 0 4px 18px rgba(27,107,58,0.35);
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(27,107,58,0.45);
+      background: linear-gradient(135deg, var(--green-light), var(--green-mid));
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled {
+      opacity: 0.6; cursor: not-allowed; transform: none;
+    }
+    .submit-note {
+      font-size: 13px; color: var(--text-muted);
+      margin-top: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .submit-note i { color: var(--green-light); }
+
+    /* ===================== SUCCESS / ERROR STATES ===================== */
+    #formStatus { margin-top: 24px; }
+    .status-box {
+      border-radius: var(--radius-sm);
+      padding: 18px 24px;
+      display: flex; gap: 14px; align-items: flex-start;
+      font-size: 14px; line-height: 1.6;
+    }
+    .status-box.success {
+      background: #eafaf1; border: 1.5px solid #2ecc71;
+    }
+    .status-box.success i { color: #27ae60; font-size: 20px; flex-shrink: 0; }
+    .status-box.error {
+      background: #fdf3f3; border: 1.5px solid #e74c3c;
+    }
+    .status-box.error i { color: #c0392b; font-size: 20px; flex-shrink: 0; }
+    .status-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+
+    /* ===================== INFO SIDEBAR ===================== */
+    .info-strip {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+    }
+    .info-item { display: flex; gap: 14px; align-items: flex-start; }
+    .info-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: var(--green-pale);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .info-icon i { color: var(--green); font-size: 16px; }
+    .info-item h4 { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .info-item p { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: var(--green-darkest);
+      padding: 32px 24px;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 13px; line-height: 1.7;
+    }
+    footer strong { color: rgba(255,255,255,0.8); }
+    footer a { color: var(--gold-light); }
+    footer a:hover { color: #fff; }
+    .footer-divider { margin: 12px auto; width: 60px; height: 1px; background: rgba(255,255,255,0.1); }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 640px) {
+      .form-row.cols-2 { grid-template-columns: 1fr; }
+      .form-row.cols-3 { grid-template-columns: 1fr; }
+      .header-contact { display: none; }
+      .form-card-body { padding: 20px 16px; }
+      .hero { padding: 40px 16px 36px; }
+      .info-strip { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .info-strip { grid-template-columns: 1fr; }
+    }
+
+    /* ===================== LOADING SPINNER ===================== */
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===================== PRINT STYLES ===================== */
+    @media print {
+      header, .hero, .notice, footer, .submit-section, .btn-submit, #formStatus { display: none !important; }
+      body { background: #fff; }
+      .form-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+      .info-strip { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- =================== HEADER =================== -->
+<header>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-emblem">
+        <!-- Wheat leaf icon -->
+        <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 23V8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M13 18c-3 0-5.5-2.5-5.5-5.5S10 7 13 7" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+          <path d="M13 18c3 0 5.5-2.5 5.5-5.5S16 7 13 7" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+          <circle cx="13" cy="5" r="2" fill="white" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-name">VANTYX PTY LTD</div>
+        <div class="logo-tagline">Agricultural Fertiliser Supply</div>
+      </div>
+    </div>
+    <div class="header-contact">
+      <div>ABN 84 544 119 830 &nbsp;|&nbsp; Melbourne, Victoria</div>
+      <div>
+        <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>
+        &nbsp;|&nbsp;
+        <a href="tel:0431367255">0431 367 255</a>
+        &nbsp;|&nbsp;
+        <a href="https://www.vantyx.com.au" target="_blank" rel="noopener">vantyx.com.au</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- =================== HERO =================== -->
+<section class="hero">
+  <div class="hero-badge">
+    <i class="fa-solid fa-seedling"></i>
+    Non-Binding Expression of Interest
+  </div>
+  <h1>Letter of Intent<br>Fertiliser Supply</h1>
+  <p>Express your interest in establishing a regular fertiliser supply relationship with Vantyx Pty Ltd. This is a non-binding statement of intent — no payment or obligation is created.</p>
+  <div class="hero-chips">
+    <span class="chip"><i class="fa-solid fa-shield-halved"></i> Non-Binding</span>
+    <span class="chip"><i class="fa-solid fa-dollar-sign"></i> No Deposit Required</span>
+    <span class="chip"><i class="fa-solid fa-lock"></i> Confidential</span>
+    <span class="chip"><i class="fa-solid fa-clock"></i> 2 Minutes to Complete</span>
+  </div>
+</section>
+
+<!-- =================== MAIN =================== -->
+<main>
+  <div class="container">
+
+    <!-- Info strip -->
+    <div class="info-strip">
+      <div class="info-item">
+        <div class="info-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <div>
+          <h4>What is an LOI?</h4>
+          <p>A non-binding statement of interest used to facilitate supplier & logistics relationships.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon"><i class="fa-solid fa-handshake"></i></div>
+        <div>
+          <h4>No Obligation</h4>
+          <p>You retain full discretion over whether to place orders. No financial commitment arises.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div>
+          <h4>Instant Confirmation</h4>
+          <p>We'll email you a copy of your LOI within one business day of submission.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon"><i class="fa-solid fa-user-tie"></i></div>
+        <div>
+          <h4>Direct Contact</h4>
+          <p>Sam will follow up personally to discuss supply options suited to your operation.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notice -->
+    <div class="notice">
+      <i class="fa-solid fa-circle-info"></i>
+      <div>
+        <strong>Important:</strong> This Letter of Intent does not constitute a legally binding contract. No deposit, payment, or financial obligation arises. Individual purchase orders will be agreed separately at the time of ordering, subject to prevailing pricing, delivery, and payment terms.
+      </div>
+    </div>
+
+    <!-- ======= FORM ======= -->
+    <form id="loiForm" novalidate>
+
+      <!-- Section 1: Your Details -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">1</div>
+          <div>
+            <h2>Your Details</h2>
+            <p>Buyer / entity information for the Letter of Intent</p>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="fullName">Full Name / Title <span class="req">*</span></label>
+              <input type="text" id="fullName" name="fullName" placeholder="e.g. John Smith, Farm Manager" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="businessName">Farm / Business Name <span class="req">*</span></label>
+              <input type="text" id="businessName" name="businessName" placeholder="e.g. Smith Family Farm Pty Ltd" required />
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="email">Contact Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="you@yourbusiness.com.au" required autocomplete="email" />
+              <span class="field-hint">A copy of this LOI will be sent to this address.</span>
+            </div>
+            <div class="field">
+              <label for="phone">Contact Phone <span class="opt">Optional</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="e.g. 0412 345 678" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="abn">ABN <span class="opt">If applicable</span></label>
+              <input type="text" id="abn" name="abn" placeholder="e.g. 12 345 678 901" maxlength="14" />
+            </div>
+            <div class="field">
+              <label for="loiDate">Date of LOI <span class="req">*</span></label>
+              <input type="date" id="loiDate" name="loiDate" required />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Supply Requirements -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">2</div>
+          <div>
+            <h2>Proposed Annual Commitment <span style="font-size:12px;font-weight:400;opacity:0.7;">(Non-Binding)</span></h2>
+            <p>Approximate supply requirements to help us plan availability</p>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="productType">Product Type <span class="req">*</span></label>
+              <select id="productType" name="productType" required>
+                <option value="" disabled selected>— Select a product —</option>
+                <option value="Urea (46-0-0)">Urea (46-0-0)</option>
+                <option value="DAP (18-46-0)">DAP (18-46-0)</option>
+                <option value="MAP (12-52-0)">MAP (12-52-0)</option>
+                <option value="NPK Blend">NPK Blend (Custom)</option>
+                <option value="Muriate of Potash (MOP)">Muriate of Potash (MOP)</option>
+                <option value="Sulphate of Ammonia">Sulphate of Ammonia</option>
+                <option value="Single Super Phosphate (SSP)">Single Super Phosphate (SSP)</option>
+                <option value="Triple Super Phosphate (TSP)">Triple Super Phosphate (TSP)</option>
+                <option value="Gypsum">Gypsum</option>
+                <option value="Agricultural Lime">Agricultural Lime</option>
+                <option value="Zinc Sulphate">Zinc Sulphate</option>
+                <option value="Multiple Products">Multiple Products</option>
+                <option value="Other">Other / Not Sure</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="otherProduct">Specify Product <span class="opt">If 'Other' selected</span></label>
+              <input type="text" id="otherProduct" name="otherProduct" placeholder="e.g. Custom liquid blend" />
+            </div>
+          </div>
+
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="annualVolume">Estimated Annual Volume <span class="req">*</span></label>
+              <div class="input-unit-wrap">
+                <input type="number" id="annualVolume" name="annualVolume"
+                  placeholder="e.g. 500" min="1" max="999999" required />
+                <div class="input-unit">T / yr</div>
+              </div>
+              <span class="field-hint">Metric tonnes per year (approximate).</span>
+            </div>
+            <div class="field">
+              <label for="deliverySchedule">Preferred Delivery Schedule <span class="req">*</span></label>
+              <select id="deliverySchedule" name="deliverySchedule" required>
+                <option value="" disabled selected>— Select schedule —</option>
+                <option value="Monthly deliveries">Monthly deliveries</option>
+                <option value="Bi-monthly deliveries">Bi-monthly deliveries</option>
+                <option value="Quarterly deliveries">Quarterly deliveries</option>
+                <option value="Bi-annual deliveries">Bi-annual (2× per year)</option>
+                <option value="Single annual delivery">Single annual delivery</option>
+                <option value="Seasonal (pre-planting)">Seasonal (pre-planting)</option>
+                <option value="On demand">On demand / as needed</option>
+                <option value="To be determined">To be determined</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="deliveryAddress">Delivery Address <span class="req">*</span></label>
+              <input type="text" id="deliveryAddress" name="deliveryAddress"
+                placeholder="e.g. 123 Farm Road, Horsham VIC 3400" required />
+              <span class="field-hint">Property or depot where product would be delivered.</span>
+            </div>
+          </div>
+
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="primaryApplication">Primary Application <span class="req">*</span></label>
+              <select id="primaryApplication" name="primaryApplication" required>
+                <option value="" disabled selected>— Select application —</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Barley">Barley</option>
+                <option value="Canola">Canola</option>
+                <option value="Corn / Maize">Corn / Maize</option>
+                <option value="Cotton">Cotton</option>
+                <option value="Sugarcane">Sugarcane</option>
+                <option value="Pasture / Hay">Pasture / Hay</option>
+                <option value="Horticulture / Vegetables">Horticulture / Vegetables</option>
+                <option value="Viticulture / Orchards">Viticulture / Orchards</option>
+                <option value="Broadacre mixed">Broadacre mixed</option>
+                <option value="Livestock support">Livestock support</option>
+                <option value="Multiple crops">Multiple crops</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="farmSize">Approximate Farm Size <span class="opt">Optional</span></label>
+              <div class="input-unit-wrap">
+                <input type="number" id="farmSize" name="farmSize"
+                  placeholder="e.g. 2000" min="1" />
+                <div class="input-unit">Ha</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="additionalNotes">Additional Notes <span class="opt">Optional</span></label>
+              <textarea id="additionalNotes" name="additionalNotes"
+                placeholder="Any specific product specifications, existing supplier arrangements, timing requirements, or other information you'd like us to know…"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Declarations -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">3</div>
+          <div>
+            <h2>Acknowledgments &amp; Declarations</h2>
+            <p>Please read and confirm the following statements</p>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="sig-block" style="margin-bottom:24px;">
+            <p>
+              <strong>Purpose of this LOI:</strong> This Letter of Intent confirms the Buyer's interest in establishing a regular supply relationship with Vantyx Pty Ltd for agricultural fertiliser products. It is a non-binding expression of interest used to demonstrate market demand and facilitate supplier, logistics, and government agency relationships.
+            </p>
+          </div>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="ackNonBinding" name="ackNonBinding" required />
+              <span class="cb-label">
+                <strong>Non-Binding Nature:</strong> I understand this LOI is a statement of intent only and does not constitute a legally binding contract for sale or purchase. Individual orders will be subject to separate purchase agreements with agreed pricing, delivery terms, and payment conditions.
+              </span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="ackNoFinancial" name="ackNoFinancial" required />
+              <span class="cb-label">
+                <strong>No Financial Commitment:</strong> I acknowledge that no deposit, payment, or financial obligation arises from this LOI. I retain complete discretion over whether to place orders with Vantyx Pty Ltd.
+              </span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="ackUsage" name="ackUsage" required />
+              <span class="cb-label">
+                <strong>LOI Usage:</strong> I acknowledge that Vantyx Pty Ltd may use this LOI to demonstrate market demand to suppliers, logistics partners, and government agencies involved in agricultural supply chain coordination.
+              </span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="ackConfidentiality" name="ackConfidentiality" required />
+              <span class="cb-label">
+                <strong>Confidentiality:</strong> Both parties agree to keep commercial terms and supplier relationships confidential to the extent practicable.
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="form-card">
+        <div class="form-card-body">
+          <div class="submit-section">
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <i class="fa-solid fa-paper-plane"></i>
+              Submit Letter of Intent
+            </button>
+            <p class="submit-note">
+              <i class="fa-solid fa-lock"></i>
+              Your submission is sent securely to Vantyx Pty Ltd &mdash; no payment or commitment is created.
+            </p>
+          </div>
+          <div id="formStatus"></div>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</main>
+
+<!-- =================== FOOTER =================== -->
+<footer>
+  <strong>Vantyx Pty Ltd</strong> &nbsp;&middot;&nbsp; ABN 84 544 119 830 &nbsp;&middot;&nbsp; Melbourne, Victoria<br>
+  <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>
+  &nbsp;&middot;&nbsp;
+  <a href="tel:0431367255">0431 367 255</a>
+  &nbsp;&middot;&nbsp;
+  <a href="https://www.vantyx.com.au" target="_blank" rel="noopener">www.vantyx.com.au</a>
+  <div class="footer-divider"></div>
+  <span>This LOI does not constitute a legally binding agreement. &copy; <span id="footerYear"></span> Vantyx Pty Ltd. All rights reserved.</span>
+</footer>
+
+<script>
+/* ============================================================
+   AUTO-FILL DATE & FOOTER YEAR
+   ============================================================ */
+(function () {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  document.getElementById('loiDate').value = `${y}-${m}-${d}`;
+  document.getElementById('footerYear').textContent = y;
+})();
+
+/* ============================================================
+   ABN FORMATTING (live XX XXX XXX XXX)
+   ============================================================ */
+document.getElementById('abn').addEventListener('input', function () {
+  let v = this.value.replace(/\D/g, '').slice(0, 11);
+  const parts = [];
+  if (v.length > 0) parts.push(v.slice(0, 2));
+  if (v.length > 2) parts.push(v.slice(2, 5));
+  if (v.length > 5) parts.push(v.slice(5, 8));
+  if (v.length > 8) parts.push(v.slice(8, 11));
+  this.value = parts.join(' ');
+});
+
+/* ============================================================
+   SHOW/HIDE 'OTHER PRODUCT' FIELD
+   ============================================================ */
+document.getElementById('productType').addEventListener('change', function () {
+  const otherField = document.getElementById('otherProduct');
+  if (this.value === 'Other' || this.value === 'Multiple Products') {
+    otherField.required = true;
+    otherField.closest('.field').style.opacity = '1';
+  } else {
+    otherField.required = false;
+    otherField.closest('.field').style.opacity = '0.5';
+  }
+});
+// initial state
+document.getElementById('otherProduct').closest('.field').style.opacity = '0.5';
+
+/* ============================================================
+   FORM VALIDATION HELPERS
+   ============================================================ */
+function validateForm(form) {
+  const errors = [];
+  const requiredFields = form.querySelectorAll('[required]');
+  requiredFields.forEach(el => {
+    el.style.borderColor = '';
+    if (el.type === 'checkbox') {
+      if (!el.checked) {
+        errors.push(el.closest('.checkbox-item')?.querySelector('.cb-label strong')?.textContent || 'Required checkbox');
+        el.style.outline = '2px solid #e74c3c';
+      } else {
+        el.style.outline = '';
+      }
+    } else if (!el.value.trim()) {
+      errors.push(el.previousElementSibling?.textContent?.replace('*','').trim() || el.name);
+      el.style.borderColor = '#e74c3c';
+      el.focus();
+    }
+  });
+
+  // Email format
+  const emailEl = form.querySelector('#email');
+  if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+    errors.push('Valid email address');
+    emailEl.style.borderColor = '#e74c3c';
+  }
+
+  return errors;
+}
+
+/* ============================================================
+   BUILD FORMATTED EMAIL BODY
+   ============================================================ */
+function buildEmailBody(data) {
+  const date = new Date(data.loiDate).toLocaleDateString('en-AU', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  return `LETTER OF INTENT — FERTILISER SUPPLY
+============================================================
+FROM:  Vantyx Pty Ltd (ABN 84 544 119 830)
+TO:    ${data.businessName}
+DATE:  ${date}
+============================================================
+
+1. BUYER DETAILS
+   Name / Title:        ${data.fullName}
+   Farm / Business:     ${data.businessName}
+   ABN:                 ${data.abn || 'N/A'}
+   Email:               ${data.email}
+   Phone:               ${data.phone || 'N/A'}
+
+2. PROPOSED ANNUAL COMMITMENT (NON-BINDING)
+   Product Type:        ${data.productType}${data.otherProduct ? ` — ${data.otherProduct}` : ''}
+   Annual Volume:       ${data.annualVolume} Tonnes (Metric) per year
+   Delivery Address:    ${data.deliveryAddress}
+   Primary Application: ${data.primaryApplication}
+   Farm Size:           ${data.farmSize ? data.farmSize + ' Ha' : 'N/A'}
+   Delivery Schedule:   ${data.deliverySchedule}
+
+3. ADDITIONAL NOTES
+   ${data.additionalNotes || 'None provided.'}
+
+4. ACKNOWLEDGMENTS
+   [✓] Non-binding nature acknowledged
+   [✓] No financial commitment acknowledged
+   [✓] LOI usage by Vantyx acknowledged
+   [✓] Confidentiality agreed
+
+============================================================
+DISCLAIMER: This LOI is a non-binding statement of intent
+only. No financial obligation arises. Individual orders
+subject to separate purchase agreements.
+============================================================
+Submitted via vantyx.com.au/loi`;
+}
+
+/* ============================================================
+   FORM SUBMIT — POST TO /submit-loi (Python handler)
+   Falls back to mailto: if no handler is running.
+   ============================================================ */
+document.getElementById('loiForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
+  statusEl.innerHTML = '';
+
+  // Validate
+  const errors = validateForm(this);
+  if (errors.length > 0) {
+    statusEl.innerHTML = `
+      <div class="status-box error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <div>
+          <h3>Please complete all required fields</h3>
+          <p>Missing: ${errors.slice(0, 4).join(', ')}${errors.length > 4 ? ` and ${errors.length - 4} more` : ''}.</p>
+        </div>
+      </div>`;
+    statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Collect data
+  const formData = {
+    fullName:         document.getElementById('fullName').value.trim(),
+    businessName:     document.getElementById('businessName').value.trim(),
+    email:            document.getElementById('email').value.trim(),
+    phone:            document.getElementById('phone').value.trim(),
+    abn:              document.getElementById('abn').value.trim(),
+    loiDate:          document.getElementById('loiDate').value,
+    productType:      document.getElementById('productType').value,
+    otherProduct:     document.getElementById('otherProduct').value.trim(),
+    annualVolume:     document.getElementById('annualVolume').value,
+    deliverySchedule: document.getElementById('deliverySchedule').value,
+    deliveryAddress:  document.getElementById('deliveryAddress').value.trim(),
+    primaryApplication: document.getElementById('primaryApplication').value,
+    farmSize:         document.getElementById('farmSize').value,
+    additionalNotes:  document.getElementById('additionalNotes').value.trim(),
+  };
+
+  // Loading state
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting…';
+
+  // Try the Python backend first
+  let submitted = false;
+  try {
+    const resp = await fetch('/submit-loi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (resp.ok) {
+      submitted = true;
+      showSuccess(formData);
+    } else {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.message || `Server error ${resp.status}`);
+    }
+  } catch (fetchErr) {
+    // Backend not available — fall back to mailto:
+    console.warn('[LOI] Backend unavailable, falling back to mailto:', fetchErr.message);
+    const subject = encodeURIComponent(`LOI – Fertiliser Supply – ${formData.businessName}`);
+    const body    = encodeURIComponent(buildEmailBody(formData));
+    const mailto  = `mailto:sam@vantyx.com.au?subject=${subject}&body=${body}`;
+
+    // Open mailto in same window (opens email client)
+    window.location.href = mailto;
+    submitted = true;
+    showMailtoSuccess(formData);
+  }
+
+  if (!submitted) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Letter of Intent';
+  }
+});
+
+function showSuccess(data) {
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> Submitted!';
+  btn.style.background = 'linear-gradient(135deg, #27ae60, #1e8449)';
+  statusEl.innerHTML = `
+    <div class="status-box success">
+      <i class="fa-solid fa-circle-check"></i>
+      <div>
+        <h3>Your LOI has been submitted successfully!</h3>
+        <p>
+          Thank you, <strong>${escHtml(data.fullName)}</strong>. Your Letter of Intent for
+          <strong>${escHtml(data.businessName)}</strong> has been received by Vantyx Pty Ltd.<br><br>
+          Sam will be in touch at <strong>${escHtml(data.email)}</strong> within one business day to discuss
+          fertiliser supply options for your operation. In the meantime, feel free to call
+          <a href="tel:0431367255">0431 367 255</a> or email
+          <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>.
+        </p>
+      </div>
+    </div>`;
+  statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showMailtoSuccess(data) {
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
+  btn.innerHTML = '<i class="fa-solid fa-envelope"></i> Email Client Opened';
+  btn.style.background = 'linear-gradient(135deg, #e67e22, #d35400)';
+  statusEl.innerHTML = `
+    <div class="status-box success">
+      <i class="fa-solid fa-envelope-open-text"></i>
+      <div>
+        <h3>Your email client has opened with your LOI pre-filled</h3>
+        <p>
+          Please <strong>send the email</strong> that just opened in your email app to complete your submission.
+          If nothing opened, please email <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a> directly
+          or call <a href="tel:0431367255">0431 367 255</a>.
+        </p>
+      </div>
+    </div>`;
+  statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
