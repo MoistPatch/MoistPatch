@@ -885,8 +885,14 @@ document.getElementById('loiForm').addEventListener('submit', async function (e)
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 5000);
 
+  // If loi_handler.py is on a separate server, replace the URL below.
+  // e.g. 'https://moistpatch.up.railway.app/submit-loi'
+  //      'https://YOUR_SERVER_IP:8080/submit-loi'
+  // Leave as '/submit-loi' if the handler runs on the same host as this page.
+  const BACKEND_URL = '/submit-loi';
+
   try {
-    const resp = await fetch('/submit-loi', {
+    const resp = await fetch(BACKEND_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
