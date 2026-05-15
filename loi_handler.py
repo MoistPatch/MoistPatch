@@ -79,21 +79,21 @@ def build_text_body(d: dict[str, Any]) -> str:
 
     return dedent(f"""\
         ============================================================
-        LETTER OF INTENT — FERTILISER SUPPLY
+        SUPPLY ENQUIRY — FERTILISER PRODUCTS
         ============================================================
-        FROM:  Vantyx Pty Ltd (ABN {VANTYX_ABN})
-        TO:    {d.get('businessName', '')}
+        FROM:  {d.get('businessName', '')}
+        TO:    Vantyx Pty Ltd (ABN {VANTYX_ABN})
         DATE:  {date_str}
         ============================================================
 
-        1. BUYER DETAILS
+        1. ENQUIRER DETAILS
            Name / Title:        {d.get('fullName', '')}
            Farm / Business:     {d.get('businessName', '')}
            ABN:                 {d.get('abn') or 'N/A'}
            Email:               {d.get('email', '')}
            Phone:               {d.get('phone') or 'N/A'}
 
-        2. PROPOSED ANNUAL COMMITMENT (NON-BINDING)
+        2. SUPPLY REQUIREMENTS
            Product Type:        {product}
            Annual Volume:       {d.get('annualVolume', '')} Tonnes (Metric) per year
            Delivery Address:    {d.get('deliveryAddress', '')}
@@ -104,22 +104,19 @@ def build_text_body(d: dict[str, Any]) -> str:
         3. ADDITIONAL NOTES
            {notes}
 
-        4. ACKNOWLEDGMENTS
-           [✓] Non-binding nature acknowledged
-           [✓] No financial commitment acknowledged
-           [✓] LOI usage by Vantyx acknowledged
-           [✓] Confidentiality agreed
+        4. CONFIRMATION
+           [✓] Non-binding enquiry acknowledged
+           [✓] No financial commitment
+           [✓] Consent to be contacted by Vantyx
 
         ============================================================
-        DISCLAIMER: This LOI is a non-binding statement of intent
-        only and does not constitute a legally binding contract for
-        sale or purchase. No financial obligation arises. Individual
-        orders are subject to separate purchase agreements with
-        agreed pricing, delivery terms, and payment conditions at
-        the time of order.
+        NOTE: This enquiry is non-binding. No financial obligation
+        arises. Individual orders are subject to separate purchase
+        agreements with agreed pricing, delivery terms, and payment
+        conditions at the time of order.
         ============================================================
         Submitted: {datetime.now(timezone.utc).strftime('%d %b %Y %H:%M UTC')}
-        Source:    {VANTYX_SITE}/loi
+        Source:    {VANTYX_SITE}/enquiry
     """)
 
 
@@ -144,7 +141,7 @@ def build_html_body(d: dict[str, Any]) -> str:
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LOI – Fertiliser Supply – {d.get('businessName','')}</title></head>
+<title>Supply Enquiry – {d.get('businessName','')}</title></head>
 <body style="margin:0;padding:0;background:#f4f9f5;font-family:Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f9f5;padding:32px 0;">
 <tr><td align="center">
@@ -163,9 +160,9 @@ def build_html_body(d: dict[str, Any]) -> str:
       {VANTYX_BIO}
     </p>
     <p style="margin:16px 0 0;font-size:20px;font-weight:700;color:#d4a017;
-      font-family:Georgia,serif;letter-spacing:1px;">LETTER OF INTENT</p>
+      font-family:Georgia,serif;letter-spacing:1px;">SUPPLY ENQUIRY</p>
     <p style="margin:4px 0 0;font-size:13px;color:rgba(255,255,255,0.65);">
-      Expression of Interest for Fertiliser Supply
+      Fertiliser Supply Enquiry
     </p>
   </td></tr>
 
@@ -174,14 +171,14 @@ def build_html_body(d: dict[str, Any]) -> str:
     <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
       <td style="font-size:13px;color:#3d4f3a;">
-        <strong>TO:</strong> {d.get('businessName','')} (&ldquo;The Buyer&rdquo;)
+        <strong>FROM:</strong> {d.get('businessName','')}
       </td>
       <td align="right" style="font-size:13px;color:#3d4f3a;">
         <strong>DATE:</strong> {date_str}
       </td>
     </tr>
     <tr><td colspan="2" style="font-size:13px;color:#3d4f3a;padding-top:4px;">
-      <strong>FROM:</strong> Vantyx Pty Ltd (&ldquo;The Supplier&rdquo;)
+      <strong>TO:</strong> Vantyx Pty Ltd
     </td></tr>
     </table>
   </td></tr>
@@ -189,10 +186,10 @@ def build_html_body(d: dict[str, Any]) -> str:
   <!-- Body -->
   <tr><td style="padding:28px 36px;">
 
-    <!-- Buyer Details -->
+    <!-- Enquirer Details -->
     <p style="font-size:14px;font-weight:700;color:#145232;text-transform:uppercase;
       letter-spacing:1px;margin:0 0 10px;border-bottom:2px solid #c8dcc4;padding-bottom:8px;">
-      1. Buyer Details
+      1. Enquirer Details
     </p>
     <table width="100%" cellpadding="0" cellspacing="0"
       style="border:1px solid #c8dcc4;border-radius:8px;overflow:hidden;margin-bottom:24px;font-size:14px;">
@@ -206,7 +203,7 @@ def build_html_body(d: dict[str, Any]) -> str:
     <!-- Supply Requirements -->
     <p style="font-size:14px;font-weight:700;color:#145232;text-transform:uppercase;
       letter-spacing:1px;margin:0 0 10px;border-bottom:2px solid #c8dcc4;padding-bottom:8px;">
-      2. Proposed Annual Commitment <span style="font-weight:400;font-size:12px;color:#6b7c68;">(Non-Binding)</span>
+      2. Supply Requirements
     </p>
     <table width="100%" cellpadding="0" cellspacing="0"
       style="border:1px solid #c8dcc4;border-radius:8px;overflow:hidden;margin-bottom:24px;font-size:14px;">
@@ -228,39 +225,29 @@ def build_html_body(d: dict[str, Any]) -> str:
       {notes_html}
     </div>
 
-    <!-- Acknowledgments -->
+    <!-- Confirmation -->
     <p style="font-size:14px;font-weight:700;color:#145232;text-transform:uppercase;
       letter-spacing:1px;margin:0 0 10px;border-bottom:2px solid #c8dcc4;padding-bottom:8px;">
-      4. Acknowledgments
+      4. Confirmation
     </p>
     <table width="100%" cellpadding="0" cellspacing="0"
       style="margin-bottom:24px;font-size:14px;color:#3d4f3a;">
       <tr><td style="padding:5px 0;">
         <span style="color:#27ae60;font-weight:700;">&#10003;</span>&nbsp;
-        <strong>Non-Binding:</strong> This LOI is a statement of intent only; not a legally binding contract.
+        <strong>Non-binding:</strong> This enquiry is not a legally binding contract. No deposit or obligation arises.
       </td></tr>
       <tr><td style="padding:5px 0;">
         <span style="color:#27ae60;font-weight:700;">&#10003;</span>&nbsp;
-        <strong>No Financial Commitment:</strong> No deposit, payment, or obligation arises.
-      </td></tr>
-      <tr><td style="padding:5px 0;">
-        <span style="color:#27ae60;font-weight:700;">&#10003;</span>&nbsp;
-        <strong>LOI Usage:</strong> Vantyx may use this LOI to demonstrate market demand to suppliers and agencies.
-      </td></tr>
-      <tr><td style="padding:5px 0;">
-        <span style="color:#27ae60;font-weight:700;">&#10003;</span>&nbsp;
-        <strong>Confidentiality:</strong> Commercial terms and supplier relationships kept confidential.
+        <strong>Contact consent:</strong> Enquirer consents to Vantyx Pty Ltd making contact to discuss supply options.
       </td></tr>
     </table>
 
     <!-- Disclaimer -->
     <div style="background:#fdf3d0;border:1px solid #e8c96a;border-radius:8px;
       padding:14px 18px;font-size:12px;color:#7a5a00;line-height:1.6;margin-bottom:8px;">
-      <strong>DISCLAIMER:</strong> This LOI is a non-binding expression of interest only and does not constitute
-      a legally binding contract for sale or purchase. No financial obligation arises from this document.
+      <strong>NOTE:</strong> This enquiry is non-binding. No financial obligation arises.
       Individual orders will be subject to separate purchase agreements with agreed pricing, delivery terms,
-      and payment conditions at the time of order. The Buyer retains complete discretion over whether to
-      place orders with Vantyx Pty Ltd.
+      and payment conditions at the time of order.
     </div>
 
   </td></tr>
@@ -278,7 +265,7 @@ def build_html_body(d: dict[str, Any]) -> str:
       <a href="https://{VANTYX_SITE}" style="color:#d4a017;">{VANTYX_SITE}</a>
     </p>
     <p style="margin:10px 0 0;font-size:11px;color:rgba(255,255,255,0.35);">
-      Submitted {submitted_at} via {VANTYX_SITE}/loi
+      Submitted {submitted_at} via {VANTYX_SITE}/enquiry
     </p>
   </td></tr>
 
@@ -307,9 +294,9 @@ def build_confirmation_html(d: dict[str, Any]) -> str:
   <tr><td style="padding:32px;">
     <p style="font-size:28px;margin:0 0 8px;text-align:center;">&#9989;</p>
     <h2 style="font-size:20px;color:#145232;text-align:center;margin:0 0 16px;
-      font-family:Georgia,serif;">Your LOI Has Been Received</h2>
+      font-family:Georgia,serif;">Enquiry Received</h2>
     <p style="font-size:15px;color:#3d4f3a;line-height:1.6;margin:0 0 20px;">
-      Thank you, <strong>{d.get('fullName','')}</strong>. We've received your Letter of Intent
+      Thank you, <strong>{d.get('fullName','')}</strong>. We've received your supply enquiry
       for <strong>{d.get('businessName','')}</strong>. Sam will be in touch within one business
       day to discuss fertiliser supply options for your operation.
     </p>
@@ -369,7 +356,7 @@ def send_loi_email(data: dict[str, Any]) -> None:
     msg_notify["From"]       = formataddr((cfg["from_name"], cfg["from_addr"]))
     msg_notify["To"]         = LOI_RECIPIENT
     msg_notify["Reply-To"]   = data.get("email", "")
-    msg_notify["Subject"]    = f"New LOI: {business} — {product} — {date_str}"
+    msg_notify["Subject"]    = f"New Enquiry: {business} — {product} — {date_str}"
     msg_notify["Message-ID"] = make_msgid(domain=cfg["from_addr"].split("@", 1)[-1])
     msg_notify["X-Agent"]    = "vantyx/loi-handler"
     msg_notify.set_content(build_text_body(data))
@@ -383,12 +370,12 @@ def send_loi_email(data: dict[str, Any]) -> None:
         msg_confirm["From"]       = formataddr(("Vantyx Pty Ltd", cfg["from_addr"]))
         msg_confirm["To"]         = buyer_email
         msg_confirm["Reply-To"]   = LOI_RECIPIENT
-        msg_confirm["Subject"]    = f"Vantyx – LOI Received: {business}"
+        msg_confirm["Subject"]    = f"Vantyx – Enquiry Received: {business}"
         msg_confirm["Message-ID"] = make_msgid(domain=cfg["from_addr"].split("@", 1)[-1])
         msg_confirm["X-Agent"]    = "vantyx/loi-handler"
         confirm_text = (
             f"Thank you, {data.get('fullName', '')}.\n\n"
-            f"We've received your Letter of Intent for {business}. "
+            f"We've received your supply enquiry for {business}. "
             f"Sam will be in touch within one business day.\n\n"
             f"Contact: sam@vantyx.com.au | {VANTYX_PHONE}\n\n"
             "— Vantyx Pty Ltd"

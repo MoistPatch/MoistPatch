@@ -48,6 +48,8 @@ def classify_news_batch(items: list[NewsItem]) -> None:
 
 Classify each news item below for relevance to Vantyx's business and sentiment (opportunity/threat/neutral).
 
+IMPORTANT: Base your analysis ONLY on the title and summary text provided for each item. Do NOT invent, assume, or add information not present in the item text. Summaries must be derived solely from the provided text.
+
 News items to classify:
 {items_text}
 
@@ -57,7 +59,7 @@ For each item, respond with a JSON array (one object per item, in order):
     "index": 1,
     "relevance": "high|medium|low|irrelevant",
     "sentiment": "opportunity|threat|neutral",
-    "summary": "One sentence explaining why this matters to Vantyx (or 'Not relevant' if irrelevant)",
+    "summary": "One sentence drawn only from the provided title/text explaining relevance to Vantyx (or 'Not relevant' if irrelevant)",
     "tags": ["urea", "price_rise", "supply_disruption"]
   }},
   ...
@@ -131,22 +133,26 @@ def generate_report(min_items: int = 5) -> SurveillanceReport | None:
 
 {_vantyx_context()}
 
-Produce a weekly market intelligence briefing based on the following recent news items.
+Produce a market intelligence briefing based ONLY on the following verified news items fetched from real RSS feeds.
 
-## Recent Market News
+## Verified News Items
 
 {news_text}
 
 ## Briefing Requirements
 
-Write a comprehensive briefing covering:
+Write a briefing covering:
 1. Executive summary (2-3 paragraphs on the key market developments)
 2. Opportunities Vantyx should act on
 3. Threats or risks to be aware of
 4. Key market trends to monitor
 5. Specific action items for Sam
 
-Be specific, practical, and commercially focused. Reference actual news items where relevant.
+CRITICAL RULES:
+- Every claim, statistic, and named event in your briefing MUST be traceable to one of the news items listed above.
+- Do NOT invent price figures, company names, country events, or market data not present in the provided items.
+- Do NOT add sources, URLs, or references not present in the items above.
+- If the news items don't support a strong conclusion, say so rather than speculating.
 
 Respond in this EXACT JSON format — no text outside the JSON:
 

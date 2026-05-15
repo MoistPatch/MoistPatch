@@ -401,6 +401,144 @@
     @media(max-width:600px){
       .claudia-panel{width:100vw;right:-100vw}
     }
+
+    /* ═══════════════════ CURRENCY MONITOR ═══════════════════ */
+    .cur-layout{display:flex;gap:0;height:calc(100vh - 120px);min-height:500px}
+    .cur-selector{
+      width:252px;flex-shrink:0;background:#fff;border:1px solid var(--bdr);
+      border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden;
+    }
+    .cur-selector-head{
+      padding:12px 14px 10px;border-bottom:1px solid var(--bdr);flex-shrink:0;
+    }
+    .cur-search{
+      width:100%;padding:7px 10px;border:1px solid var(--bdr);border-radius:7px;
+      font-family:'Inter',sans-serif;font-size:12px;color:var(--txt);outline:none;
+    }
+    .cur-search:focus{border-color:var(--green)}
+    .cur-cat-filters{
+      display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;
+    }
+    .cur-cat{
+      padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600;
+      border:1px solid var(--bdr);background:transparent;color:var(--txt3);
+      cursor:pointer;transition:.12s;
+    }
+    .cur-cat:hover{border-color:var(--green);color:var(--green)}
+    .cur-cat.active{background:var(--green);color:#fff;border-color:var(--green)}
+    .cur-list{
+      flex:1;overflow-y:auto;padding:6px 0;
+    }
+    .cur-item{
+      display:flex;align-items:center;gap:7px;
+      padding:5px 12px;cursor:pointer;font-size:12px;transition:.1s;
+    }
+    .cur-item:hover{background:#f4faf5}
+    .cur-item input[type=checkbox]{accent-color:var(--green);cursor:pointer;flex-shrink:0}
+    .cur-item-flag{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+    .cur-item-info{flex:1;min-width:0}
+    .cur-item-code{font-weight:600;color:var(--txt);font-size:11px}
+    .cur-item-name{color:var(--txt3);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .cur-selector-foot{
+      padding:10px 12px;border-top:1px solid var(--bdr);flex-shrink:0;display:flex;gap:6px;
+    }
+
+    .cur-rates-panel{
+      flex:1;display:flex;flex-direction:column;margin-left:16px;min-width:0;
+    }
+    .cur-controls{
+      background:#fff;border:1px solid var(--bdr);border-radius:var(--r);
+      padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;
+      margin-bottom:12px;flex-wrap:wrap;
+    }
+    .cur-controls select{
+      padding:5px 8px;border:1px solid var(--bdr);border-radius:6px;
+      font-family:'Inter',sans-serif;font-size:12px;color:var(--txt);outline:none;
+    }
+    .cur-updated{font-size:11px;color:var(--txt3);margin-left:auto}
+    .cur-table-wrap{
+      background:#fff;border:1px solid var(--bdr);border-radius:var(--r);
+      flex:1;overflow-y:auto;
+    }
+    .cur-table{width:100%;border-collapse:collapse;font-size:12.5px}
+    .cur-table th{
+      padding:9px 12px;text-align:left;font-weight:600;font-size:10px;
+      color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;
+      border-bottom:2px solid var(--bdr);background:var(--bg);
+      position:sticky;top:0;z-index:1;
+    }
+    .cur-table td{
+      padding:9px 12px;border-bottom:1px solid #f0f5f0;color:var(--txt2);
+      vertical-align:middle;
+    }
+    .cur-table tr:last-child td{border-bottom:none}
+    .cur-table tr:hover td{background:#f8fdf9}
+    .cur-flag{font-size:18px;line-height:1}
+    .cur-code{font-weight:700;color:var(--txt);font-size:13px}
+    .cur-name{font-size:11px;color:var(--txt3)}
+    .cur-rate{font-size:13px;font-weight:600;color:var(--txt);font-variant-numeric:tabular-nums}
+    .chg-up{color:var(--success);font-weight:600}
+    .chg-dn{color:var(--danger);font-weight:600}
+    .chg-nil{color:var(--txt3)}
+    .cur-star{
+      background:none;border:none;cursor:pointer;font-size:14px;padding:2px 4px;
+      color:#ccc;transition:.12s;
+    }
+    .cur-star.on{color:#f1c40f}
+    .cur-star:hover{color:#f1c40f}
+    .cur-bell{
+      background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px;
+      color:var(--txt3);transition:.12s;border-radius:5px;
+    }
+    .cur-bell:hover{background:#fef9e7;color:var(--gold-dim)}
+    .cur-bell.active{color:var(--gold-dim)}
+
+    /* Sparkline */
+    .spark-svg{display:block;overflow:visible}
+
+    /* Calculator */
+    .cur-calc{
+      background:#fff;border:1px solid var(--bdr);border-radius:var(--r);
+      padding:14px 16px;margin-top:12px;flex-shrink:0;
+    }
+    .cur-calc-head{
+      font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:10px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .cur-calc-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+    .cur-calc-row input{
+      width:110px;padding:7px 10px;border:1px solid var(--bdr);border-radius:7px;
+      font-family:'Inter',sans-serif;font-size:13px;color:var(--txt);outline:none;
+    }
+    .cur-calc-row input:focus{border-color:var(--green)}
+    .cur-calc-row select{
+      padding:7px 10px;border:1px solid var(--bdr);border-radius:7px;
+      font-family:'Inter',sans-serif;font-size:12px;color:var(--txt);outline:none;
+    }
+    .cur-calc-results{
+      display:flex;flex-wrap:wrap;gap:6px;max-height:96px;overflow-y:auto;
+    }
+    .calc-chip{
+      background:var(--bg);border:1px solid var(--bdr);border-radius:6px;
+      padding:4px 10px;font-size:12px;color:var(--txt2);white-space:nowrap;
+    }
+    .calc-chip strong{color:var(--txt);font-weight:600}
+
+    /* History Modal */
+    .history-modal{width:600px;max-width:95vw}
+    .chart-area{margin-top:12px}
+    .chart-svg{width:100%;height:180px;display:block}
+    .chart-axis{font-size:10px;fill:var(--txt3)}
+    .chart-line{fill:none;stroke:var(--green);stroke-width:2;stroke-linejoin:round}
+    .chart-fill{fill:rgba(27,107,58,0.08)}
+    .chart-dot{fill:var(--green)}
+
+    /* Alert Setup Modal */
+    .alert-list-item{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:7px 0;border-bottom:1px solid var(--bdr);font-size:12px;
+    }
+    .alert-list-item:last-child{border-bottom:none}
   </style>
 </head>
 <body>
@@ -425,12 +563,16 @@
         <span class="badge warn" id="nav-price-alerts" style="display:none"></span>
       </div>
       <div class="nav-item" data-panel="surveillance" onclick="showPanel('surveillance',this)">
-        <i class="fa-solid fa-satellite-dish"></i> Surveillance
+        <i class="fa-solid fa-satellite-dish"></i> Analysis
         <span class="badge" id="nav-surv-alerts" style="display:none"></span>
       </div>
       <div class="nav-item" data-panel="leads" onclick="showPanel('leads',this)">
         <i class="fa-solid fa-user-plus"></i> Leads
         <span class="badge" id="nav-leads">0</span>
+      </div>
+      <div class="nav-item" data-panel="currency" onclick="showPanel('currency',this)">
+        <i class="fa-solid fa-coins"></i> Currency Monitor
+        <span class="badge info" id="nav-cur-alerts" style="display:none"></span>
       </div>
       <div class="nav-item" onclick="toggleClaudia()" style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:14px">
         <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold)"></i> Chat with CLAUDIA
@@ -438,7 +580,7 @@
     </nav>
     <div class="sidebar-links">
       <a href="/" target="_blank"><i class="fa-solid fa-globe fa-xs"></i> Vantyx Website</a>
-      <a href="/loi" target="_blank"><i class="fa-solid fa-file-signature fa-xs"></i> LOI Form</a>
+      <a href="/loi" target="_blank"><i class="fa-solid fa-file-signature fa-xs"></i> Enquiry Form</a>
     </div>
   </aside>
 
@@ -629,6 +771,83 @@
         </div>
       </div>
 
+      <!-- ── Currency Monitor ── -->
+      <div class="panel" id="panel-currency">
+
+        <div class="cur-layout">
+          <!-- Left: currency selector -->
+          <div class="cur-selector">
+            <div class="cur-selector-head">
+              <input class="cur-search" id="cur-search" type="text" placeholder="Search currencies…" oninput="filterCurrencyList()" />
+              <div class="cur-cat-filters" id="cur-cats">
+                <button class="cur-cat active" data-cat="All" onclick="setCurCat('All',this)">All</button>
+                <button class="cur-cat" data-cat="Major" onclick="setCurCat('Major',this)">Major</button>
+                <button class="cur-cat" data-cat="Americas" onclick="setCurCat('Americas',this)">Americas</button>
+                <button class="cur-cat" data-cat="Europe" onclick="setCurCat('Europe',this)">Europe</button>
+                <button class="cur-cat" data-cat="Asia Pacific" onclick="setCurCat('Asia Pacific',this)">Asia Pac</button>
+                <button class="cur-cat" data-cat="Africa" onclick="setCurCat('Africa',this)">Africa</button>
+                <button class="cur-cat" data-cat="Middle East" onclick="setCurCat('Middle East',this)">M. East</button>
+              </div>
+            </div>
+            <div class="cur-list" id="cur-list"><!-- populated by JS --></div>
+            <div class="cur-selector-foot">
+              <button class="btn btn-primary btn-sm" style="flex:1" onclick="saveCurSelection()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+              <button class="btn btn-outline btn-sm" onclick="selectAllVisible()">All</button>
+              <button class="btn btn-outline btn-sm" onclick="clearCurSelection()">None</button>
+            </div>
+          </div>
+
+          <!-- Right: rates + calculator -->
+          <div class="cur-rates-panel">
+            <div class="cur-controls">
+              <label style="font-size:12px;color:var(--txt3);font-weight:500">Auto-refresh:</label>
+              <select id="cur-refresh-sel" onchange="setCurAutoRefresh(this.value)">
+                <option value="0">Off</option>
+                <option value="5000">5 s</option>
+                <option value="30000" selected>30 s</option>
+                <option value="60000">1 min</option>
+                <option value="300000">5 min</option>
+              </select>
+              <button class="btn btn-outline btn-sm" onclick="triggerCurRefresh()"><i class="fa-solid fa-rotate-right"></i> Fetch Live</button>
+              <button class="btn btn-outline btn-sm" onclick="exportCurrencyCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+              <span class="cur-updated" id="cur-updated">Not loaded yet</span>
+            </div>
+
+            <div class="cur-table-wrap">
+              <table class="cur-table">
+                <thead>
+                  <tr>
+                    <th style="width:28px"></th>
+                    <th>Currency</th>
+                    <th>1 USD =</th>
+                    <th>1h Δ</th>
+                    <th>24h Δ</th>
+                    <th>7d</th>
+                    <th style="width:34px" title="Alert"></th>
+                  </tr>
+                </thead>
+                <tbody id="cur-tbody">
+                  <tr><td colspan="7" class="empty"><i class="fa-solid fa-coins"></i> Click "Fetch Live" to load rates</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Calculator -->
+            <div class="cur-calc">
+              <div class="cur-calc-head"><i class="fa-solid fa-calculator" style="color:var(--green)"></i> Quick Converter</div>
+              <div class="cur-calc-row">
+                <input type="number" id="calc-amount" value="100" min="0" step="any" oninput="updateCalc()" />
+                <select id="calc-from" onchange="updateCalc()"><!-- populated by JS --></select>
+                <span style="font-size:13px;color:var(--txt3)">→ selected currencies</span>
+                <button class="btn btn-outline btn-sm" onclick="reverseCalc()"><i class="fa-solid fa-right-left"></i></button>
+              </div>
+              <div class="cur-calc-results" id="calc-results"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /panel-currency -->
+
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
@@ -734,6 +953,55 @@
   </div>
 </div>
 
+<!-- Currency Alert Modal -->
+<div class="modal-overlay" id="modal-cur-alert">
+  <div class="modal">
+    <h2><i class="fa-solid fa-bell" style="color:var(--gold);margin-right:8px"></i>Rate Alert — <span id="alert-cur-code"></span></h2>
+    <p style="font-size:12px;color:var(--txt3);margin-bottom:14px">Current: 1 USD = <strong id="alert-cur-rate"></strong></p>
+    <div class="form-group">
+      <label>Condition</label>
+      <select id="alert-condition">
+        <option value="above">Alert when rate goes ABOVE</option>
+        <option value="below">Alert when rate goes BELOW</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Threshold (units per USD)</label>
+      <input type="number" id="alert-threshold" step="any" placeholder="e.g. 1.10" />
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Active alerts for <span id="alert-cur-code2"></span></div>
+      <div id="alert-active-list" style="font-size:12px;color:var(--txt3)">Loading…</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-cur-alert')">Cancel</button>
+      <button class="btn btn-gold" onclick="submitCurAlert()"><i class="fa-solid fa-bell"></i> Set Alert</button>
+    </div>
+  </div>
+</div>
+
+<!-- Currency History Modal -->
+<div class="modal-overlay" id="modal-cur-history">
+  <div class="modal history-modal">
+    <h2><i class="fa-solid fa-chart-line" style="color:var(--green);margin-right:8px"></i><span id="hist-cur-title"></span></h2>
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn btn-outline btn-sm" onclick="loadHistoryChart(curHistoryCode,7)" id="hist-7d">7d</button>
+      <button class="btn btn-outline btn-sm" onclick="loadHistoryChart(curHistoryCode,30)" id="hist-30d">30d</button>
+      <button class="btn btn-outline btn-sm" onclick="loadHistoryChart(curHistoryCode,90)" id="hist-90d">90d</button>
+      <button class="btn btn-outline btn-sm" onclick="loadHistoryChart(curHistoryCode,365)" id="hist-1y">1y</button>
+      <span style="margin-left:auto;font-size:11px;color:var(--txt3);align-self:center" id="hist-data-note"></span>
+    </div>
+    <div class="chart-area">
+      <svg class="chart-svg" id="hist-svg" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+        <text x="280" y="95" text-anchor="middle" font-size="12" fill="#999">Loading chart…</text>
+      </svg>
+    </div>
+    <div style="margin-top:8px;text-align:right">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('modal-cur-history')">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── CLAUDIA chat ── -->
 <button class="claudia-fab" id="claudia-fab" onclick="toggleClaudia()" title="Chat with CLAUDIA">
   <i class="fa-solid fa-comments"></i>
@@ -783,7 +1051,8 @@ const API = '';  // same-origin
 // ── Navigation ─────────────────────────────────────────────────────────
 const PANEL_TITLES = {
   overview:'Overview', marketing:'Marketing Agent',
-  pricing:'Pricing Agent', surveillance:'Market Surveillance', leads:'Lead Management'
+  pricing:'Pricing Agent', surveillance:'Market Analysis',
+  leads:'Lead Management', currency:'Currency Monitor'
 };
 function showPanel(name, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -824,7 +1093,7 @@ async function refreshAll() {
   _refreshing = true;
   document.getElementById('last-updated').textContent = 'Refreshing…';
   try {
-    await Promise.all([loadStatus(), loadPosts(), loadLeads(), loadPrices(), loadPriceAlerts(), loadNews(), loadSurvAlerts()]);
+    await Promise.all([loadStatus(), loadPosts(), loadLeads(), loadPrices(), loadPriceAlerts(), loadNews(), loadSurvAlerts(), loadCurrencyRates()]);
     document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
     document.getElementById('status-dot').className = 'status-dot';
   } catch(e) {
@@ -1240,7 +1509,7 @@ function renderEmptyState() {
     <div class="claudia-empty">
       <div class="welcome-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
       <strong style="color:var(--txt);font-size:14px">Hi Sam — I'm CLAUDIA.</strong><br>
-      I can pull live data from your marketing, pricing, and surveillance agents, and run actions for you. Ask me anything or try one of these:
+      I can pull live data from your marketing, pricing, and analysis agents, and run actions for you. Ask me anything or try one of these:
       <div class="claudia-starters">
         ${STARTERS.map(s => `<button class="claudia-starter" onclick="useStarter(this)">${esc(s)}</button>`).join('')}
       </div>
@@ -1355,8 +1624,491 @@ if (window.marked) {
   marked.setOptions({ breaks: true, gfm: true });
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+//  CURRENCY MONITOR
+// ═══════════════════════════════════════════════════════════════════════
+
+const CURRENCIES = [
+  // Major
+  {code:'EUR',name:'Euro',flag:'🇪🇺',region:'Major'},
+  {code:'GBP',name:'British Pound',flag:'🇬🇧',region:'Major'},
+  {code:'JPY',name:'Japanese Yen',flag:'🇯🇵',region:'Major'},
+  {code:'CHF',name:'Swiss Franc',flag:'🇨🇭',region:'Major'},
+  {code:'CAD',name:'Canadian Dollar',flag:'🇨🇦',region:'Major'},
+  {code:'AUD',name:'Australian Dollar',flag:'🇦🇺',region:'Major'},
+  {code:'NZD',name:'New Zealand Dollar',flag:'🇳🇿',region:'Major'},
+  {code:'CNY',name:'Chinese Yuan',flag:'🇨🇳',region:'Major'},
+  {code:'HKD',name:'Hong Kong Dollar',flag:'🇭🇰',region:'Major'},
+  {code:'SGD',name:'Singapore Dollar',flag:'🇸🇬',region:'Major'},
+  // Americas
+  {code:'BRL',name:'Brazilian Real',flag:'🇧🇷',region:'Americas'},
+  {code:'MXN',name:'Mexican Peso',flag:'🇲🇽',region:'Americas'},
+  {code:'ARS',name:'Argentine Peso',flag:'🇦🇷',region:'Americas'},
+  {code:'COP',name:'Colombian Peso',flag:'🇨🇴',region:'Americas'},
+  {code:'CLP',name:'Chilean Peso',flag:'🇨🇱',region:'Americas'},
+  {code:'PEN',name:'Peruvian Sol',flag:'🇵🇪',region:'Americas'},
+  {code:'UYU',name:'Uruguayan Peso',flag:'🇺🇾',region:'Americas'},
+  // Europe
+  {code:'SEK',name:'Swedish Krona',flag:'🇸🇪',region:'Europe'},
+  {code:'NOK',name:'Norwegian Krone',flag:'🇳🇴',region:'Europe'},
+  {code:'DKK',name:'Danish Krone',flag:'🇩🇰',region:'Europe'},
+  {code:'PLN',name:'Polish Złoty',flag:'🇵🇱',region:'Europe'},
+  {code:'CZK',name:'Czech Koruna',flag:'🇨🇿',region:'Europe'},
+  {code:'HUF',name:'Hungarian Forint',flag:'🇭🇺',region:'Europe'},
+  {code:'RON',name:'Romanian Leu',flag:'🇷🇴',region:'Europe'},
+  {code:'RUB',name:'Russian Ruble',flag:'🇷🇺',region:'Europe'},
+  {code:'TRY',name:'Turkish Lira',flag:'🇹🇷',region:'Europe'},
+  {code:'UAH',name:'Ukrainian Hryvnia',flag:'🇺🇦',region:'Europe'},
+  // Asia Pacific
+  {code:'INR',name:'Indian Rupee',flag:'🇮🇳',region:'Asia Pacific'},
+  {code:'KRW',name:'South Korean Won',flag:'🇰🇷',region:'Asia Pacific'},
+  {code:'TWD',name:'Taiwan Dollar',flag:'🇹🇼',region:'Asia Pacific'},
+  {code:'THB',name:'Thai Baht',flag:'🇹🇭',region:'Asia Pacific'},
+  {code:'MYR',name:'Malaysian Ringgit',flag:'🇲🇾',region:'Asia Pacific'},
+  {code:'IDR',name:'Indonesian Rupiah',flag:'🇮🇩',region:'Asia Pacific'},
+  {code:'PHP',name:'Philippine Peso',flag:'🇵🇭',region:'Asia Pacific'},
+  {code:'VND',name:'Vietnamese Dong',flag:'🇻🇳',region:'Asia Pacific'},
+  {code:'PKR',name:'Pakistani Rupee',flag:'🇵🇰',region:'Asia Pacific'},
+  {code:'BDT',name:'Bangladeshi Taka',flag:'🇧🇩',region:'Asia Pacific'},
+  {code:'LKR',name:'Sri Lankan Rupee',flag:'🇱🇰',region:'Asia Pacific'},
+  // Africa
+  {code:'ZAR',name:'South African Rand',flag:'🇿🇦',region:'Africa'},
+  {code:'NGN',name:'Nigerian Naira',flag:'🇳🇬',region:'Africa'},
+  {code:'KES',name:'Kenyan Shilling',flag:'🇰🇪',region:'Africa'},
+  {code:'GHS',name:'Ghanaian Cedi',flag:'🇬🇭',region:'Africa'},
+  {code:'EGP',name:'Egyptian Pound',flag:'🇪🇬',region:'Africa'},
+  {code:'MAD',name:'Moroccan Dirham',flag:'🇲🇦',region:'Africa'},
+  {code:'TZS',name:'Tanzanian Shilling',flag:'🇹🇿',region:'Africa'},
+  {code:'ETB',name:'Ethiopian Birr',flag:'🇪🇹',region:'Africa'},
+  // Middle East
+  {code:'AED',name:'UAE Dirham',flag:'🇦🇪',region:'Middle East'},
+  {code:'SAR',name:'Saudi Riyal',flag:'🇸🇦',region:'Middle East'},
+  {code:'QAR',name:'Qatari Riyal',flag:'🇶🇦',region:'Middle East'},
+  {code:'KWD',name:'Kuwaiti Dinar',flag:'🇰🇼',region:'Middle East'},
+  {code:'ILS',name:'Israeli Shekel',flag:'🇮🇱',region:'Middle East'},
+  {code:'JOD',name:'Jordanian Dinar',flag:'🇯🇴',region:'Middle East'},
+  {code:'OMR',name:'Omani Rial',flag:'🇴🇲',region:'Middle East'},
+  {code:'BHD',name:'Bahraini Dinar',flag:'🇧🇭',region:'Middle East'},
+];
+
+// lookup by code
+const CUR_MAP = {};
+CURRENCIES.forEach(c => { CUR_MAP[c.code] = c; });
+
+let _curRates = {};          // code → rate data from API
+let _curSelected = new Set();// checked currencies
+let _curFavorites = new Set();
+let _curCat = 'All';
+let _curAutoTimer = null;
+let curHistoryCode = '';
+let _curAlertTarget = '';    // code currently in alert modal
+
+// ── Init ─────────────────────────────────────────────────────────────────
+function initCurrencyPanel() {
+  // Load saved prefs from localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem('cur_selected') || 'null');
+    if (Array.isArray(saved)) _curSelected = new Set(saved);
+    else _curSelected = new Set(CURRENCIES.filter(c => c.region==='Major').map(c => c.code));
+  } catch(e) {
+    _curSelected = new Set(CURRENCIES.filter(c => c.region==='Major').map(c => c.code));
+  }
+  try {
+    const fav = JSON.parse(localStorage.getItem('cur_favorites') || '[]');
+    _curFavorites = new Set(fav);
+  } catch(e) { _curFavorites = new Set(); }
+
+  renderCurrencyList();
+  populateCalcFrom();
+  setCurAutoRefresh(document.getElementById('cur-refresh-sel').value);
+}
+
+// ── Selector panel ────────────────────────────────────────────────────────
+function setCurCat(cat, btn) {
+  _curCat = cat;
+  document.querySelectorAll('.cur-cat').forEach(b => b.classList.toggle('active', b.dataset.cat===cat));
+  renderCurrencyList();
+}
+
+function filterCurrencyList() { renderCurrencyList(); }
+
+function renderCurrencyList() {
+  const q = (document.getElementById('cur-search').value || '').toLowerCase();
+  const list = document.getElementById('cur-list');
+  const visible = CURRENCIES.filter(c => {
+    if (_curCat !== 'All' && c.region !== _curCat) return false;
+    if (q && !c.code.toLowerCase().includes(q) && !c.name.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  list.innerHTML = visible.map(c => `
+    <label class="cur-item">
+      <input type="checkbox" onchange="toggleCurCode('${c.code}',this.checked)"
+             ${_curSelected.has(c.code) ? 'checked' : ''} />
+      <span class="cur-item-flag">${c.flag}</span>
+      <span class="cur-item-info">
+        <span class="cur-item-code">${c.code}</span>
+        <span class="cur-item-name">${c.name}</span>
+      </span>
+    </label>`).join('');
+}
+
+function toggleCurCode(code, checked) {
+  if (checked) _curSelected.add(code); else _curSelected.delete(code);
+  renderCurrencyTable();
+  updateCalc();
+}
+
+function saveCurSelection() {
+  localStorage.setItem('cur_selected', JSON.stringify([..._curSelected]));
+  toast('Currency selection saved');
+  renderCurrencyTable();
+  updateCalc();
+}
+
+function selectAllVisible() {
+  const q = (document.getElementById('cur-search').value || '').toLowerCase();
+  CURRENCIES.filter(c => {
+    if (_curCat !== 'All' && c.region !== _curCat) return false;
+    if (q && !c.code.toLowerCase().includes(q) && !c.name.toLowerCase().includes(q)) return false;
+    return true;
+  }).forEach(c => _curSelected.add(c.code));
+  renderCurrencyList();
+  renderCurrencyTable();
+  updateCalc();
+}
+
+function clearCurSelection() {
+  const q = (document.getElementById('cur-search').value || '').toLowerCase();
+  CURRENCIES.filter(c => {
+    if (_curCat !== 'All' && c.region !== _curCat) return false;
+    if (q && !c.code.toLowerCase().includes(q) && !c.name.toLowerCase().includes(q)) return false;
+    return true;
+  }).forEach(c => _curSelected.delete(c.code));
+  renderCurrencyList();
+  renderCurrencyTable();
+  updateCalc();
+}
+
+// ── Rates table ───────────────────────────────────────────────────────────
+async function loadCurrencyRates() {
+  try {
+    _curRates = await api('/api/currency/rates');
+    renderCurrencyTable();
+    updateCalc();
+    const codes = Object.keys(_curRates);
+    const ts = codes.length ? (_curRates[codes[0]]?.fetched_at || '') : '';
+    document.getElementById('cur-updated').textContent =
+      ts ? 'Updated ' + new Date(ts + 'Z').toLocaleTimeString() : 'Loaded';
+    setBadge('nav-cur-alerts', 0, true);
+  } catch(e) {
+    // no data yet — silently ignore (server may not have been refreshed)
+  }
+}
+
+function renderCurrencyTable() {
+  const tbody = document.getElementById('cur-tbody');
+
+  // Build sorted list: favorites first, then alphabetical within selected
+  const selected = [..._curSelected];
+  selected.sort((a, b) => {
+    const af = _curFavorites.has(a), bf = _curFavorites.has(b);
+    if (af !== bf) return af ? -1 : 1;
+    return a.localeCompare(b);
+  });
+
+  if (!selected.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-coins"></i> Select currencies from the left panel</td></tr>';
+    return;
+  }
+
+  if (!Object.keys(_curRates).length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-rotate-right"></i> Click "Fetch Live" to load rates</td></tr>';
+    return;
+  }
+
+  const rows = selected.map(code => {
+    const meta = CUR_MAP[code] || {flag:'🌐', name: code, code};
+    const r = _curRates[code];
+    if (!r) return `<tr>
+      <td><button class="cur-star ${_curFavorites.has(code)?'on':''}" onclick="toggleFavorite('${code}')" title="Favourite">★</button></td>
+      <td><span class="cur-flag">${meta.flag}</span></td>
+      <td colspan="5" style="color:var(--txt3);font-size:12px">${esc(meta.name)} — no data yet</td>
+    </tr>`;
+
+    const rate = r.rate;
+    const fmt = fmtRate(code, rate);
+    const c1h = chgCell(r.change_1h);
+    const c24h = chgCell(r.change_24h);
+    const spark = sparklineSVG(r.sparkline || []);
+    const isFav = _curFavorites.has(code);
+
+    return `<tr>
+      <td><button class="cur-star ${isFav?'on':''}" onclick="toggleFavorite('${code}')" title="Favourite">★</button></td>
+      <td style="cursor:pointer" onclick="openHistoryModal('${code}')">
+        <span class="cur-flag">${meta.flag}</span>
+        <span class="cur-code" style="margin-left:4px">${code}</span>
+        <div class="cur-name">${esc(meta.name)}</div>
+      </td>
+      <td class="cur-rate">${esc(fmt)}</td>
+      <td>${c1h}</td>
+      <td>${c24h}</td>
+      <td>${spark}</td>
+      <td><button class="cur-bell" onclick="openAlertModal('${code}')" title="Set rate alert"><i class="fa-solid fa-bell"></i></button></td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = rows.join('');
+}
+
+function fmtRate(code, rate) {
+  // High-value currencies (many units per USD) — show 2 decimals max
+  if (rate >= 100) return rate.toLocaleString('en-AU', {maximumFractionDigits: 2});
+  if (rate >= 10)  return rate.toFixed(4);
+  if (rate >= 1)   return rate.toFixed(4);
+  return rate.toFixed(6); // sub-unit currencies like KWD
+}
+
+function chgCell(pct) {
+  if (pct === null || pct === undefined) return '<span class="chg-nil">—</span>';
+  const sign = pct >= 0 ? '▲' : '▼';
+  const cls  = pct >= 0 ? 'chg-up' : 'chg-dn';
+  return `<span class="${cls}">${sign} ${Math.abs(pct).toFixed(2)}%</span>`;
+}
+
+function sparklineSVG(values) {
+  if (!values || values.length < 2)
+    return '<svg class="spark-svg" width="70" height="20"><text x="35" y="13" text-anchor="middle" font-size="9" fill="#ccc">no data</text></svg>';
+
+  const W = 70, H = 20, pad = 2;
+  const mn = Math.min(...values), mx = Math.max(...values);
+  const range = mx - mn || 1;
+  const pts = values.map((v, i) => {
+    const x = pad + (i / (values.length - 1)) * (W - pad*2);
+    const y = H - pad - ((v - mn) / range) * (H - pad*2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+
+  const trend = values[values.length-1] >= values[0];
+  const clr = trend ? '#27ae60' : '#c0392b';
+  return `<svg class="spark-svg" width="${W}" height="${H}">
+    <polyline points="${pts.join(' ')}" fill="none" stroke="${clr}" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+// ── Favorites ─────────────────────────────────────────────────────────────
+function toggleFavorite(code) {
+  if (_curFavorites.has(code)) _curFavorites.delete(code);
+  else _curFavorites.add(code);
+  localStorage.setItem('cur_favorites', JSON.stringify([..._curFavorites]));
+  renderCurrencyTable();
+}
+
+// ── Auto-refresh ──────────────────────────────────────────────────────────
+function setCurAutoRefresh(ms) {
+  if (_curAutoTimer) clearInterval(_curAutoTimer);
+  _curAutoTimer = null;
+  if (parseInt(ms) > 0) {
+    _curAutoTimer = setInterval(loadCurrencyRates, parseInt(ms));
+  }
+}
+
+// ── Manual fetch + export ─────────────────────────────────────────────────
+async function triggerCurRefresh() {
+  toast('Fetching live rates from open.er-api.com…');
+  try {
+    const r = await post('/api/currency/refresh');
+    await loadCurrencyRates();
+    toast(`Fetched ${r.currencies_fetched} rates${r.alerts_triggered ? ' · ' + r.alerts_triggered + ' alert(s) triggered' : ''}`);
+  } catch(e) { toast('Fetch failed: ' + e.message, true); }
+}
+
+function exportCurrencyCSV() {
+  window.open('/api/currency/export', '_blank');
+}
+
+// ── Calculator ────────────────────────────────────────────────────────────
+function populateCalcFrom() {
+  const sel = document.getElementById('calc-from');
+  const all = [{code:'USD',name:'US Dollar',flag:'🇺🇸'}, ...CURRENCIES];
+  sel.innerHTML = all.map(c => `<option value="${c.code}">${c.flag} ${c.code}</option>`).join('');
+}
+
+function updateCalc() {
+  const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
+  const fromCode = document.getElementById('calc-from').value;
+  const results = document.getElementById('calc-results');
+
+  const selected = [..._curSelected].filter(c => _curRates[c] || c === 'USD');
+  if (!selected.length || !Object.keys(_curRates).length) {
+    results.innerHTML = '<span style="font-size:12px;color:var(--txt3)">Fetch rates first</span>';
+    return;
+  }
+
+  // Convert amount in fromCode to USD first
+  const fromRate = fromCode === 'USD' ? 1 : (_curRates[fromCode]?.rate || 1);
+  const amountUSD = amount / fromRate;
+
+  const chips = selected
+    .filter(c => c !== fromCode)
+    .map(c => {
+      const toRate = c === 'USD' ? 1 : (_curRates[c]?.rate || null);
+      if (toRate === null) return '';
+      const converted = amountUSD * toRate;
+      const meta = CUR_MAP[c] || {flag:'🌐'};
+      return `<span class="calc-chip">${meta.flag} <strong>${fmtRate(c, converted)}</strong> ${c}</span>`;
+    }).filter(Boolean);
+
+  results.innerHTML = chips.length
+    ? chips.join('')
+    : '<span style="font-size:12px;color:var(--txt3)">No selected currencies have data</span>';
+}
+
+function reverseCalc() {
+  const sel = document.getElementById('calc-from');
+  // Cycle to the next selected currency
+  const opts = [...sel.options].map(o => o.value);
+  const cur = sel.value;
+  const idx = opts.indexOf(cur);
+  const next = opts[(idx + 1) % opts.length];
+  sel.value = next;
+  updateCalc();
+}
+
+// ── Alert Modal ───────────────────────────────────────────────────────────
+async function openAlertModal(code) {
+  _curAlertTarget = code;
+  const r = _curRates[code];
+  const rate = r ? fmtRate(code, r.rate) : '—';
+  document.getElementById('alert-cur-code').textContent = code;
+  document.getElementById('alert-cur-code2').textContent = code;
+  document.getElementById('alert-cur-rate').textContent = rate;
+  document.getElementById('alert-threshold').value = '';
+
+  // Load active alerts for this currency
+  const listEl = document.getElementById('alert-active-list');
+  try {
+    const alerts = await api('/api/currency/alerts');
+    const mine = alerts.filter(a => a.currency_code === code);
+    if (!mine.length) {
+      listEl.innerHTML = '<span style="color:var(--txt3)">No active alerts</span>';
+    } else {
+      listEl.innerHTML = mine.map(a => `
+        <div class="alert-list-item">
+          <span>Rate ${a.condition} <strong>${a.threshold}</strong></span>
+          <button class="btn btn-danger btn-sm" onclick="deleteCurAlert(${a.id})">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>`).join('');
+    }
+  } catch(e) {
+    listEl.innerHTML = '<span style="color:var(--txt3)">Could not load alerts</span>';
+  }
+
+  document.getElementById('modal-cur-alert').classList.add('open');
+}
+
+async function submitCurAlert() {
+  const condition = document.getElementById('alert-condition').value;
+  const threshold = parseFloat(document.getElementById('alert-threshold').value);
+  if (!threshold || threshold <= 0) { toast('Enter a valid threshold', true); return; }
+  try {
+    await post('/api/currency/alerts', {
+      currency_code: _curAlertTarget, condition, threshold
+    });
+    toast(`Alert set: ${_curAlertTarget} ${condition} ${threshold}`);
+    closeModal('modal-cur-alert');
+    setBadge('nav-cur-alerts', 1, false);
+    // Request browser notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  } catch(e) { toast('Failed: ' + e.message, true); }
+}
+
+async function deleteCurAlert(id) {
+  try {
+    await post('/api/currency/alerts/delete', {id});
+    toast('Alert removed');
+    openAlertModal(_curAlertTarget); // refresh the list
+  } catch(e) { toast('Delete failed: ' + e.message, true); }
+}
+
+// ── History Chart Modal ───────────────────────────────────────────────────
+async function openHistoryModal(code) {
+  curHistoryCode = code;
+  const meta = CUR_MAP[code] || {flag:'🌐', name:code};
+  document.getElementById('hist-cur-title').textContent = `${meta.flag} ${code} — ${meta.name}`;
+  document.getElementById('modal-cur-history').classList.add('open');
+  await loadHistoryChart(code, 30);
+}
+
+async function loadHistoryChart(code, days) {
+  const svg = document.getElementById('hist-svg');
+  const note = document.getElementById('hist-data-note');
+  svg.innerHTML = '<text x="280" y="95" text-anchor="middle" font-size="12" fill="#999">Loading…</text>';
+  try {
+    const resp = await api(`/api/currency/history?currency=${code}&days=${days}`);
+    const data = resp.data || [];
+    note.textContent = `${data.length} data point(s)`;
+    if (data.length < 2) {
+      svg.innerHTML = `<text x="280" y="95" text-anchor="middle" font-size="12" fill="#999">Not enough history yet — fetch rates regularly to build data</text>`;
+      return;
+    }
+    drawHistoryChart(svg, data);
+  } catch(e) {
+    svg.innerHTML = `<text x="280" y="95" text-anchor="middle" font-size="12" fill="#c0392b">Error loading history</text>`;
+  }
+}
+
+function drawHistoryChart(svg, data) {
+  const W = 560, H = 180, padL = 60, padR = 16, padT = 14, padB = 30;
+  const values = data.map(d => d.rate);
+  const dates  = data.map(d => d.date);
+  const mn = Math.min(...values), mx = Math.max(...values);
+  const range = mx - mn || mx * 0.01;
+  const n = values.length;
+
+  const toX = i => padL + (i / (n-1)) * (W - padL - padR);
+  const toY = v => padT + (1 - (v - mn) / range) * (H - padT - padB);
+
+  const pts   = values.map((v,i) => `${toX(i).toFixed(1)},${toY(v).toFixed(1)}`);
+  const fillPts = [
+    `${toX(0).toFixed(1)},${(H-padB).toFixed(1)}`,
+    ...pts,
+    `${toX(n-1).toFixed(1)},${(H-padB).toFixed(1)}`
+  ];
+
+  // Y-axis labels (5 ticks)
+  const yTicks = [0,.25,.5,.75,1].map(t => {
+    const v = mn + t * range;
+    const y = toY(v);
+    const lbl = v >= 1000 ? v.toFixed(0) : v >= 100 ? v.toFixed(1) : v >= 10 ? v.toFixed(2) : v.toFixed(4);
+    return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${(W-padR).toFixed(1)}" y2="${y.toFixed(1)}" stroke="#eef3ee" stroke-width="1"/>
+            <text x="${(padL-6).toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="end" class="chart-axis">${lbl}</text>`;
+  }).join('');
+
+  // X-axis labels (up to 5 evenly spaced)
+  const xCount = Math.min(5, n);
+  const xTicks = Array.from({length:xCount}, (_,k) => {
+    const i = Math.round(k / (xCount-1) * (n-1));
+    const x = toX(i);
+    const d = dates[i] || '';
+    const lbl = d.slice(5); // MM-DD
+    return `<text x="${x.toFixed(1)}" y="${(H-padB+16).toFixed(1)}" text-anchor="middle" class="chart-axis">${lbl}</text>`;
+  }).join('');
+
+  svg.innerHTML = `
+    ${yTicks}
+    <polygon points="${fillPts.join(' ')}" class="chart-fill"/>
+    <polyline points="${pts.join(' ')}" class="chart-line"/>
+    ${values.map((v,i) => `<circle cx="${toX(i).toFixed(1)}" cy="${toY(v).toFixed(1)}" r="2.5" class="chart-dot"/>`).join('')}
+    ${xTicks}
+  `;
+}
+
 // ── Boot ────────────────────────────────────────────────────────────────
 (async () => {
+  initCurrencyPanel();
   await refreshAll();
   await loadStrategyBox();
   await loadInitialReport();
