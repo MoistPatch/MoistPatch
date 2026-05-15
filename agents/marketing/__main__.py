@@ -88,6 +88,22 @@ def main() -> None:
     p_posts = sub.add_parser("posts", help="List posts")
     p_posts.add_argument("--status", choices=["draft", "scheduled", "published", "failed"])
 
+    # ── refresh-metrics ──────────────────────────────────────────────────
+    p_metrics = sub.add_parser("refresh-metrics", help="Pull engagement metrics from all platforms")
+    p_metrics.add_argument("--min-age", type=int, default=0,
+                           help="Only refresh posts whose metrics are older than N hours")
+
+    # ── analyse ──────────────────────────────────────────────────────────
+    p_analyse = sub.add_parser("analyse", help="Run Claude performance analysis and update strategy")
+    p_analyse.add_argument("--force", action="store_true",
+                           help="Analyse even if fewer than 5 posts have metrics")
+
+    # ── strategy ─────────────────────────────────────────────────────────
+    sub.add_parser("strategy", help="Show current learned marketing strategy")
+
+    # ── insights ─────────────────────────────────────────────────────────
+    sub.add_parser("insights", help="List all past strategy insights")
+
     args = parser.parse_args()
 
     if not os.environ.get("ANTHROPIC_API_KEY") and args.cmd in ("draft", "campaign"):
@@ -180,6 +196,38 @@ def main() -> None:
         for p in posts:
             ts = p.scheduled_at or p.published_at or p.created_at
             print(f"  #{p.id:4d} [{p.status.value:10s}] {p.platform.value:12s} {ts.strftime('%Y-%m-%d %H:%M')} — {p.content[:60]}...")
+
+    elif args.cmd == "refresh-metrics":
+        count = agent.refresh_metrics(min_age_hours=args.min_age)
+        print(f"Refreshed metrics for {count} post(s).")
+
+    elif args.cmd == "analyse":
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            print("ERROR: ANTHROPIC_API_KEY is not set.", file=sys.stderr)
+            sys.exit(1)
+        insight = agent.analyse(force=args.force)
+        if insight:
+            print(f"\nInsight #{insight.id} generated ({insight.posts_analysed} posts analysed)\n")
+            print(insight.summary)
+            print("\nRecommendations:")
+            for rec in insight.recommendations:
+                print(f"  • {rec}")
+        else:
+            print("Not enough data yet. Use --force to analyse anyway, or publish more posts first.")
+
+    elif args.cmd == "strategy":
+        print(agent.strategy())
+
+    elif args.cmd == "insights":
+        history = agent.insight_history()
+        if not history:
+            print("No insights yet. Run: python -m agents.marketing analyse")
+        for ins in history:
+            print(f"\n{'─'*60}")
+            print(f"Insight #{ins.id} — {ins.generated_at.strftime('%Y-%m-%d %H:%M')} UTC ({ins.posts_analysed} posts)")
+            print(ins.summary[:300] + "..." if len(ins.summary) > 300 else ins.summary)
+            for rec in ins.recommendations[:3]:
+                print(f"  • {rec}")
 
 
 if __name__ == "__main__":

@@ -44,14 +44,18 @@ def _client() -> anthropic.Anthropic:
 
 
 def generate_post(req: ContentRequest) -> GeneratedContent:
-    """Generate a social media post using Claude."""
+    """Generate a social media post using Claude, informed by learned strategy."""
+    from .insights import get_strategy_context
+
     char_limit = req.max_chars or PLATFORM_LIMITS.get(req.platform, 2000)
     cta = "Submit an LOI at vantyx.com.au to secure allocation." if req.include_cta else ""
+    strategy_block = get_strategy_context()
 
     prompt = f"""You are a professional agricultural commodities marketing specialist for Vantyx Pty Ltd.
 
 Company context:
 {VANTYX_CONTEXT}
+{strategy_block}
 
 Write a {req.tone.value} {req.platform.value} post about: {req.product}
 {"Campaign context: " + req.campaign_context if req.campaign_context else ""}
@@ -60,7 +64,7 @@ Requirements:
 - Maximum {char_limit} characters for the post text (STRICT limit)
 - Tone: {req.tone.value}
 - {"Include this CTA: " + cta if req.include_cta else "No CTA needed"}
-- Include 3-6 relevant hashtags
+- Include 3-6 relevant hashtags (prioritise high-performing ones from strategy above; avoid listed underperformers)
 - Suggest an image prompt for DALL-E or Stable Diffusion
 - For Google Ads: also write a 30-char headline and 90-char description
 

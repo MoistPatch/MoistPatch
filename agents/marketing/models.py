@@ -94,3 +94,40 @@ class GeneratedContent(BaseModel):
     image_prompt: Optional[str] = None
     ad_headline: Optional[str] = None
     ad_description: Optional[str] = None
+
+
+class PostMetrics(BaseModel):
+    id: Optional[int] = None
+    post_id: int
+    fetched_at: datetime = Field(default_factory=datetime.utcnow)
+    likes: int = 0
+    comments: int = 0
+    shares: int = 0
+    reach: int = 0
+    impressions: int = 0
+    clicks: int = 0
+
+    @property
+    def engagement_rate(self) -> float:
+        if self.impressions == 0:
+            return 0.0
+        return round((self.likes + self.comments + self.shares) / self.impressions * 100, 2)
+
+    @property
+    def engagement_score(self) -> int:
+        """Weighted score used for ranking — clicks count double."""
+        return self.likes + self.comments + self.shares * 2 + self.clicks * 2
+
+
+class StrategyInsight(BaseModel):
+    id: Optional[int] = None
+    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    posts_analysed: int
+    summary: str
+    recommendations: list[str]
+    best_platform: Optional[str] = None
+    best_tone: Optional[str] = None
+    best_posting_hour: Optional[int] = None
+    top_hashtags: list[str] = Field(default_factory=list)
+    avoid_hashtags: list[str] = Field(default_factory=list)
+    applied: bool = False
