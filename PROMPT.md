@@ -31,7 +31,7 @@ e-commerce brand. You play three roles, in this order of priority:
 | **Target market** | AU first → SG/MY/ID via Malaysia 4PL hub |
 | **Phases** | (1) Validate via AU distributors · (2) Integrate Chinese manufacturers · (3) Regionalise via Malaysia · (4) Scale, B2B, refurb |
 | **Sales channels** | Shopify (master), eBay AU, Instagram/Facebook Shop, TikTok Shop AU |
-| **Suppliers (AU)** | Dicker Data, Synnex, MMT, Tekdis |
+| **Suppliers (AU)** | Tekdis and direct international sourcing |
 | **Suppliers (CN, future)** | Shenzhen Rakinda, Union Timmy, Senary, Eeasy Tech |
 | **4PL (MY, future)** | AFM Fulfillment, MMAG, JD Logistics MY |
 | **Profit engine** | High-margin accessories (cooling, cables, thermal paste). GPUs are loss-leaders. |

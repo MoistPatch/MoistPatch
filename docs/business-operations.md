@@ -28,8 +28,6 @@
 | Mon | Register neuralhardware.com.au at VentraIP | Founder | 0.5 | CRITICAL |
 | Tue | Open Shopify free trial + basic settings | Founder | 2.0 | CRITICAL |
 | Tue | Open business bank account (NAB/ANZ) | Founder | 1.0 | CRITICAL |
-| Wed | Apply to Dicker Data reseller account | Founder | 1.5 | HIGH |
-| Wed | Apply to Synnex Australia account | Founder | 1.5 | HIGH |
 | Thu | Set up Google Workspace (email + Drive) | Founder | 1.0 | HIGH |
 | Thu | Register business name with ASIC BizReg | Founder | 0.5 | HIGH |
 | Thu | Trademark search: IP Australia | Founder | 0.5 | HIGH |
@@ -75,7 +73,7 @@
 | Wed | Add 5 more products to Shopify + eBay | VA | 2.0 | HIGH |
 | Thu | Set up Google Shopping campaign ($10/day) | Founder | 1.5 | HIGH |
 | Thu | Respond to first customer enquiries | Founder | 1.0 | CRITICAL |
-| Fri | Apply to MMT + Tekdis distributor accounts | Founder | 1.5 | MEDIUM |
+| Fri | Apply to Tekdis distributor account | Founder | 1.5 | MEDIUM |
 | Fri | GST registration at ATO Business Portal | Founder | 0.5 | HIGH |
 | Sat | Write 2 blog posts (SEO: "best GPU for AI 2025") | VA | 2.0 | MEDIUM |
 | Sun | Review week 3 analytics; adjust ads | Founder | 1.5 | HIGH |
@@ -136,18 +134,11 @@
 
 **Time estimate: 2–3 hours per distributor; 2–4 weeks for approval**
 
-- [ ] **Dicker Data** – Apply online at https://www.dickerdata.com.au/customer-signup
-  - Need: ABN, business address, expected monthly spend, 2 trade references
-  - First step: Complete online form; approval usually 3–5 business days
-  - Credit terms: Net 30 available after 3 months trading history
 
-- [ ] **Synnex Australia** – Apply at https://www.synnex.com.au/partners/become-a-partner
-  - Need: ABN, business registration cert, bank details
-  - First step: Email partner@synnex.com.au requesting reseller application
 
-- [ ] **MMT (Multimedia Technology)** – Contact via https://www.mmtaustralia.com.au
-  - Specialises in: Gaming, consumer electronics
-  - First step: Email sales@mmtaustralia.com.au with business introduction
+
+
+
 
 - [ ] **Tekdis** – Apply at https://www.tekdis.com.au
   - Specialises in: Industrial/embedded, SBCs (Raspberry Pi, Jetson)
@@ -248,7 +239,7 @@
 - [ ] Warranty claims process:
   1. Customer emails support@neuralhardware.com.au with proof of purchase + description of fault
   2. VA logs in Gorgias ticket; assigns to Founder for assessment
-  3. Founder contacts distributor's warranty department (e.g., Dicker Data warranty team)
+  3. Founder contacts distributor's warranty department (e.g., your distributor)
   4. Resolution: Repair/replacement within warranty terms
   5. Create template email responses (see below)
 
@@ -260,7 +251,7 @@
   - Change-of-mind return: "We're happy to accept your return. Please note: return postage is at your cost for change-of-mind returns."
 
 - [ ] Stock reconciliation:
-  - Weekly: Compare Shopify inventory vs distributor's available stock (download CSV from Dicker Data portal)
+  - Weekly: Compare Shopify inventory vs distributor's available stock (download CSV from distributor portal)
   - Tool: Shopify inventory export + Google Sheets comparison formula
   - Monthly: Reconcile with Xero purchase orders
 
@@ -331,7 +322,7 @@
 - [ ] Prohibited products check:
   - Ensure all products comply with ACMA (Australian Communications and Media Authority) labelling
   - Products with WiFi/Bluetooth require ACMA compliance (RCM mark)
-  - Sourcing from Australian distributors (Dicker Data, Synnex) ensures this is already handled
+  - Sourcing from authorised Australian distributors ensures this is already handled
 
 - [ ] ACCC competition law:
   - No misleading claims: "Cheapest in Australia" requires proof
@@ -519,9 +510,6 @@ STORE BUILD
  Email flows (Klaviyo)          ███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 SUPPLIER ONBOARDING
- Apply: Dicker Data         ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
- Apply: Synnex              ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
- Apply: MMT                  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
  Apply: Tekdis               ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
  First distributor order         ████████░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
@@ -569,7 +557,7 @@ Legend: █ Active work  ░ Waiting/monitoring
 | 2 | Legal + domain | Register domain, business name | Domain secured |
 | 3 | Infrastructure | Open business bank account | Banking ready |
 | 4 | Shopify | Start Shopify trial, basic settings | Store live (unpublished) |
-| 5 | Shopify + suppliers | Configure GST/shipping; apply Dicker Data | Distributor applications sent |
+| 5 | Shopify + suppliers | Configure GST/shipping; apply to distributors | Distributor applications sent |
 | 6 | Shopify | Add first 5 products | Products in Shopify |
 | 7 | eBay | Create eBay seller account | eBay account live |
 | 8 | Legal pages | Write ToS, Privacy, Refund Policy | Legal pages published |
