@@ -6,6 +6,7 @@
   <title>Vantyx Agent Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -243,6 +244,163 @@
       .summary-row{grid-template-columns:repeat(2,1fr)}
       .row2,.row3{grid-template-columns:1fr}
     }
+
+    /* ═════════════════════ CLAUDIA Chat ═════════════════════ */
+    .claudia-fab{
+      position:fixed;bottom:24px;right:24px;
+      width:58px;height:58px;border-radius:50%;
+      background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);
+      box-shadow:0 8px 28px rgba(184,134,11,0.45);
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:22px;z-index:200;transition:.2s;
+      border:none;
+    }
+    .claudia-fab:hover{transform:scale(1.06);box-shadow:0 12px 32px rgba(184,134,11,0.6)}
+    .claudia-fab.open{transform:scale(.9);opacity:.6}
+
+    .claudia-panel{
+      position:fixed;top:0;right:-440px;width:420px;height:100vh;
+      background:#fafdfa;border-left:1px solid var(--bdr);
+      box-shadow:-12px 0 40px rgba(10,51,32,0.18);
+      display:flex;flex-direction:column;z-index:300;
+      transition:right .28s cubic-bezier(.4,0,.2,1);
+    }
+    .claudia-panel.open{right:0}
+
+    .claudia-head{
+      background:var(--sidebar);color:#fff;
+      padding:14px 18px;display:flex;align-items:center;gap:10px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .claudia-avatar{
+      width:34px;height:34px;border-radius:50%;
+      background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:14px;font-weight:700;
+    }
+    .claudia-head-text{flex:1}
+    .claudia-name{font-size:14px;font-weight:600;letter-spacing:.2px}
+    .claudia-sub{font-size:11px;color:rgba(255,255,255,0.5)}
+    .claudia-head-btn{
+      background:transparent;border:none;color:rgba(255,255,255,0.6);
+      cursor:pointer;padding:6px 8px;font-size:14px;border-radius:6px;
+    }
+    .claudia-head-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+
+    .claudia-body{
+      flex:1;overflow-y:auto;padding:18px;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .claudia-empty{
+      text-align:center;color:var(--txt3);font-size:13px;
+      padding:32px 16px;line-height:1.6;
+    }
+    .claudia-empty .welcome-icon{
+      font-size:32px;color:var(--gold);margin-bottom:12px;
+    }
+    .claudia-starters{
+      display:flex;flex-direction:column;gap:6px;margin-top:14px;
+    }
+    .claudia-starter{
+      background:#fff;border:1px solid var(--bdr);border-radius:8px;
+      padding:9px 12px;font-size:12px;color:var(--txt2);cursor:pointer;
+      text-align:left;transition:.15s;font-family:'Inter',sans-serif;
+    }
+    .claudia-starter:hover{
+      border-color:var(--green);background:#f4faf5;color:var(--green);
+    }
+
+    .msg-user{
+      align-self:flex-end;max-width:80%;
+      background:var(--green);color:#fff;
+      border-radius:14px 14px 4px 14px;padding:10px 14px;
+      font-size:13.5px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;
+    }
+    .msg-assistant{
+      align-self:flex-start;max-width:90%;
+      background:#fff;color:var(--txt);
+      border:1px solid var(--bdr);border-radius:14px 14px 14px 4px;
+      padding:11px 14px;font-size:13.5px;line-height:1.6;
+    }
+    .msg-assistant h1,.msg-assistant h2,.msg-assistant h3{
+      font-size:14px;font-weight:600;margin:8px 0 4px;color:var(--txt);
+    }
+    .msg-assistant p{margin-bottom:6px}
+    .msg-assistant p:last-child{margin-bottom:0}
+    .msg-assistant ul,.msg-assistant ol{margin:6px 0 6px 18px}
+    .msg-assistant li{margin-bottom:2px;font-size:13px}
+    .msg-assistant strong{color:var(--green-darkest,#0a3320);font-weight:600}
+    .msg-assistant table{
+      width:100%;border-collapse:collapse;margin:6px 0;font-size:12px;
+    }
+    .msg-assistant th,.msg-assistant td{
+      padding:5px 8px;text-align:left;border-bottom:1px solid #e8efe8;
+    }
+    .msg-assistant th{background:#f0f7f3;font-weight:600;font-size:11px}
+    .msg-assistant code{
+      background:#f0f7f3;padding:1px 5px;border-radius:3px;font-size:12px;
+      font-family:'Monaco','Consolas',monospace;
+    }
+
+    .msg-tool-call{
+      align-self:flex-start;
+      background:#fef9e7;border:1px solid #f4d160;border-radius:8px;
+      padding:6px 10px;font-size:11px;color:#7d5c00;
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .msg-tool-call i{color:var(--gold-dim)}
+    .msg-tool-call code{font-family:'Monaco','Consolas',monospace;font-size:11px;font-weight:600}
+
+    .msg-tool-result{
+      align-self:flex-start;max-width:90%;
+      background:#f0f7f3;border:1px solid var(--bdr);border-radius:8px;
+      padding:8px 12px;font-size:11.5px;color:var(--txt3);line-height:1.5;
+      font-family:'Monaco','Consolas',monospace;
+      white-space:pre-wrap;word-break:break-word;
+      max-height:120px;overflow-y:auto;
+    }
+
+    .claudia-typing{
+      align-self:flex-start;display:flex;align-items:center;gap:8px;
+      color:var(--txt3);font-size:12px;padding:4px 0;
+    }
+    .typing-dots{display:inline-flex;gap:3px}
+    .typing-dots span{
+      width:6px;height:6px;border-radius:50%;background:var(--gold);
+      animation:dot 1.4s infinite ease-in-out both;
+    }
+    .typing-dots span:nth-child(2){animation-delay:.15s}
+    .typing-dots span:nth-child(3){animation-delay:.3s}
+    @keyframes dot{0%,80%,100%{opacity:.3}40%{opacity:1}}
+
+    .claudia-input-area{
+      border-top:1px solid var(--bdr);padding:12px 14px;background:#fff;
+    }
+    .claudia-input-row{
+      display:flex;gap:8px;align-items:flex-end;
+    }
+    .claudia-input{
+      flex:1;border:1px solid var(--bdr);border-radius:8px;
+      padding:9px 12px;font-family:'Inter',sans-serif;font-size:13px;
+      color:var(--txt);resize:none;min-height:36px;max-height:140px;
+      outline:none;line-height:1.5;
+    }
+    .claudia-input:focus{border-color:var(--green)}
+    .claudia-send{
+      background:var(--green);color:#fff;border:none;
+      width:36px;height:36px;border-radius:8px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:13px;
+      flex-shrink:0;
+    }
+    .claudia-send:hover{background:var(--green-lt)}
+    .claudia-send:disabled{opacity:.4;cursor:not-allowed}
+    .claudia-input-hint{
+      font-size:10px;color:var(--txt3);margin-top:5px;text-align:right;
+    }
+
+    @media(max-width:600px){
+      .claudia-panel{width:100vw;right:-100vw}
+    }
   </style>
 </head>
 <body>
@@ -273,6 +431,9 @@
       <div class="nav-item" data-panel="leads" onclick="showPanel('leads',this)">
         <i class="fa-solid fa-user-plus"></i> Leads
         <span class="badge" id="nav-leads">0</span>
+      </div>
+      <div class="nav-item" onclick="toggleClaudia()" style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:14px">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold)"></i> Chat with CLAUDIA
       </div>
     </nav>
     <div class="sidebar-links">
@@ -572,6 +733,47 @@
     </div>
   </div>
 </div>
+
+<!-- ── CLAUDIA chat ── -->
+<button class="claudia-fab" id="claudia-fab" onclick="toggleClaudia()" title="Chat with CLAUDIA">
+  <i class="fa-solid fa-comments"></i>
+</button>
+
+<aside class="claudia-panel" id="claudia-panel">
+  <div class="claudia-head">
+    <div class="claudia-avatar">C</div>
+    <div class="claudia-head-text">
+      <div class="claudia-name">CLAUDIA</div>
+      <div class="claudia-sub">Vantyx operations controller</div>
+    </div>
+    <button class="claudia-head-btn" onclick="clearClaudia()" title="Clear conversation">
+      <i class="fa-solid fa-eraser"></i>
+    </button>
+    <button class="claudia-head-btn" onclick="toggleClaudia()" title="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="claudia-body" id="claudia-body">
+    <!-- Populated by JS -->
+  </div>
+
+  <div class="claudia-input-area">
+    <div class="claudia-input-row">
+      <textarea
+        id="claudia-input"
+        class="claudia-input"
+        placeholder="Ask CLAUDIA anything…"
+        rows="1"
+        onkeydown="handleClaudiaKey(event)"
+        oninput="autosizeInput(this)"></textarea>
+      <button class="claudia-send" id="claudia-send" onclick="sendClaudia()" title="Send (Enter)">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+    <div class="claudia-input-hint">Enter to send · Shift+Enter for newline</div>
+  </div>
+</aside>
 
 <div id="toast"></div>
 
@@ -978,6 +1180,179 @@ async function loadInitialReport() {
     const r = await api('/api/surveillance/report');
     renderSurvReport(r);
   } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  CLAUDIA — master chat agent
+// ═══════════════════════════════════════════════════════════════════════
+const STARTERS = [
+  "Give me a status summary across all agents",
+  "What are urea prices right now?",
+  "Run a market scan",
+  "Draft a LinkedIn post about DAP fertiliser",
+  "Show me recent leads",
+  "What's the latest market intelligence report?",
+];
+
+function toggleClaudia() {
+  const panel = document.getElementById('claudia-panel');
+  const fab = document.getElementById('claudia-fab');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  fab.classList.toggle('open', opening);
+  if (opening) {
+    setTimeout(() => document.getElementById('claudia-input').focus(), 280);
+    loadClaudiaHistory();
+  }
+}
+
+function autosizeInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function handleClaudiaKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendClaudia();
+  }
+}
+
+async function loadClaudiaHistory() {
+  try {
+    const r = await api('/api/claudia/history');
+    const body = document.getElementById('claudia-body');
+    if (!r.messages || r.messages.length === 0) {
+      renderEmptyState();
+      return;
+    }
+    body.innerHTML = '';
+    for (const m of r.messages) renderEvent(m);
+    scrollClaudiaToBottom();
+  } catch (e) {
+    renderEmptyState();
+  }
+}
+
+function renderEmptyState() {
+  const body = document.getElementById('claudia-body');
+  body.innerHTML = `
+    <div class="claudia-empty">
+      <div class="welcome-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <strong style="color:var(--txt);font-size:14px">Hi Sam — I'm CLAUDIA.</strong><br>
+      I can pull live data from your marketing, pricing, and surveillance agents, and run actions for you. Ask me anything or try one of these:
+      <div class="claudia-starters">
+        ${STARTERS.map(s => `<button class="claudia-starter" onclick="useStarter(this)">${esc(s)}</button>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function useStarter(btn) {
+  const text = btn.textContent.trim();
+  const input = document.getElementById('claudia-input');
+  input.value = text;
+  sendClaudia();
+}
+
+function renderEvent(ev) {
+  const body = document.getElementById('claudia-body');
+
+  // Remove empty state if present
+  const empty = body.querySelector('.claudia-empty');
+  if (empty) empty.remove();
+
+  const el = document.createElement('div');
+  if (ev.type === 'user') {
+    el.className = 'msg-user';
+    el.textContent = ev.text;
+  } else if (ev.type === 'assistant') {
+    el.className = 'msg-assistant';
+    try {
+      el.innerHTML = marked.parse(ev.text || '');
+    } catch (e) {
+      el.textContent = ev.text || '';
+    }
+  } else if (ev.type === 'tool_call') {
+    el.className = 'msg-tool-call';
+    el.innerHTML = `<i class="fa-solid fa-bolt"></i> Calling <code>${esc(ev.name)}</code>`;
+  } else if (ev.type === 'tool_result') {
+    el.className = 'msg-tool-result';
+    el.textContent = ev.preview || '';
+  } else {
+    return;
+  }
+  body.appendChild(el);
+}
+
+function scrollClaudiaToBottom() {
+  const body = document.getElementById('claudia-body');
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTypingIndicator() {
+  const body = document.getElementById('claudia-body');
+  const el = document.createElement('div');
+  el.className = 'claudia-typing';
+  el.id = 'claudia-typing';
+  el.innerHTML = `CLAUDIA is thinking <span class="typing-dots"><span></span><span></span><span></span></span>`;
+  body.appendChild(el);
+  scrollClaudiaToBottom();
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('claudia-typing');
+  if (el) el.remove();
+}
+
+async function sendClaudia() {
+  const input = document.getElementById('claudia-input');
+  const sendBtn = document.getElementById('claudia-send');
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Render the user message immediately
+  renderEvent({ type: 'user', text });
+  input.value = '';
+  autosizeInput(input);
+  sendBtn.disabled = true;
+  scrollClaudiaToBottom();
+  showTypingIndicator();
+
+  try {
+    const r = await post('/api/claudia/chat', { message: text });
+    removeTypingIndicator();
+    for (const ev of r.events || []) {
+      renderEvent(ev);
+      scrollClaudiaToBottom();
+    }
+    // If the assistant triggered tool calls that change state, refresh dashboard
+    if ((r.events || []).some(e => e.type === 'tool_call')) {
+      refreshAll();
+      loadStrategyBox();
+    }
+  } catch (e) {
+    removeTypingIndicator();
+    renderEvent({ type: 'assistant', text: `**Error:** ${e.message}\n\nMake sure your \`ANTHROPIC_API_KEY\` is set in \`.env\`.` });
+  }
+  sendBtn.disabled = false;
+  input.focus();
+}
+
+async function clearClaudia() {
+  if (!confirm('Clear the conversation with CLAUDIA?')) return;
+  try {
+    await post('/api/claudia/clear');
+    renderEmptyState();
+    toast('Conversation cleared');
+  } catch (e) {
+    toast('Failed to clear: ' + e.message, true);
+  }
+}
+
+// Configure marked.js for safer rendering
+if (window.marked) {
+  marked.setOptions({ breaks: true, gfm: true });
 }
 
 // ── Boot ────────────────────────────────────────────────────────────────

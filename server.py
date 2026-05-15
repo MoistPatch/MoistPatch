@@ -44,6 +44,7 @@ log = logging.getLogger("vantyx.server")
 _marketing_agent = None
 _pricing_agent = None
 _surveillance_agent = None
+_claudia_agent = None
 
 
 def _marketing():
@@ -68,6 +69,14 @@ def _surveillance():
         from agents.surveillance import SurveillanceAgent
         _surveillance_agent = SurveillanceAgent()
     return _surveillance_agent
+
+
+def _claudia():
+    global _claudia_agent
+    if _claudia_agent is None:
+        from agents.claudia import ClaudiaAgent
+        _claudia_agent = ClaudiaAgent()
+    return _claudia_agent
 
 
 # ── LOI email logic (reuse from loi_handler) ──────────────────────────────
@@ -213,6 +222,11 @@ class VantyxHandler(BaseHTTPRequestHandler):
             self._safe_json(lambda: self._surveillance_report())
             return
 
+        # CLAUDIA
+        if path == "/api/claudia/history":
+            self._safe_json(lambda: {"messages": _claudia().history()})
+            return
+
         self._json(404, {"error": "Not found"})
 
     def do_POST(self) -> None:
@@ -250,6 +264,14 @@ class VantyxHandler(BaseHTTPRequestHandler):
 
         if path == "/api/surveillance/scan":
             self._safe_json(lambda: _surveillance().scan())
+            return
+
+        # CLAUDIA chat
+        if path == "/api/claudia/chat":
+            self._safe_post(self._api_claudia_chat)
+            return
+        if path == "/api/claudia/clear":
+            self._safe_json(lambda: (_claudia().clear(), {"ok": True})[1])
             return
 
         self._json(404, {"error": "Not found"})
@@ -439,6 +461,13 @@ class VantyxHandler(BaseHTTPRequestHandler):
         if not insight:
             return {"ok": False, "message": "Not enough data. Add force=true or publish more posts."}
         return {"ok": True, "id": insight.id, "recommendations": insight.recommendations}
+
+    def _api_claudia_chat(self, data: dict) -> dict:
+        message = (data.get("message") or "").strip()
+        if not message:
+            raise ValueError("message is required")
+        events = _claudia().chat(message)
+        return {"events": events}
 
     def _api_pricing_add_price(self, data: dict) -> dict:
         product = data.get("product")
