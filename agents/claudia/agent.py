@@ -118,12 +118,22 @@ class ClaudiaAgent:
                     })
                     tool_uses.append(block)
                 elif btype == "thinking":
-                    # Adaptive thinking blocks — preserve them in history for compliance
-                    assistant_blocks.append({
-                        "type": "thinking",
-                        "thinking": getattr(block, "thinking", ""),
-                        "signature": getattr(block, "signature", ""),
-                    })
+                    # Only preserve if signature is non-empty (omitted display gives empty sig)
+                    sig = getattr(block, "signature", "") or ""
+                    if sig:
+                        assistant_blocks.append({
+                            "type": "thinking",
+                            "thinking": getattr(block, "thinking", "") or "",
+                            "signature": sig,
+                        })
+                elif btype == "redacted_thinking":
+                    # Opus 4.7 default: returns redacted_thinking blocks instead of thinking
+                    data = getattr(block, "data", "") or ""
+                    if data:
+                        assistant_blocks.append({
+                            "type": "redacted_thinking",
+                            "data": data,
+                        })
 
             save_message("assistant", assistant_blocks)
             conversation.append({"role": "assistant", "content": assistant_blocks})
