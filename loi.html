@@ -803,13 +803,19 @@ document.getElementById('loiForm').addEventListener('submit', async function (e)
   btn.innerHTML = '<span class="spinner"></span> Submitting…';
 
   try {
-    const resp = await fetch('/submit-loi', {
+    const resp = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: 'PASTE_YOUR_WEB3FORMS_KEY_HERE',
+        subject: `New Fertiliser Enquiry — ${formData.fullName} (${formData.businessName || 'Individual'})`,
+        from_name: formData.fullName,
+        ...formData,
+      }),
     });
 
-    if (resp.ok) {
+    const result = await resp.json();
+    if (result.success) {
       btn.innerHTML = '<i class="fa-solid fa-check"></i> Sent!';
       btn.style.background = 'linear-gradient(135deg, #27ae60, #1e8449)';
       statusEl.innerHTML = `
