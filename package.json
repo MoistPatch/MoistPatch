@@ -1,0 +1,17 @@
+{
+  "name": "neuralhardware",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "drizzle-orm": "beta"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.0.0",
+    "drizzle-kit": "beta",
+    "typescript": "^5.0.0"
+  }
+}
