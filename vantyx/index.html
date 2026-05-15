@@ -280,12 +280,13 @@
     .hcf-label { font-size: 11px; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .hcf-value { font-size: 18px; font-weight: 700; color: #fff; }
     .hcf-value.gold { color: var(--gold-lt); }
-    .product-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; justify-content: center; }
+    .product-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
     .pill {
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.12);
-      border-radius: 20px; padding: 5px 12px;
+      border-radius: 20px; padding: 7px 10px;
       font-size: 12px; color: rgba(255,255,255,.75);
+      text-align: center; white-space: nowrap;
     }
     .pill.active { background: rgba(45,154,88,.25); border-color: rgba(45,154,88,.4); color: #6ee89e; }
     .card-label { font-size: 12px; color: var(--gold-lt); font-weight: 600; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 10px; }
@@ -748,6 +749,7 @@
             <span class="pill">SSP</span>
             <span class="pill active">Gypsum</span>
             <span class="pill">Ag Lime</span>
+            <span class="pill">Zinc Sulphate</span>
           </div>
         </div>
         <div class="hero-card-float f1">
