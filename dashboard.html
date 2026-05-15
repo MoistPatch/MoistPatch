@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vantyx Agent Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --sidebar:#061a0d;
+      --sidebar2:#0a3320;
+      --green:#1b6b3a;
+      --green-lt:#2d9a58;
+      --gold:#d4a017;
+      --gold-dim:#b8860b;
+      --cream:#f9f7f1;
+      --white:#fff;
+      --txt:#1a2214;
+      --txt2:#3d4f3a;
+      --txt3:#6b7c68;
+      --bdr:#c8dcc4;
+      --card:#ffffff;
+      --bg:#f2f8f3;
+      --danger:#c0392b;
+      --warn:#e67e22;
+      --info:#2980b9;
+      --success:#27ae60;
+      --r:10px;
+    }
+    html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt)}
+    a{color:var(--green);text-decoration:none}
+
+    /* ── Layout ── */
+    .app{display:flex;height:100vh;overflow:hidden}
+
+    /* ── Sidebar ── */
+    .sidebar{
+      width:220px;flex-shrink:0;background:var(--sidebar);
+      display:flex;flex-direction:column;overflow-y:auto;
+    }
+    .sidebar-logo{
+      padding:24px 20px 20px;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .sidebar-logo .wordmark{
+      font-size:18px;font-weight:700;color:#fff;letter-spacing:0.3px
+    }
+    .sidebar-logo .sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px}
+    .nav{padding:16px 0;flex:1}
+    .nav-item{
+      display:flex;align-items:center;gap:10px;
+      padding:11px 20px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.6);
+      cursor:pointer;transition:.15s;border-left:3px solid transparent;
+    }
+    .nav-item:hover{color:#fff;background:rgba(255,255,255,0.05)}
+    .nav-item.active{color:#fff;border-left-color:var(--gold);background:rgba(255,255,255,0.07)}
+    .nav-item i{width:16px;text-align:center;font-size:14px}
+    .badge{
+      margin-left:auto;background:var(--danger);color:#fff;
+      border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700
+    }
+    .badge.warn{background:var(--warn)}
+    .badge.info{background:var(--info)}
+    .sidebar-links{
+      padding:16px 20px;border-top:1px solid rgba(255,255,255,0.07);
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .sidebar-links a{font-size:12px;color:rgba(255,255,255,0.4)}
+    .sidebar-links a:hover{color:rgba(255,255,255,0.8)}
+
+    /* ── Main ── */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    .topbar{
+      background:#fff;border-bottom:1px solid var(--bdr);
+      padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
+      flex-shrink:0;
+    }
+    .topbar-title{font-size:16px;font-weight:600;color:var(--txt)}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .status-dot{
+      width:8px;height:8px;border-radius:50%;background:var(--success);
+      display:inline-block;margin-right:6px;
+    }
+    .status-dot.warn{background:var(--warn)}
+    .status-dot.error{background:var(--danger)}
+    .topbar-time{font-size:12px;color:var(--txt3)}
+    .btn{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:8px 16px;border-radius:var(--r);border:none;cursor:pointer;
+      font-family:'Inter',sans-serif;font-size:13px;font-weight:500;transition:.15s;
+    }
+    .btn-primary{background:var(--green);color:#fff}
+    .btn-primary:hover{background:var(--green-lt)}
+    .btn-gold{background:var(--gold);color:#fff}
+    .btn-gold:hover{background:var(--gold-dim)}
+    .btn-outline{background:transparent;border:1px solid var(--bdr);color:var(--txt2)}
+    .btn-outline:hover{background:var(--bg);border-color:var(--green)}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-sm{padding:6px 12px;font-size:12px}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+
+    /* ── Content ── */
+    .content{flex:1;overflow-y:auto;padding:24px 28px}
+
+    /* ── Panels ── */
+    .panel{display:none}
+    .panel.active{display:block}
+
+    /* ── Summary cards ── */
+    .summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .scard{
+      background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);
+      padding:20px;display:flex;flex-direction:column;gap:6px;
+    }
+    .scard-label{font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px}
+    .scard-value{font-size:28px;font-weight:700;color:var(--txt)}
+    .scard-sub{font-size:12px;color:var(--txt3)}
+    .scard-icon{font-size:20px;color:var(--green);margin-bottom:4px}
+    .scard.alert .scard-value{color:var(--danger)}
+    .scard.warn .scard-value{color:var(--warn)}
+    .scard.ok .scard-value{color:var(--success)}
+
+    /* ── Section cards ── */
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+    .row3{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px}
+    .card{
+      background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden
+    }
+    .card-head{
+      padding:14px 18px;border-bottom:1px solid var(--bdr);
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .card-head h3{font-size:13px;font-weight:600;color:var(--txt)}
+    .card-head .actions{display:flex;gap:8px}
+    .card-body{padding:16px 18px}
+    .card-body.np{padding:0}
+
+    /* ── Tables ── */
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{padding:10px 14px;text-align:left;font-weight:600;font-size:11px;
+       color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;
+       border-bottom:2px solid var(--bdr);background:var(--bg)}
+    td{padding:10px 14px;border-bottom:1px solid #eef3ee;color:var(--txt2)}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#f8fdf9}
+
+    /* ── Chips ── */
+    .chip{
+      display:inline-flex;align-items:center;gap:4px;
+      padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
+    }
+    .chip-green{background:#d4edda;color:#145232}
+    .chip-gold{background:var(--gold-pale,#fdf3d0);color:var(--gold-dim)}
+    .chip-red{background:#fde8e8;color:var(--danger)}
+    .chip-orange{background:#fdebd0;color:var(--warn)}
+    .chip-blue{background:#d6eaf8;color:var(--info)}
+    .chip-grey{background:#eee;color:#555}
+
+    /* ── Sentiment tags ── */
+    .sent-opportunity{color:var(--success);font-weight:600}
+    .sent-threat{color:var(--danger);font-weight:600}
+    .sent-neutral{color:var(--txt3)}
+
+    /* ── News feed ── */
+    .news-list{display:flex;flex-direction:column;gap:0}
+    .news-item{
+      padding:14px 18px;border-bottom:1px solid #eef3ee;
+      display:flex;flex-direction:column;gap:4px;
+    }
+    .news-item:last-child{border-bottom:none}
+    .news-item:hover{background:#f8fdf9}
+    .news-title{font-size:13px;font-weight:500;color:var(--txt);line-height:1.4}
+    .news-title a{color:inherit}
+    .news-title a:hover{color:var(--green)}
+    .news-meta{font-size:11px;color:var(--txt3);display:flex;gap:10px;align-items:center}
+    .news-summary{font-size:12px;color:var(--txt3);line-height:1.5}
+
+    /* ── Alerts ── */
+    .alert-item{
+      padding:12px 18px;border-bottom:1px solid #eef3ee;
+      display:flex;align-items:flex-start;gap:12px;
+    }
+    .alert-item:last-child{border-bottom:none}
+    .alert-icon{font-size:16px;margin-top:1px}
+    .alert-icon.critical{color:var(--danger)}
+    .alert-icon.warning{color:var(--warn)}
+    .alert-icon.info{color:var(--info)}
+    .alert-msg{flex:1}
+    .alert-msg p{font-size:13px;color:var(--txt);line-height:1.4}
+    .alert-msg span{font-size:11px;color:var(--txt3)}
+
+    /* ── Prices table ── */
+    .price-up{color:var(--danger)}
+    .price-down{color:var(--success)}
+
+    /* ── Action modal ── */
+    .modal-overlay{
+      display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+      z-index:1000;align-items:center;justify-content:center;
+    }
+    .modal-overlay.open{display:flex}
+    .modal{
+      background:#fff;border-radius:14px;padding:28px;width:440px;
+      box-shadow:0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal h2{font-size:17px;font-weight:700;margin-bottom:20px;color:var(--txt)}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:5px}
+    .form-group input,.form-group select,.form-group textarea{
+      width:100%;padding:9px 12px;border:1px solid var(--bdr);border-radius:8px;
+      font-family:'Inter',sans-serif;font-size:13px;color:var(--txt);
+      outline:none;
+    }
+    .form-group input:focus,.form-group select:focus{border-color:var(--green)}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+    /* ── Outlook badge ── */
+    .outlook-bullish{color:var(--success);font-weight:700;text-transform:uppercase}
+    .outlook-bearish{color:var(--danger);font-weight:700;text-transform:uppercase}
+    .outlook-neutral{color:var(--txt3);font-weight:700;text-transform:uppercase}
+    .outlook-mixed{color:var(--warn);font-weight:700;text-transform:uppercase}
+
+    /* ── Empty states ── */
+    .empty{text-align:center;padding:32px;color:var(--txt3);font-size:13px}
+    .empty i{font-size:24px;margin-bottom:8px;display:block}
+
+    /* ── Spinner ── */
+    .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);
+             border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── Toast ── */
+    #toast{
+      position:fixed;bottom:24px;right:24px;background:#145232;color:#fff;
+      padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;
+      opacity:0;transition:.3s;pointer-events:none;z-index:9999;
+    }
+    #toast.show{opacity:1}
+
+    @media(max-width:900px){
+      .summary-row{grid-template-columns:repeat(2,1fr)}
+      .row2,.row3{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="wordmark">VANTYX</div>
+      <div class="sub">Agent Dashboard</div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" data-panel="overview" onclick="showPanel('overview',this)">
+        <i class="fa-solid fa-gauge-high"></i> Overview
+      </div>
+      <div class="nav-item" data-panel="marketing" onclick="showPanel('marketing',this)">
+        <i class="fa-solid fa-bullhorn"></i> Marketing
+        <span class="badge info" id="nav-scheduled">0</span>
+      </div>
+      <div class="nav-item" data-panel="pricing" onclick="showPanel('pricing',this)">
+        <i class="fa-solid fa-chart-line"></i> Pricing
+        <span class="badge warn" id="nav-price-alerts" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-panel="surveillance" onclick="showPanel('surveillance',this)">
+        <i class="fa-solid fa-satellite-dish"></i> Surveillance
+        <span class="badge" id="nav-surv-alerts" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-panel="leads" onclick="showPanel('leads',this)">
+        <i class="fa-solid fa-user-plus"></i> Leads
+        <span class="badge" id="nav-leads">0</span>
+      </div>
+    </nav>
+    <div class="sidebar-links">
+      <a href="/" target="_blank"><i class="fa-solid fa-globe fa-xs"></i> Vantyx Website</a>
+      <a href="/loi" target="_blank"><i class="fa-solid fa-file-signature fa-xs"></i> LOI Form</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="panel-title">Overview</div>
+      <div class="topbar-right">
+        <span class="topbar-time"><span class="status-dot" id="status-dot"></span><span id="last-updated">Loading…</span></span>
+        <button class="btn btn-outline btn-sm" onclick="refreshAll()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── Overview ── -->
+      <div class="panel active" id="panel-overview">
+        <div class="summary-row">
+          <div class="scard" id="sc-posts">
+            <div class="scard-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="scard-label">Scheduled Posts</div>
+            <div class="scard-value" id="ov-scheduled">—</div>
+            <div class="scard-sub" id="ov-published">— published</div>
+          </div>
+          <div class="scard" id="sc-leads">
+            <div class="scard-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="scard-label">Leads</div>
+            <div class="scard-value" id="ov-leads">—</div>
+            <div class="scard-sub" id="ov-unforwarded">— unforwarded</div>
+          </div>
+          <div class="scard" id="sc-prices">
+            <div class="scard-icon"><i class="fa-solid fa-tags"></i></div>
+            <div class="scard-label">Market Outlook</div>
+            <div class="scard-value" id="ov-outlook">—</div>
+            <div class="scard-sub" id="ov-price-alerts">— price alerts</div>
+          </div>
+          <div class="scard" id="sc-news">
+            <div class="scard-icon"><i class="fa-solid fa-newspaper"></i></div>
+            <div class="scard-label">Surv. Alerts</div>
+            <div class="scard-value" id="ov-surv-alerts">—</div>
+            <div class="scard-sub" id="ov-last-scan">Last scan: —</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="card">
+            <div class="card-head">
+              <h3><i class="fa-solid fa-bullhorn" style="color:var(--green);margin-right:6px"></i>Scheduled Posts</h3>
+              <div class="actions">
+                <button class="btn btn-primary btn-sm" onclick="openDraftModal()"><i class="fa-solid fa-plus"></i> Draft Post</button>
+              </div>
+            </div>
+            <div class="card-body np" id="ov-posts-table">
+              <div class="empty"><i class="fa-solid fa-calendar-xmark"></i>No posts scheduled</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3><i class="fa-solid fa-triangle-exclamation" style="color:var(--warn);margin-right:6px"></i>Active Alerts</h3>
+            </div>
+            <div class="card-body np" id="ov-alerts-list">
+              <div class="empty"><i class="fa-solid fa-check-circle"></i>No active alerts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h3><i class="fa-solid fa-newspaper" style="color:var(--green);margin-right:6px"></i>Latest Market Intelligence</h3>
+            <div class="actions">
+              <button class="btn btn-outline btn-sm" onclick="triggerScan()"><i class="fa-solid fa-satellite-dish"></i> Run Scan</button>
+            </div>
+          </div>
+          <div class="card-body np" id="ov-news-list">
+            <div class="empty"><i class="fa-solid fa-rss"></i>Run a scan to fetch news</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Marketing ── -->
+      <div class="panel" id="panel-marketing">
+        <div class="row3">
+          <div class="card">
+            <div class="card-head">
+              <h3>Post Queue</h3>
+              <div class="actions">
+                <button class="btn btn-primary btn-sm" onclick="openDraftModal()"><i class="fa-solid fa-plus"></i> Draft Post</button>
+                <button class="btn btn-outline btn-sm" onclick="openCampaignModal()"><i class="fa-solid fa-rocket"></i> Campaign</button>
+              </div>
+            </div>
+            <div class="card-body np" id="mkt-posts-table">
+              <div class="empty"><i class="fa-solid fa-calendar-xmark"></i>No posts yet</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Actions</h3></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <button class="btn btn-outline" onclick="triggerFlushLeads()"><i class="fa-solid fa-paper-plane"></i> Flush Leads to Sam</button>
+                <button class="btn btn-outline" onclick="triggerRefreshMetrics()"><i class="fa-solid fa-chart-bar"></i> Refresh Engagement Metrics</button>
+                <button class="btn btn-outline" onclick="triggerMarketingAnalyse()"><i class="fa-solid fa-brain"></i> Re-analyse Strategy</button>
+              </div>
+              <div style="margin-top:20px" id="mkt-strategy-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Pricing ── -->
+      <div class="panel" id="panel-pricing">
+        <div class="row2" style="margin-bottom:20px">
+          <div class="card">
+            <div class="card-head">
+              <h3>Current Prices</h3>
+              <div class="actions">
+                <button class="btn btn-primary btn-sm" onclick="triggerPriceRefresh()"><i class="fa-solid fa-rotate-right"></i> Fetch Prices</button>
+                <button class="btn btn-outline btn-sm" onclick="openPriceModal()"><i class="fa-solid fa-plus"></i> Manual Entry</button>
+              </div>
+            </div>
+            <div class="card-body np" id="prices-table">
+              <div class="empty"><i class="fa-solid fa-tags"></i>Click "Fetch Prices" to load market data</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <h3>Price Alerts</h3>
+            </div>
+            <div class="card-body np" id="price-alerts-list">
+              <div class="empty"><i class="fa-solid fa-bell-slash"></i>No alerts</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h3>Market Analysis</h3>
+            <div class="actions">
+              <button class="btn btn-gold btn-sm" onclick="triggerPriceAnalyse()"><i class="fa-solid fa-brain"></i> Run Claude Analysis</button>
+            </div>
+          </div>
+          <div class="card-body" id="price-analysis-box">
+            <div class="empty"><i class="fa-solid fa-chart-pie"></i>No analysis yet. Fetch prices then run analysis.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Surveillance ── -->
+      <div class="panel" id="panel-surveillance">
+        <div class="row2" style="margin-bottom:20px">
+          <div class="card">
+            <div class="card-head">
+              <h3>Market Alerts</h3>
+              <div class="actions">
+                <button class="btn btn-primary btn-sm" onclick="triggerScan()"><i class="fa-solid fa-satellite-dish"></i> Run Full Scan</button>
+              </div>
+            </div>
+            <div class="card-body np" id="surv-alerts-list">
+              <div class="empty"><i class="fa-solid fa-bell-slash"></i>No alerts — run a scan first</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recent News</h3></div>
+            <div class="card-body np" id="surv-news-list">
+              <div class="empty"><i class="fa-solid fa-rss"></i>Run a scan to fetch news</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Latest Intelligence Report</h3></div>
+          <div class="card-body" id="surv-report-box">
+            <div class="empty"><i class="fa-solid fa-file-lines"></i>No report yet — run a scan to generate one</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Leads ── -->
+      <div class="panel" id="panel-leads">
+        <div class="card">
+          <div class="card-head">
+            <h3>Recent Leads</h3>
+            <div class="actions">
+              <button class="btn btn-primary btn-sm" onclick="triggerFlushLeads()"><i class="fa-solid fa-paper-plane"></i> Flush All to Sam</button>
+            </div>
+          </div>
+          <div class="card-body np" id="leads-table">
+            <div class="empty"><i class="fa-solid fa-user-slash"></i>No leads yet</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Draft Post Modal -->
+<div class="modal-overlay" id="modal-draft">
+  <div class="modal">
+    <h2><i class="fa-solid fa-pen-to-square" style="color:var(--green);margin-right:8px"></i>Draft a Post</h2>
+    <div class="form-group">
+      <label>Product</label>
+      <input type="text" id="d-product" value="Urea 46% N" placeholder="e.g. Urea 46%, DAP 18-46-0" />
+    </div>
+    <div class="form-group">
+      <label>Platform</label>
+      <select id="d-platform">
+        <option value="linkedin">LinkedIn</option>
+        <option value="facebook">Facebook</option>
+        <option value="instagram">Instagram</option>
+        <option value="twitter">Twitter / X</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Tone</label>
+      <select id="d-tone">
+        <option value="professional">Professional</option>
+        <option value="informative">Informative</option>
+        <option value="promotional">Promotional</option>
+        <option value="engaging">Engaging</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Schedule (hours from now, 0 = draft only)</label>
+      <input type="number" id="d-schedule" value="0" min="0" max="720" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-draft')">Cancel</button>
+      <button class="btn btn-primary" id="btn-draft-submit" onclick="submitDraft()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate with Claude</button>
+    </div>
+    <div id="draft-result" style="margin-top:14px;display:none;background:var(--bg);border-radius:8px;padding:12px;font-size:13px;color:var(--txt2);line-height:1.6;border:1px solid var(--bdr)"></div>
+  </div>
+</div>
+
+<!-- Campaign Modal -->
+<div class="modal-overlay" id="modal-campaign">
+  <div class="modal">
+    <h2><i class="fa-solid fa-rocket" style="color:var(--green);margin-right:8px"></i>Launch Campaign</h2>
+    <div class="form-group">
+      <label>Campaign Name</label>
+      <input type="text" id="c-name" placeholder="e.g. Q2 Urea Push" />
+    </div>
+    <div class="form-group">
+      <label>Product</label>
+      <input type="text" id="c-product" value="Urea 46%" />
+    </div>
+    <div class="form-group">
+      <label>Audience</label>
+      <input type="text" id="c-audience" value="agricultural buyers and distributors globally" />
+    </div>
+    <div class="form-group">
+      <label>Budget (AUD)</label>
+      <input type="number" id="c-budget" value="500" />
+    </div>
+    <div class="form-group">
+      <label>Duration (days)</label>
+      <input type="number" id="c-days" value="30" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-campaign')">Cancel</button>
+      <button class="btn btn-primary" id="btn-camp-submit" onclick="submitCampaign()"><i class="fa-solid fa-rocket"></i> Launch</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manual Price Modal -->
+<div class="modal-overlay" id="modal-price">
+  <div class="modal">
+    <h2><i class="fa-solid fa-dollar-sign" style="color:var(--green);margin-right:8px"></i>Manual Price Entry</h2>
+    <div class="form-group">
+      <label>Product</label>
+      <select id="p-product">
+        <option value="urea">Urea 46% N</option>
+        <option value="dap">DAP 18-46-0</option>
+        <option value="map">MAP 12-61-0</option>
+        <option value="mop">MOP (Muriate of Potash)</option>
+        <option value="phosphate_rock">Phosphate Rock</option>
+        <option value="ammonia">Ammonia</option>
+        <option value="ammonium_sulphate">Ammonium Sulphate</option>
+        <option value="tsp">TSP</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Price (USD/MT)</label>
+      <input type="number" id="p-price" placeholder="e.g. 285" step="0.01" />
+    </div>
+    <div class="form-group">
+      <label>Notes (optional)</label>
+      <input type="text" id="p-notes" placeholder="e.g. Supplier quote from Yara" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-price')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitManualPrice()"><i class="fa-solid fa-check"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = '';  // same-origin
+
+// ── Navigation ─────────────────────────────────────────────────────────
+const PANEL_TITLES = {
+  overview:'Overview', marketing:'Marketing Agent',
+  pricing:'Pricing Agent', surveillance:'Market Surveillance', leads:'Lead Management'
+};
+function showPanel(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('panel-title').textContent = PANEL_TITLES[name] || name;
+}
+
+// ── Toast ───────────────────────────────────────────────────────────────
+function toast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#c0392b' : '#145232';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── Fetch helpers ───────────────────────────────────────────────────────
+async function api(path) {
+  const r = await fetch(API + path);
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+  return r.json();
+}
+async function post(path, body={}) {
+  const r = await fetch(API + path, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+  return r.json();
+}
+
+// ── Refresh all data ────────────────────────────────────────────────────
+let _refreshing = false;
+async function refreshAll() {
+  if (_refreshing) return;
+  _refreshing = true;
+  document.getElementById('last-updated').textContent = 'Refreshing…';
+  try {
+    await Promise.all([loadStatus(), loadPosts(), loadLeads(), loadPrices(), loadPriceAlerts(), loadNews(), loadSurvAlerts()]);
+    document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    document.getElementById('status-dot').className = 'status-dot';
+  } catch(e) {
+    document.getElementById('status-dot').className = 'status-dot error';
+    document.getElementById('last-updated').textContent = 'Error — server offline?';
+  }
+  _refreshing = false;
+}
+
+async function loadStatus() {
+  const s = await api('/api/status');
+  const m = s.marketing || {};
+  const p = s.pricing || {};
+  const sv = s.surveillance || {};
+
+  // Overview cards
+  document.getElementById('ov-scheduled').textContent = m.posts_scheduled ?? '—';
+  document.getElementById('ov-published').textContent = (m.posts_published ?? '—') + ' published';
+  document.getElementById('ov-leads').textContent = m.leads_total ?? '—';
+  document.getElementById('ov-unforwarded').textContent = (m.leads_unforwarded ?? 0) + ' unforwarded';
+
+  const outlook = p.market_outlook || 'unknown';
+  document.getElementById('ov-outlook').className = 'scard-value outlook-'+outlook;
+  document.getElementById('ov-outlook').textContent = outlook.toUpperCase();
+  document.getElementById('ov-price-alerts').textContent = (p.unacknowledged_alerts ?? 0) + ' price alerts';
+
+  document.getElementById('ov-surv-alerts').textContent = sv.unacknowledged_alerts ?? '—';
+  if (sv.last_scan)
+    document.getElementById('ov-last-scan').textContent = 'Last scan: ' + fmtDate(sv.last_scan);
+
+  // Nav badges
+  setBadge('nav-scheduled', m.posts_scheduled);
+  setBadge('nav-leads', m.leads_total);
+  setBadge('nav-price-alerts', p.unacknowledged_alerts, true);
+  setBadge('nav-surv-alerts', sv.unacknowledged_alerts, true);
+}
+
+function setBadge(id, val, hideZero=false) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (hideZero && !val) { el.style.display='none'; return; }
+  el.style.display = val ? '' : 'none';
+  el.textContent = val;
+}
+
+async function loadPosts() {
+  const posts = await api('/api/marketing/posts');
+  const el = document.getElementById('ov-posts-table');
+  const mel = document.getElementById('mkt-posts-table');
+
+  if (!posts.length) {
+    el.innerHTML = '<div class="empty"><i class="fa-solid fa-calendar-xmark"></i>No posts yet</div>';
+    mel.innerHTML = el.innerHTML; return;
+  }
+  const html = `<table><thead><tr><th>Platform</th><th>Status</th><th>Content</th><th>Scheduled</th></tr></thead><tbody>
+    ${posts.map(p => `<tr>
+      <td>${platformChip(p.platform)}</td>
+      <td>${statusChip(p.status)}</td>
+      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.content)}</td>
+      <td>${p.scheduled_at ? fmtDate(p.scheduled_at) : p.published_at ? fmtDate(p.published_at) : '—'}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+  el.innerHTML = html;
+  mel.innerHTML = html;
+}
+
+async function loadLeads() {
+  const leads = await api('/api/marketing/leads');
+  const el = document.getElementById('leads-table');
+  if (!leads.length) { el.innerHTML='<div class="empty"><i class="fa-solid fa-user-slash"></i>No leads yet</div>'; return; }
+  el.innerHTML = `<table><thead><tr><th>Name</th><th>Company</th><th>Product Interest</th><th>Volume (MT)</th><th>Source</th><th>Forwarded</th><th>Date</th></tr></thead><tbody>
+    ${leads.map(l => `<tr>
+      <td>${esc(l.name||'—')}</td>
+      <td>${esc(l.company||'—')}</td>
+      <td>${esc(l.product_interest||'—')}</td>
+      <td>${l.quantity_mt||'—'}</td>
+      <td><span class="chip chip-blue">${esc(l.source)}</span></td>
+      <td>${l.forwarded?'<span class="chip chip-green">✓ Sent</span>':'<span class="chip chip-orange">Pending</span>'}</td>
+      <td>${l.created_at?fmtDate(l.created_at):'—'}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+async function loadPrices() {
+  const prices = await api('/api/pricing/prices');
+  const el = document.getElementById('prices-table');
+  const keys = Object.keys(prices);
+  if (!keys.length) { el.innerHTML='<div class="empty"><i class="fa-solid fa-tags"></i>Click "Fetch Prices" to load market data</div>'; return; }
+  el.innerHTML = `<table><thead><tr><th>Product</th><th>Price (USD/MT)</th><th>Source</th><th>Date</th></tr></thead><tbody>
+    ${keys.map(k => { const p=prices[k]; return `<tr>
+      <td><strong>${esc(p.label)}</strong></td>
+      <td style="font-weight:600;font-size:14px">$${Number(p.price_usd_mt).toLocaleString()}</td>
+      <td><span class="chip chip-grey">${esc(p.source)}</span></td>
+      <td>${esc(p.date)}</td>
+    </tr>`; }).join('')}
+  </tbody></table>`;
+
+  // Also update analysis
+  const analysis = await api('/api/pricing/analysis');
+  renderPriceAnalysis(analysis);
+}
+
+function renderPriceAnalysis(a) {
+  const el = document.getElementById('price-analysis-box');
+  if (!a.available) { el.innerHTML='<div class="empty"><i class="fa-solid fa-chart-pie"></i>No analysis yet. Fetch prices then run analysis.</div>'; return; }
+  el.innerHTML = `
+    <div style="margin-bottom:16px">
+      <span style="font-size:12px;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px">Market Outlook</span>
+      <span class="outlook-${a.outlook}" style="margin-left:10px">${a.outlook}</span>
+      <span style="font-size:11px;color:var(--txt3);margin-left:12px">Generated ${fmtDate(a.generated_at)}</span>
+    </div>
+    <p style="font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px">${esc(a.market_summary)}</p>
+    ${a.buying_opportunities?.length ? `<div style="margin-bottom:12px"><strong style="font-size:12px;color:var(--success)">Buying Opportunities</strong><ul style="margin-top:6px;padding-left:16px">${a.buying_opportunities.map(o=>`<li style="font-size:13px;color:var(--txt2);margin-bottom:4px">${esc(o)}</li>`).join('')}</ul></div>` : ''}
+    ${a.risk_warnings?.length ? `<div style="margin-bottom:12px"><strong style="font-size:12px;color:var(--danger)">Risk Warnings</strong><ul style="margin-top:6px;padding-left:16px">${a.risk_warnings.map(w=>`<li style="font-size:13px;color:var(--txt2);margin-bottom:4px">${esc(w)}</li>`).join('')}</ul></div>` : ''}
+    ${a.recommendations?.length ? `<div><strong style="font-size:12px;color:var(--green)">Recommendations</strong><ul style="margin-top:6px;padding-left:16px">${a.recommendations.map(r=>`<li style="font-size:13px;color:var(--txt2);margin-bottom:4px">${esc(r)}</li>`).join('')}</ul></div>` : ''}
+  `;
+}
+
+async function loadPriceAlerts() {
+  const alerts = await api('/api/pricing/alerts');
+  const el = document.getElementById('price-alerts-list');
+  const ov = document.getElementById('ov-alerts-list');
+  if (!alerts.length) {
+    el.innerHTML='<div class="empty"><i class="fa-solid fa-bell-slash"></i>No alerts</div>';
+    ov.innerHTML='<div class="empty"><i class="fa-solid fa-check-circle"></i>No active alerts</div>';
+    return;
+  }
+  const html = alerts.map(a => `
+    <div class="alert-item">
+      <i class="fa-solid fa-circle-exclamation alert-icon ${a.severity}"></i>
+      <div class="alert-msg">
+        <p>${esc(a.message)}</p>
+        <span>${fmtDate(a.created_at)} · ${esc(a.product)}</span>
+      </div>
+    </div>`).join('');
+  el.innerHTML = html;
+  ov.innerHTML = html;
+}
+
+async function loadNews() {
+  const news = await api('/api/surveillance/news');
+  const el = document.getElementById('ov-news-list');
+  const sel = document.getElementById('surv-news-list');
+  if (!news.length) {
+    el.innerHTML='<div class="empty"><i class="fa-solid fa-rss"></i>Run a scan to fetch news</div>';
+    sel.innerHTML=el.innerHTML; return;
+  }
+  const html = `<div class="news-list">${news.slice(0,8).map(n=>`
+    <div class="news-item">
+      <div class="news-title"><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a></div>
+      <div class="news-meta">
+        <span class="sent-${n.sentiment}">${n.sentiment}</span>
+        <span>${esc(n.source)}</span>
+        ${n.published_at?`<span>${fmtDate(n.published_at)}</span>`:''}
+        ${(n.tags||[]).slice(0,3).map(t=>`<span class="chip chip-grey" style="padding:1px 6px;font-size:10px">${esc(t)}</span>`).join('')}
+      </div>
+      ${n.summary?`<div class="news-summary">${esc(n.summary.slice(0,180))}…</div>`:''}
+    </div>`).join('')}</div>`;
+  el.innerHTML = html;
+  sel.innerHTML = `<div class="news-list">${news.map(n=>`
+    <div class="news-item">
+      <div class="news-title"><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a></div>
+      <div class="news-meta">
+        <span class="sent-${n.sentiment}">${n.sentiment}</span>
+        <span>${esc(n.source)}</span>
+        ${n.published_at?`<span>${fmtDate(n.published_at)}</span>`:''}
+      </div>
+      ${n.summary?`<div class="news-summary">${esc(n.summary.slice(0,200))}</div>`:''}
+    </div>`).join('')}</div>`;
+}
+
+async function loadSurvAlerts() {
+  const alerts = await api('/api/surveillance/alerts');
+  const el = document.getElementById('surv-alerts-list');
+  if (!alerts.length) { el.innerHTML='<div class="empty"><i class="fa-solid fa-bell-slash"></i>No alerts</div>'; return; }
+  el.innerHTML = alerts.map(a=>`
+    <div class="alert-item">
+      <i class="fa-solid fa-satellite-dish alert-icon ${a.sentiment==='threat'?'critical':'info'}"></i>
+      <div class="alert-msg">
+        <p>${esc(a.headline)}</p>
+        <span>${fmtDate(a.created_at)} · <span class="sent-${a.sentiment}">${a.sentiment}</span></span>
+      </div>
+    </div>`).join('');
+}
+
+// ── Actions ──────────────────────────────────────────────────────────────
+async function triggerScan() {
+  toast('Running market scan… this may take 30-60 seconds');
+  try {
+    const r = await post('/api/surveillance/scan');
+    await Promise.all([loadNews(), loadSurvAlerts()]);
+    const rpt = await api('/api/surveillance/report');
+    renderSurvReport(rpt);
+    toast(`Scan complete: ${r.new_items_fetched} new items, report ${r.report_generated?'generated':'pending'}`);
+  } catch(e) { toast('Scan failed: '+e.message, true); }
+}
+
+async function triggerPriceRefresh() {
+  toast('Fetching prices from IndexMundi & FRED…');
+  try {
+    const r = await post('/api/pricing/refresh');
+    await loadPrices(); await loadPriceAlerts();
+    toast(`Fetched ${r.prices_fetched} prices, ${r.alerts_generated} new alerts`);
+  } catch(e) { toast('Price refresh failed: '+e.message, true); }
+}
+
+async function triggerPriceAnalyse() {
+  toast('Running Claude market analysis…');
+  try {
+    const r = await post('/api/pricing/analyse');
+    await loadPrices();
+    toast('Analysis complete: '+r.outlook+' market outlook');
+  } catch(e) { toast('Analysis failed: '+e.message, true); }
+}
+
+async function triggerFlushLeads() {
+  try {
+    const r = await post('/api/marketing/flush-leads');
+    await loadLeads();
+    toast(`Forwarded ${r.forwarded} lead(s) to sam@vantyx.com.au`);
+  } catch(e) { toast('Failed: '+e.message, true); }
+}
+
+async function triggerRefreshMetrics() {
+  toast('Refreshing engagement metrics…');
+  try {
+    const r = await post('/api/marketing/refresh-metrics');
+    toast(`Updated ${r.updated} post(s)`);
+  } catch(e) { toast('Failed: '+e.message, true); }
+}
+
+async function triggerMarketingAnalyse() {
+  toast('Running Claude strategy analysis…');
+  try {
+    const r = await post('/api/marketing/analyse', {force:true});
+    if (r.ok) toast('Strategy updated: '+r.recommendations?.length+' new rules');
+    else toast(r.message, true);
+    await loadStrategyBox();
+  } catch(e) { toast('Failed: '+e.message, true); }
+}
+
+async function loadStrategyBox() {
+  try {
+    const s = await api('/api/marketing/strategy');
+    const el = document.getElementById('mkt-strategy-box');
+    if (!s.available) { el.innerHTML=''; return; }
+    el.innerHTML = `
+      <div style="border-top:1px solid var(--bdr);padding-top:14px;margin-top:4px">
+        <div style="font-size:12px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">
+          Learned Strategy · ${fmtDate(s.generated_at)}
+        </div>
+        <p style="font-size:12px;color:var(--txt3);margin-bottom:8px">Based on ${s.posts_analysed} posts</p>
+        ${s.best_platform?`<div style="font-size:13px;margin-bottom:4px"><strong>Best platform:</strong> ${s.best_platform}</div>`:''}
+        ${s.best_tone?`<div style="font-size:13px;margin-bottom:4px"><strong>Best tone:</strong> ${s.best_tone}</div>`:''}
+        ${s.top_hashtags?.length?`<div style="font-size:13px;margin-bottom:8px"><strong>Top hashtags:</strong> ${s.top_hashtags.join(' ')}</div>`:''}
+        <ul style="padding-left:16px;margin-top:4px">${(s.recommendations||[]).map(r=>`<li style="font-size:12px;color:var(--txt2);margin-bottom:3px">${esc(r)}</li>`).join('')}</ul>
+      </div>`;
+  } catch(e) {}
+}
+
+function renderSurvReport(r) {
+  const el = document.getElementById('surv-report-box');
+  if (!r.available) return;
+  el.innerHTML = `
+    <div style="margin-bottom:12px;font-size:11px;color:var(--txt3)">Report #${r.id} · ${fmtDate(r.generated_at)} · ${r.items_analysed} items</div>
+    <p style="font-size:13px;line-height:1.7;color:var(--txt2);margin-bottom:16px">${esc(r.executive_summary)}</p>
+    ${r.opportunities?.length?`<div style="margin-bottom:12px"><strong style="font-size:12px;color:var(--success)">Opportunities</strong><ul style="margin-top:6px;padding-left:16px">${r.opportunities.map(o=>`<li style="font-size:13px;color:var(--txt2);margin-bottom:4px">${esc(o)}</li>`).join('')}</ul></div>`:''}
+    ${r.threats?.length?`<div style="margin-bottom:12px"><strong style="font-size:12px;color:var(--danger)">Threats</strong><ul style="margin-top:6px;padding-left:16px">${r.threats.map(t=>`<li style="font-size:13px;color:var(--txt2);margin-bottom:4px">${esc(t)}</li>`).join('')}</ul></div>`:''}
+    ${r.action_items?.length?`<div><strong style="font-size:12px;color:var(--green)">Action Items</strong><ul style="margin-top:6px;padding-left:16px">${r.action_items.map(a=>`<li style="font-size:13px;color:var(--txt2);margin-bottom:4px">${esc(a)}</li>`).join('')}</ul></div>`:''}
+  `;
+}
+
+// ── Modals ──────────────────────────────────────────────────────────────
+function openDraftModal() { document.getElementById('modal-draft').classList.add('open'); document.getElementById('draft-result').style.display='none'; }
+function openCampaignModal() { document.getElementById('modal-campaign').classList.add('open'); }
+function openPriceModal() { document.getElementById('modal-price').classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+async function submitDraft() {
+  const btn = document.getElementById('btn-draft-submit');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Generating…';
+  try {
+    const r = await post('/api/marketing/draft', {
+      product: document.getElementById('d-product').value,
+      platform: document.getElementById('d-platform').value,
+      tone: document.getElementById('d-tone').value,
+      schedule_hours: parseInt(document.getElementById('d-schedule').value)||0,
+    });
+    const res = document.getElementById('draft-result');
+    res.style.display='block';
+    res.innerHTML = `<strong>Post #${r.id} [${r.status}]</strong><br><br>${esc(r.content)}<br><br><em style="color:var(--green)">${(r.hashtags||[]).join(' ')}</em>`;
+    toast('Post drafted successfully!');
+    await loadPosts();
+  } catch(e) { toast('Draft failed: '+e.message, true); }
+  btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-wand-magic-sparkles"></i> Generate with Claude';
+}
+
+async function submitCampaign() {
+  const btn = document.getElementById('btn-camp-submit');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Launching…';
+  try {
+    const r = await post('/api/marketing/campaign', {
+      name: document.getElementById('c-name').value,
+      product: document.getElementById('c-product').value,
+      audience: document.getElementById('c-audience').value,
+      budget: parseFloat(document.getElementById('c-budget').value),
+      days: parseInt(document.getElementById('c-days').value),
+      platforms:['linkedin','facebook','twitter'],
+    });
+    closeModal('modal-campaign');
+    await loadPosts();
+    toast(`Campaign "${r.name}" launched!`);
+  } catch(e) { toast('Campaign failed: '+e.message, true); }
+  btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-rocket"></i> Launch';
+}
+
+async function submitManualPrice() {
+  try {
+    await post('/api/pricing/price', {
+      product: document.getElementById('p-product').value,
+      price_usd_mt: parseFloat(document.getElementById('p-price').value),
+      notes: document.getElementById('p-notes').value,
+    });
+    closeModal('modal-price');
+    await loadPrices(); await loadPriceAlerts();
+    toast('Price recorded');
+  } catch(e) { toast('Failed: '+e.message, true); }
+}
+
+// ── Utilities ───────────────────────────────────────────────────────────
+function esc(s) {
+  if (s==null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtDate(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  } catch(e) { return iso||''; }
+}
+function platformChip(p) {
+  const map={linkedin:'chip-blue',facebook:'chip-info',instagram:'chip-orange',twitter:'chip-grey',google_ads:'chip-gold'};
+  return `<span class="chip ${map[p]||'chip-grey'}">${p}</span>`;
+}
+function statusChip(s) {
+  const map={scheduled:'chip-blue',published:'chip-green',draft:'chip-grey',failed:'chip-red'};
+  return `<span class="chip ${map[s]||'chip-grey'}">${s}</span>`;
+}
+
+// ── Load surveillance report on start ──────────────────────────────────
+async function loadInitialReport() {
+  try {
+    const r = await api('/api/surveillance/report');
+    renderSurvReport(r);
+  } catch(e) {}
+}
+
+// ── Boot ────────────────────────────────────────────────────────────────
+(async () => {
+  await refreshAll();
+  await loadStrategyBox();
+  await loadInitialReport();
+  // Auto-refresh every 60 seconds
+  setInterval(refreshAll, 60000);
+})();
+</script>
+</body>
+</html>

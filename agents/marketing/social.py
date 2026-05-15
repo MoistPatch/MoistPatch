@@ -114,7 +114,7 @@ def post_to_twitter(post: SocialPost) -> str:
         ),
     ])
 
-    signing_key = f"{urllib.parse.quote(consumer_secret)}&{urllib.parse.quote(access_secret)}"
+    signing_key = f"{urllib.parse.quote(consumer_secret, safe='')}&{urllib.parse.quote(access_secret, safe='')}"
     sig = base64.b64encode(
         hmac.new(signing_key.encode(), base_string.encode(), hashlib.sha1).digest()
     ).decode()

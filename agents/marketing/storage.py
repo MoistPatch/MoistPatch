@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Generator, Optional
 
@@ -366,11 +366,7 @@ def get_published_posts_without_metrics() -> list[SocialPost]:
 
 def get_stale_metrics_posts(min_age_hours: int = 6) -> list[SocialPost]:
     """Return published posts whose metrics haven't been refreshed recently."""
-    cutoff = datetime.utcnow().replace(
-        hour=datetime.utcnow().hour - min_age_hours
-        if datetime.utcnow().hour >= min_age_hours else 0,
-        minute=0, second=0, microsecond=0,
-    )
+    cutoff = (datetime.utcnow() - timedelta(hours=min_age_hours)).isoformat()
     with _db() as conn:
         rows = conn.execute("""
             SELECT p.* FROM posts p
@@ -379,7 +375,7 @@ def get_stale_metrics_posts(min_age_hours: int = 6) -> list[SocialPost]:
             ) lm ON p.id = lm.post_id
             WHERE p.status = 'published' AND p.platform_post_id IS NOT NULL
               AND lm.latest < ?
-        """, (cutoff.isoformat(),)).fetchall()
+        """, (cutoff,)).fetchall()
     return [_row_to_post(r) for r in rows]
 
 

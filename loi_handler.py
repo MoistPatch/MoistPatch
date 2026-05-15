@@ -302,7 +302,7 @@ def build_confirmation_html(d: dict[str, Any]) -> str:
     <p style="margin:0;font-family:Georgia,serif;font-size:20px;font-weight:700;color:#fff;">
       VANTYX PTY LTD
     </p>
-    <p style="margin:6px 0 0;font-size:14px;color:rgba(255,255,255,0.65);">Agricultural Fertiliser Supply</p>
+    <p style="margin:6px 0 0;font-size:14px;color:rgba(255,255,255,0.65);">International Commodity Trader &amp; Importer/Exporter of Agricultural Fertiliser Products</p>
   </td></tr>
   <tr><td style="padding:32px;">
     <p style="font-size:28px;margin:0 0 8px;text-align:center;">&#9989;</p>
