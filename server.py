@@ -124,11 +124,13 @@ except ImportError:
 
 # ── Static file map ───────────────────────────────────────────────────────
 _STATIC: dict[str, Path] = {
-    "/":            _ROOT / "vantyx" / "index.html",
-    "/index.html":  _ROOT / "vantyx" / "index.html",
-    "/loi":         _ROOT / "loi.html",
-    "/loi.html":    _ROOT / "loi.html",
-    "/dashboard":   _ROOT / "dashboard.html",
+    "/":              _ROOT / "vantyx" / "index.html",
+    "/index.html":    _ROOT / "vantyx" / "index.html",
+    "/loi":           _ROOT / "loi.html",
+    "/loi.html":      _ROOT / "loi.html",
+    "/enquiry":       _ROOT / "enquiry.html",
+    "/enquiry.html":  _ROOT / "enquiry.html",
+    "/dashboard":     _ROOT / "dashboard.html",
 }
 
 
