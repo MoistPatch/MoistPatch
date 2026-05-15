@@ -46,6 +46,7 @@ _pricing_agent = None
 _surveillance_agent = None
 _claudia_agent = None
 _currency_agent = None
+_dicker_agent = None
 
 _ENQUIRIES_DB = _ROOT / "enquiries.db"
 
@@ -102,6 +103,14 @@ def _currency():
         from agents.currency import CurrencyAgent
         _currency_agent = CurrencyAgent()
     return _currency_agent
+
+
+def _dicker():
+    global _dicker_agent
+    if _dicker_agent is None:
+        from agents.dicker_data import DickerDataAgent
+        _dicker_agent = DickerDataAgent()
+    return _dicker_agent
 
 
 # ── LOI email logic (reuse from loi_handler) ──────────────────────────────
@@ -284,6 +293,22 @@ class VantyxHandler(BaseHTTPRequestHandler):
             self._safe_json(lambda: self._list_enquiries())
             return
 
+        # Dicker Data
+        if path == "/api/dicker/status":
+            self._safe_json(lambda: _dicker().status())
+            return
+        if path == "/api/dicker/tracked":
+            self._safe_json(lambda: _dicker().get_tracked())
+            return
+        if path == "/api/dicker/orders":
+            self._safe_json(lambda: _dicker().get_orders())
+            return
+        if path.startswith("/api/dicker/search"):
+            from urllib.parse import urlparse, parse_qs
+            q = parse_qs(urlparse(self.path).query).get("q", [""])[0]
+            self._safe_json(lambda: _dicker().search(q))
+            return
+
         self._json(404, {"error": "Not found"})
 
     def do_POST(self) -> None:
@@ -344,6 +369,22 @@ class VantyxHandler(BaseHTTPRequestHandler):
 
         if path == "/api/enquiries":
             self._safe_post(self._api_save_enquiry)
+            return
+
+        # Dicker Data
+        if path == "/api/dicker/refresh":
+            self._safe_json(lambda: _dicker().refresh_tracked())
+            return
+        if path == "/api/dicker/track":
+            self._safe_post(lambda d: _dicker().track_sku(d.get("sku", ""), d.get("label", "")))
+            return
+        if path == "/api/dicker/untrack":
+            self._safe_post(lambda d: _dicker().untrack_sku(d.get("sku", "")))
+            return
+        if path == "/api/dicker/order":
+            self._safe_post(lambda d: _dicker().place_order(
+                d.get("reference", ""), d.get("lines", []), d.get("delivery_address", {})
+            ))
             return
 
         self._json(404, {"error": "Not found"})

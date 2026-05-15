@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Enquiry | Tensor Works</title>
+  <meta name="description" content="Submit a product or bulk order enquiry with Tensor Works — Australian IT hardware reseller and distributor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --dark:      #0d1117;
+      --dark2:     #161b22;
+      --dark3:     #21262d;
+      --border:    #30363d;
+      --accent:    #58a6ff;
+      --accent2:   #3fb950;
+      --gold:      #d29922;
+      --gold-pale: #1c1a10;
+      --text:      #e6edf3;
+      --text2:     #8b949e;
+      --text3:     #6e7681;
+      --danger:    #f85149;
+      --shadow:    0 4px 24px rgba(0,0,0,0.4);
+      --radius:    12px;
+      --radius-sm: 8px;
+      --transition: 0.2s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Header ── */
+    header {
+      background: var(--dark2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      max-width: 900px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; }
+    .logo-emblem {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff; font-weight: 700;
+    }
+    .logo-name {
+      font-family: 'Merriweather', serif;
+      font-size: 16px; font-weight: 700; color: var(--text);
+    }
+    .logo-tagline { font-size: 11px; color: var(--text3); }
+    .header-back { font-size: 13px; color: var(--text2); }
+    .header-back a { color: var(--accent); font-weight: 500; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(160deg, #0d1f3c 0%, var(--dark) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 52px 24px 48px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 30% 40%, rgba(88,166,255,0.06) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(63,185,80,0.05) 0%, transparent 60%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(88,166,255,0.1);
+      border: 1px solid rgba(88,166,255,0.25);
+      border-radius: 40px; padding: 5px 14px;
+      font-size: 11px; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700; color: var(--text);
+      margin-bottom: 14px; line-height: 1.25;
+    }
+    .hero p {
+      font-size: 15px; color: var(--text2);
+      max-width: 560px; margin: 0 auto 24px;
+      line-height: 1.75;
+    }
+    .hero-chips {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 30px; padding: 5px 14px;
+      font-size: 12px; color: var(--text2);
+    }
+    .chip i { color: var(--accent2); font-size: 11px; }
+
+    /* ── Layout ── */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+    main { padding: 44px 24px 72px; }
+
+    /* ── Notice ── */
+    .notice {
+      background: rgba(210,153,34,0.08);
+      border: 1px solid rgba(210,153,34,0.25);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin-bottom: 32px;
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 13px; color: #c9a32a; line-height: 1.6;
+    }
+    .notice i { color: var(--gold); font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── Form cards ── */
+    .form-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .form-card-header {
+      background: linear-gradient(135deg, #1f2a3d, #162032);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-num {
+      width: 30px; height: 30px;
+      background: rgba(88,166,255,0.15);
+      border: 1px solid rgba(88,166,255,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--accent);
+      flex-shrink: 0;
+    }
+    .form-card-header h2 { font-size: 15px; font-weight: 600; color: var(--text); }
+    .form-card-header p { font-size: 12px; color: var(--text3); margin-top: 1px; }
+    .form-card-body { padding: 24px; }
+
+    /* ── Fields ── */
+    .form-row { display: grid; gap: 18px; margin-bottom: 18px; }
+    .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: 12px; font-weight: 600;
+      color: var(--text2); letter-spacing: 0.3px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .field label .req { color: var(--danger); font-size: 13px; }
+    .field label .opt {
+      font-size: 10px; font-weight: 400; color: var(--text3);
+      background: var(--dark3); border-radius: 3px; padding: 1px 5px;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="number"], input[type="date"], textarea, select {
+      width: 100%;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: var(--text);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    input::placeholder, textarea::placeholder { color: var(--text3); }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(88,166,255,0.12);
+    }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e7681' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+      cursor: pointer;
+    }
+    select option { background: var(--dark3); }
+    textarea { resize: vertical; min-height: 90px; }
+
+    .field-note { font-size: 11px; color: var(--text3); margin-top: 4px; }
+    .field-error { font-size: 11px; color: var(--danger); margin-top: 3px; display: none; }
+
+    /* ── Product lines ── */
+    .product-lines { display: flex; flex-direction: column; gap: 10px; }
+    .product-line {
+      display: grid; grid-template-columns: 1fr auto 100px auto;
+      gap: 10px; align-items: center;
+      background: var(--dark3); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 12px;
+    }
+    .product-line input { background: var(--dark2); }
+    .product-line .remove-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--text3); font-size: 14px; padding: 4px;
+      transition: color var(--transition);
+    }
+    .product-line .remove-btn:hover { color: var(--danger); }
+    .add-line-btn {
+      background: none; border: 1px dashed var(--border);
+      border-radius: var(--radius-sm); padding: 8px 16px;
+      color: var(--accent); font-size: 13px; font-weight: 500;
+      cursor: pointer; width: 100%; margin-top: 6px;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .add-line-btn:hover { background: rgba(88,166,255,0.05); border-color: var(--accent); }
+
+    /* ── Consent ── */
+    .consent-wrap {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--dark3); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+    }
+    .consent-wrap input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--accent); }
+    .consent-wrap label { font-size: 13px; color: var(--text2); line-height: 1.6; cursor: pointer; }
+
+    /* ── Submit ── */
+    .submit-section { text-align: center; padding: 8px 0 0; }
+    .btn-submit {
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      color: #fff; border: none; border-radius: var(--radius-sm);
+      padding: 14px 40px; font-size: 15px; font-weight: 600;
+      cursor: pointer; letter-spacing: 0.3px;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 16px rgba(31,111,235,0.35);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(31,111,235,0.45); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .submit-note { font-size: 12px; color: var(--text3); margin-top: 12px; }
+    .submit-note i { color: var(--accent2); }
+
+    /* ── Status boxes ── */
+    #formStatus { margin-top: 20px; }
+    .status-box {
+      border-radius: var(--radius-sm); padding: 18px 20px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .status-box.success { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.3); }
+    .status-box.success i { color: var(--accent2); font-size: 20px; }
+    .status-box.success h3 { color: var(--accent2); font-size: 15px; margin-bottom: 6px; }
+    .status-box.error { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.3); }
+    .status-box.error i { color: var(--danger); font-size: 20px; }
+    .status-box.error h3 { color: var(--danger); font-size: 15px; margin-bottom: 6px; }
+    .status-box p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+    .status-box a { color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 12px; color: var(--text3);
+      line-height: 1.8;
+    }
+
+    /* ── Spinner ── */
+    .spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 640px) {
+      .form-row.cols-2, .form-row.cols-3 { grid-template-columns: 1fr; }
+      .form-card-body { padding: 18px 16px; }
+      .product-line { grid-template-columns: 1fr auto; }
+      .product-line input[type="number"] { width: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-emblem">T</div>
+      <div>
+        <div class="logo-name">Tensor Works</div>
+        <div class="logo-tagline"><a href="index.html">&#8592; Back to Home</a></div>
+      </div>
+    </div>
+    <div class="header-back">
+      <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a> &nbsp;|&nbsp;
+      <a href="tel:0431367255">0431 367 255</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge"><i class="fa-solid fa-microchip"></i> IT Hardware Enquiry</div>
+    <h1>Product &amp; Bulk Order<br>Enquiry</h1>
+    <p>Tell us what you need and we'll come back to you with pricing, availability, and lead times — no commitment required.</p>
+    <div class="hero-chips">
+      <span class="chip"><i class="fa-solid fa-check"></i> No Obligation</span>
+      <span class="chip"><i class="fa-solid fa-clock"></i> Fast Response</span>
+      <span class="chip"><i class="fa-solid fa-box"></i> Bulk Pricing Available</span>
+      <span class="chip"><i class="fa-solid fa-shield-halved"></i> Australian Business</span>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+
+    <div class="notice">
+      <i class="fa-solid fa-circle-info"></i>
+      <div>
+        This enquiry is <strong>non-binding</strong> — no payment or commitment is required. We'll respond with a quote or availability update within one business day. For urgent orders, call <a href="tel:0431367255" style="color:var(--gold)">0431 367 255</a>.
+      </div>
+    </div>
+
+    <form id="enquiryForm" novalidate>
+
+      <!-- Section 1: Contact -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">1</div>
+          <div>
+            <h2>Your Details</h2>
+            <p>Tell us who you are and how to reach you</p>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="fullName">Full Name <span class="req">*</span></label>
+              <input type="text" id="fullName" name="fullName" placeholder="Jane Smith" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="businessName">Business / Organisation <span class="opt">Optional</span></label>
+              <input type="text" id="businessName" name="businessName" placeholder="Acme Pty Ltd" autocomplete="organization" />
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="email">Email Address <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com.au" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="04XX XXX XXX" required autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="abn">ABN <span class="opt">For business orders</span></label>
+              <input type="text" id="abn" name="abn" placeholder="12 345 678 901" />
+            </div>
+            <div class="field">
+              <label for="customerType">Customer Type <span class="req">*</span></label>
+              <select id="customerType" name="customerType" required>
+                <option value="">— Select —</option>
+                <option value="Business / Corporate">Business / Corporate</option>
+                <option value="Government / Education">Government / Education</option>
+                <option value="Reseller / Distributor">Reseller / Distributor</option>
+                <option value="IT Service Provider">IT Service Provider</option>
+                <option value="Individual / Personal">Individual / Personal</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Products -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">2</div>
+          <div>
+            <h2>Products Required</h2>
+            <p>List the products or categories you need — SKU, model name, or description is fine</p>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row" style="margin-bottom:14px">
+            <div class="field">
+              <label for="productCategory">Primary Category <span class="req">*</span></label>
+              <select id="productCategory" name="productCategory" required>
+                <option value="">— Select —</option>
+                <option value="Laptops & Notebooks">Laptops &amp; Notebooks</option>
+                <option value="Desktops & Workstations">Desktops &amp; Workstations</option>
+                <option value="Servers & NAS">Servers &amp; NAS</option>
+                <option value="GPUs & AI Hardware">GPUs &amp; AI Hardware</option>
+                <option value="Networking & Wireless">Networking &amp; Wireless</option>
+                <option value="Storage & Memory">Storage &amp; Memory</option>
+                <option value="Monitors & Displays">Monitors &amp; Displays</option>
+                <option value="Peripherals & Accessories">Peripherals &amp; Accessories</option>
+                <option value="Software & Licences">Software &amp; Licences</option>
+                <option value="Components & Parts">Components &amp; Parts</option>
+                <option value="Mixed / Multiple Categories">Mixed / Multiple Categories</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic product lines -->
+          <div class="product-lines" id="productLines">
+            <div class="product-line" data-line="0">
+              <input type="text" placeholder="Product name, SKU, or model (e.g. RTX 5090, ThinkPad X1)" name="product_0" />
+              <input type="number" placeholder="Qty" name="qty_0" min="1" style="width:80px" />
+              <input type="text" placeholder="Budget / unit (optional)" name="budget_0" style="width:140px" />
+              <button type="button" class="remove-btn" onclick="removeLine(this)" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+          <button type="button" class="add-line-btn" onclick="addProductLine()">
+            <i class="fa-solid fa-plus"></i> Add Another Product
+          </button>
+          <div class="field-note" style="margin-top:10px">Partial information is fine — we'll follow up to clarify specs.</div>
+        </div>
+      </div>
+
+      <!-- Section 3: Requirements -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">3</div>
+          <div>
+            <h2>Order Requirements</h2>
+            <p>Delivery, timeline, and intended use</p>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="totalBudget">Total Budget (AUD) <span class="opt">Optional</span></label>
+              <select id="totalBudget" name="totalBudget">
+                <option value="">— Select range —</option>
+                <option value="Under $1,000">Under $1,000</option>
+                <option value="$1,000 – $5,000">$1,000 – $5,000</option>
+                <option value="$5,000 – $20,000">$5,000 – $20,000</option>
+                <option value="$20,000 – $50,000">$20,000 – $50,000</option>
+                <option value="$50,000 – $100,000">$50,000 – $100,000</option>
+                <option value="$100,000+">$100,000+</option>
+                <option value="No fixed budget">No fixed budget</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="timeline">Required By <span class="req">*</span></label>
+              <select id="timeline" name="timeline" required>
+                <option value="">— Select —</option>
+                <option value="ASAP / Urgent">ASAP / Urgent</option>
+                <option value="Within 1 week">Within 1 week</option>
+                <option value="Within 2–4 weeks">Within 2–4 weeks</option>
+                <option value="1–3 months">1–3 months</option>
+                <option value="3–6 months">3–6 months</option>
+                <option value="Flexible / Just pricing">Flexible / Just pricing</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="intendedUse">Intended Use <span class="req">*</span></label>
+              <select id="intendedUse" name="intendedUse" required>
+                <option value="">— Select —</option>
+                <option value="Office / Business Workstations">Office / Business Workstations</option>
+                <option value="Server / Data Centre Deployment">Server / Data Centre Deployment</option>
+                <option value="AI / Machine Learning Workloads">AI / Machine Learning Workloads</option>
+                <option value="Gaming / Creative">Gaming / Creative</option>
+                <option value="Resale / Distribution">Resale / Distribution</option>
+                <option value="Remote Work / WFH Setup">Remote Work / WFH Setup</option>
+                <option value="Education / Lab">Education / Lab</option>
+                <option value="Personal Use">Personal Use</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="deliveryState">Delivery State <span class="req">*</span></label>
+              <select id="deliveryState" name="deliveryState" required>
+                <option value="">— Select —</option>
+                <option value="VIC">Victoria (VIC)</option>
+                <option value="NSW">New South Wales (NSW)</option>
+                <option value="QLD">Queensland (QLD)</option>
+                <option value="WA">Western Australia (WA)</option>
+                <option value="SA">South Australia (SA)</option>
+                <option value="TAS">Tasmania (TAS)</option>
+                <option value="ACT">ACT</option>
+                <option value="NT">Northern Territory (NT)</option>
+                <option value="International">International</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="deliveryAddress">Delivery Address <span class="opt">Optional</span></label>
+              <input type="text" id="deliveryAddress" name="deliveryAddress" placeholder="Street, Suburb, State, Postcode" autocomplete="street-address" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="additionalNotes">Additional Notes <span class="opt">Optional</span></label>
+              <textarea id="additionalNotes" name="additionalNotes" placeholder="Specific specs, warranty requirements, brand preferences, existing infrastructure, any other context…"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Consent -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="section-num">4</div>
+          <div><h2>Confirmation</h2></div>
+        </div>
+        <div class="form-card-body">
+          <div class="consent-wrap">
+            <input type="checkbox" id="consent" name="consent" required />
+            <label for="consent">
+              I understand this enquiry is <strong>non-binding</strong> — no payment or commitment is created by submitting this form. I consent to Tensor Works contacting me at the details provided to discuss pricing and availability.
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-section">
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <i class="fa-solid fa-paper-plane"></i> Send Enquiry
+        </button>
+        <div class="submit-note">
+          <i class="fa-solid fa-lock"></i> Your details are used only to respond to this enquiry. &nbsp;·&nbsp; Tensor Works · Melbourne, Australia
+        </div>
+      </div>
+
+      <div id="formStatus"></div>
+
+    </form>
+  </div>
+</main>
+
+<footer>
+  <strong>Tensor Works</strong> &nbsp;·&nbsp; Melbourne, Victoria &nbsp;·&nbsp;
+  <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a> &nbsp;·&nbsp;
+  <a href="tel:0431367255">0431 367 255</a> &nbsp;·&nbsp;
+  <a href="https://tensor-works.myshopify.com" target="_blank" rel="noopener">tensor-works.myshopify.com</a><br>
+  <span>This enquiry form does not constitute a legally binding agreement. &copy; <span id="footerYear"></span> Tensor Works. All rights reserved.</span>
+</footer>
+
+<script>
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+// ── Dynamic product lines ────────────────────────────────────────────────
+let _lineCount = 1;
+
+function addProductLine() {
+  const i = _lineCount++;
+  const lines = document.getElementById('productLines');
+  const div = document.createElement('div');
+  div.className = 'product-line';
+  div.dataset.line = i;
+  div.innerHTML = `
+    <input type="text" placeholder="Product name, SKU, or model" name="product_${i}" />
+    <input type="number" placeholder="Qty" name="qty_${i}" min="1" style="width:80px" />
+    <input type="text" placeholder="Budget / unit (optional)" name="budget_${i}" style="width:140px" />
+    <button type="button" class="remove-btn" onclick="removeLine(this)" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+  `;
+  lines.appendChild(div);
+}
+
+function removeLine(btn) {
+  const line = btn.closest('.product-line');
+  const parent = document.getElementById('productLines');
+  if (parent.children.length > 1) line.remove();
+}
+
+// ── Collect product lines ────────────────────────────────────────────────
+function collectProductLines() {
+  const lines = [];
+  document.querySelectorAll('.product-line').forEach(div => {
+    const i = div.dataset.line;
+    const product = (div.querySelector(`[name="product_${i}"]`) || {}).value?.trim();
+    const qty = (div.querySelector(`[name="qty_${i}"]`) || {}).value?.trim();
+    const budget = (div.querySelector(`[name="budget_${i}"]`) || {}).value?.trim();
+    if (product) lines.push({ product, qty: qty || '1', budget: budget || '' });
+  });
+  return lines;
+}
+
+// ── Validation ───────────────────────────────────────────────────────────
+function validateForm(form) {
+  const errors = [];
+  if (!form.fullName.value.trim()) errors.push('Full Name');
+  if (!form.email.value.trim() || !/\S+@\S+\.\S+/.test(form.email.value)) errors.push('Email');
+  if (!form.phone.value.trim()) errors.push('Phone');
+  if (!form.customerType.value) errors.push('Customer Type');
+  if (!form.productCategory.value) errors.push('Product Category');
+  if (!form.timeline.value) errors.push('Required By');
+  if (!form.intendedUse.value) errors.push('Intended Use');
+  if (!form.deliveryState.value) errors.push('Delivery State');
+  if (!form.consent.checked) errors.push('Consent checkbox');
+  if (collectProductLines().length === 0) errors.push('At least one product');
+  return errors;
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Submit ───────────────────────────────────────────────────────────────
+document.getElementById('enquiryForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
+  statusEl.innerHTML = '';
+
+  const errors = validateForm(this);
+  if (errors.length) {
+    statusEl.innerHTML = `
+      <div class="status-box error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <div>
+          <h3>Please complete all required fields</h3>
+          <p>Missing: ${errors.slice(0,4).map(escHtml).join(', ')}${errors.length > 4 ? ` and ${errors.length - 4} more` : ''}.</p>
+        </div>
+      </div>`;
+    statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const productLines = collectProductLines();
+  const formData = {
+    fullName:        this.fullName.value.trim(),
+    businessName:    this.businessName.value.trim(),
+    email:           this.email.value.trim(),
+    phone:           this.phone.value.trim(),
+    abn:             this.abn.value.trim(),
+    customerType:    this.customerType.value,
+    productCategory: this.productCategory.value,
+    products:        productLines.map(l => `${l.qty}x ${l.product}${l.budget ? ` (${l.budget})` : ''}`).join('\n'),
+    totalBudget:     this.totalBudget.value,
+    timeline:        this.timeline.value,
+    intendedUse:     this.intendedUse.value,
+    deliveryState:   this.deliveryState.value,
+    deliveryAddress: this.deliveryAddress.value.trim(),
+    additionalNotes: this.additionalNotes.value.trim(),
+  };
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Sending…';
+
+  try {
+    const resp = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: '398d6f36-210c-4975-8bac-ed3151722da2',
+        subject: `New IT Hardware Enquiry — ${formData.fullName}${formData.businessName ? ' (' + formData.businessName + ')' : ''} — ${formData.productCategory}`,
+        from_name: formData.fullName,
+        ...formData,
+      }),
+    });
+
+    const result = await resp.json();
+    if (result.success) {
+      fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      }).catch(() => {});
+
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Sent!';
+      btn.style.background = 'linear-gradient(135deg, #238636, #3fb950)';
+      statusEl.innerHTML = `
+        <div class="status-box success">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <h3>Enquiry received — thank you!</h3>
+            <p>
+              Thanks, <strong>${escHtml(formData.fullName)}</strong>. Your enquiry has been received by Tensor Works.<br><br>
+              We'll be in touch at <strong>${escHtml(formData.email)}</strong> shortly with pricing and availability.
+              You can also reach us at <a href="tel:0431367255">0431 367 255</a> or
+              <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>.
+            </p>
+          </div>
+        </div>`;
+      statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      throw new Error(result.message || 'Submission failed');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Enquiry';
+    statusEl.innerHTML = `
+      <div class="status-box error">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+          <h3>Submission failed — please contact us directly</h3>
+          <p>
+            Email <a href="mailto:sam@vantyx.com.au">sam@vantyx.com.au</a>
+            or call <a href="tel:0431367255">0431 367 255</a>.<br>
+            <small style="color:var(--text3)">${escHtml(err.message)}</small>
+          </p>
+        </div>
+      </div>`;
+  }
+});
+</script>
+</body>
+</html>
