@@ -45,6 +45,7 @@ _marketing_agent = None
 _pricing_agent = None
 _surveillance_agent = None
 _claudia_agent = None
+_currency_agent = None
 
 
 def _marketing():
@@ -77,6 +78,14 @@ def _claudia():
         from agents.claudia import ClaudiaAgent
         _claudia_agent = ClaudiaAgent()
     return _claudia_agent
+
+
+def _currency():
+    global _currency_agent
+    if _currency_agent is None:
+        from agents.currency import CurrencyAgent
+        _currency_agent = CurrencyAgent()
+    return _currency_agent
 
 
 # ── LOI email logic (reuse from loi_handler) ──────────────────────────────
@@ -227,6 +236,30 @@ class VantyxHandler(BaseHTTPRequestHandler):
             self._safe_json(lambda: {"messages": _claudia().history()})
             return
 
+        # Currency Monitor
+        if path == "/api/currency/status":
+            self._safe_json(lambda: _currency().status())
+            return
+        if path == "/api/currency/rates":
+            self._safe_json(lambda: _currency().rates())
+            return
+        if path == "/api/currency/history":
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            code = (qs.get("currency", ["USD"])[0]).upper()
+            days = int(qs.get("days", ["30"])[0])
+            self._safe_json(lambda: {"code": code, "data": _currency().history(code, days)})
+            return
+        if path == "/api/currency/alerts":
+            self._safe_json(lambda: _currency().get_alerts())
+            return
+        if path == "/api/currency/alert-history":
+            self._safe_json(lambda: _currency().alert_history())
+            return
+        if path == "/api/currency/export":
+            self._currency_export()
+            return
+
         self._json(404, {"error": "Not found"})
 
     def do_POST(self) -> None:
@@ -272,6 +305,17 @@ class VantyxHandler(BaseHTTPRequestHandler):
             return
         if path == "/api/claudia/clear":
             self._safe_json(lambda: (_claudia().clear(), {"ok": True})[1])
+            return
+
+        # Currency Monitor
+        if path == "/api/currency/refresh":
+            self._safe_json(lambda: _currency().refresh())
+            return
+        if path == "/api/currency/alerts":
+            self._safe_post(self._api_currency_set_alert)
+            return
+        if path == "/api/currency/alerts/delete":
+            self._safe_post(self._api_currency_delete_alert)
             return
 
         self._json(404, {"error": "Not found"})
@@ -478,6 +522,49 @@ class VantyxHandler(BaseHTTPRequestHandler):
         _pricing().add_price(product, price, notes)
         return {"ok": True}
 
+    def _api_currency_set_alert(self, data: dict) -> dict:
+        code = str(data.get("currency_code", "")).upper()
+        condition = str(data.get("condition", ""))
+        threshold = float(data.get("threshold", 0))
+        if not code or not condition or threshold <= 0:
+            raise ValueError("currency_code, condition, and threshold are required")
+        alert_id = _currency().set_alert(code, condition, threshold)
+        return {"ok": True, "id": alert_id}
+
+    def _api_currency_delete_alert(self, data: dict) -> dict:
+        alert_id = int(data.get("id", 0))
+        if not alert_id:
+            raise ValueError("id is required")
+        _currency().remove_alert(alert_id)
+        return {"ok": True}
+
+    def _currency_export(self) -> None:
+        try:
+            rates = _currency().rates()
+            import csv, io
+            buf = io.StringIO()
+            w = csv.writer(buf)
+            w.writerow(["Code", "Rate (per USD)", "Change 1h %", "Change 24h %", "Fetched At"])
+            for code, r in sorted(rates.items()):
+                w.writerow([
+                    code,
+                    r["rate"],
+                    r.get("change_1h") or "",
+                    r.get("change_24h") or "",
+                    r.get("fetched_at", ""),
+                ])
+            payload = buf.getvalue().encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.send_header("Content-Disposition", "attachment; filename=currency_rates.csv")
+            self.send_header("Content-Length", str(len(payload)))
+            self._cors()
+            self.end_headers()
+            self.wfile.write(payload)
+        except Exception as exc:
+            log.exception("CSV export error")
+            self._json(500, {"error": str(exc)})
+
     def _handle_loi(self) -> None:
         if not _LOI_OK:
             self._json(503, {"error": "LOI handler not available"})
@@ -534,6 +621,11 @@ def main() -> None:
         log.info("Surveillance agent initialised")
     except Exception as e:
         log.warning("Surveillance agent init failed: %s", e)
+    try:
+        _currency()
+        log.info("Currency agent initialised")
+    except Exception as e:
+        log.warning("Currency agent init failed: %s", e)
 
     # Start marketing scheduler in background
     try:
