@@ -816,6 +816,8 @@ document.getElementById('loiForm').addEventListener('submit', async function (e)
 
     const result = await resp.json();
     if (result.success) {
+      // Silently log to local dashboard (fire-and-forget; fails gracefully if server not running)
+      fetch('/api/enquiries', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(formData) }).catch(() => {});
       btn.innerHTML = '<i class="fa-solid fa-check"></i> Sent!';
       btn.style.background = 'linear-gradient(135deg, #27ae60, #1e8449)';
       statusEl.innerHTML = `

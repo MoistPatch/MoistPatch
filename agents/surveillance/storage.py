@@ -194,6 +194,14 @@ def get_latest_report() -> Optional[SurveillanceReport]:
     return _to_report(row) if row else None
 
 
+def get_all_reports(limit: int = 20) -> list[SurveillanceReport]:
+    with _db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM surveillance_reports ORDER BY generated_at DESC LIMIT ?", (limit,)
+        ).fetchall()
+    return [_to_report(r) for r in rows]
+
+
 def _to_report(row: sqlite3.Row) -> SurveillanceReport:
     d = _row(row)
     for f in ("opportunities", "threats", "key_trends", "action_items"):

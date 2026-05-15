@@ -47,6 +47,22 @@ _surveillance_agent = None
 _claudia_agent = None
 _currency_agent = None
 
+_ENQUIRIES_DB = _ROOT / "enquiries.db"
+
+def _init_enquiries_db() -> None:
+    import sqlite3
+    conn = sqlite3.connect(_ENQUIRIES_DB)
+    conn.execute("""CREATE TABLE IF NOT EXISTS enquiries (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        received_at TEXT NOT NULL,
+        full_name TEXT, business_name TEXT, email TEXT, phone TEXT, abn TEXT,
+        product_type TEXT, other_product TEXT, annual_volume TEXT,
+        delivery_schedule TEXT, delivery_address TEXT, primary_application TEXT,
+        farm_size TEXT, additional_notes TEXT, loi_date TEXT
+    )""")
+    conn.commit()
+    conn.close()
+
 
 def _marketing():
     global _marketing_agent
@@ -260,6 +276,14 @@ class VantyxHandler(BaseHTTPRequestHandler):
             self._currency_export()
             return
 
+        if path == "/api/reports":
+            self._safe_json(lambda: self._list_reports())
+            return
+
+        if path == "/api/enquiries":
+            self._safe_json(lambda: self._list_enquiries())
+            return
+
         self._json(404, {"error": "Not found"})
 
     def do_POST(self) -> None:
@@ -316,6 +340,10 @@ class VantyxHandler(BaseHTTPRequestHandler):
             return
         if path == "/api/currency/alerts/delete":
             self._safe_post(self._api_currency_delete_alert)
+            return
+
+        if path == "/api/enquiries":
+            self._safe_post(self._api_save_enquiry)
             return
 
         self._json(404, {"error": "Not found"})
@@ -442,6 +470,60 @@ class VantyxHandler(BaseHTTPRequestHandler):
             }
             for i in items
         ]
+
+    def _list_reports(self) -> list:
+        from agents.surveillance.storage import get_all_reports
+        reports = get_all_reports(limit=20)
+        return [
+            {
+                "id": r.id,
+                "generated_at": r.generated_at.isoformat(),
+                "items_analysed": r.items_analysed,
+                "executive_summary": r.executive_summary,
+                "opportunities": r.opportunities,
+                "threats": r.threats,
+                "key_trends": r.key_trends,
+                "action_items": r.action_items,
+            }
+            for r in reports
+        ]
+
+    def _list_enquiries(self) -> list:
+        import sqlite3
+        if not _ENQUIRIES_DB.exists():
+            return []
+        conn = sqlite3.connect(_ENQUIRIES_DB)
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT * FROM enquiries ORDER BY received_at DESC LIMIT 100"
+        ).fetchall()
+        conn.close()
+        return [dict(r) for r in rows]
+
+    def _api_save_enquiry(self, data: dict) -> dict:
+        import sqlite3
+        _init_enquiries_db()
+        conn = sqlite3.connect(_ENQUIRIES_DB)
+        conn.execute(
+            """INSERT INTO enquiries
+               (received_at, full_name, business_name, email, phone, abn,
+                product_type, other_product, annual_volume, delivery_schedule,
+                delivery_address, primary_application, farm_size, additional_notes, loi_date)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (
+                datetime.utcnow().isoformat(),
+                data.get("fullName", ""), data.get("businessName", ""),
+                data.get("email", ""), data.get("phone", ""), data.get("abn", ""),
+                data.get("productType", ""), data.get("otherProduct", ""),
+                data.get("annualVolume", ""), data.get("deliverySchedule", ""),
+                data.get("deliveryAddress", ""), data.get("primaryApplication", ""),
+                data.get("farmSize", ""), data.get("additionalNotes", ""),
+                data.get("loiDate", ""),
+            ),
+        )
+        conn.commit()
+        conn.close()
+        return {"ok": True}
 
     def _surveillance_report(self) -> dict:
         r = _surveillance().report()
@@ -604,6 +686,8 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 def main() -> None:
     host = os.environ.get("LOI_HOST", "0.0.0.0")
     port = int(os.environ.get("LOI_PORT", "8080"))
+
+    _init_enquiries_db()
 
     # Pre-initialise agents so first request is fast
     try:

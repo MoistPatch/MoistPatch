@@ -539,6 +539,56 @@
       padding:7px 0;border-bottom:1px solid var(--bdr);font-size:12px;
     }
     .alert-list-item:last-child{border-bottom:none}
+
+    /* ── Reports panel ── */
+    .rpt-generate{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .rpt-list{display:flex;flex-direction:column;gap:14px}
+    .rpt-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;transition:.15s}
+    .rpt-card-head{
+      display:flex;align-items:center;gap:12px;padding:14px 18px;
+      cursor:pointer;user-select:none;
+    }
+    .rpt-card-head:hover{background:var(--gbg)}
+    .rpt-date{font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap}
+    .rpt-title{flex:1;font-size:14px;font-weight:600;color:var(--txt);line-height:1.4}
+    .rpt-meta{font-size:11px;color:var(--txt3);white-space:nowrap}
+    .rpt-chevron{color:var(--txt3);transition:.2s;font-size:12px}
+    .rpt-card.open .rpt-chevron{transform:rotate(180deg)}
+    .rpt-body{display:none;padding:0 18px 18px;border-top:1px solid var(--bdr)}
+    .rpt-card.open .rpt-body{display:block}
+    .rpt-section{margin-top:14px}
+    .rpt-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--txt3);margin-bottom:8px}
+    .rpt-exec{font-size:13px;color:var(--txt2);line-height:1.75;white-space:pre-line}
+    .rpt-items{display:flex;flex-direction:column;gap:6px}
+    .rpt-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--txt2);line-height:1.5}
+    .rpt-item-icon{margin-top:2px;flex-shrink:0;font-size:11px}
+    .rpt-item-icon.opp{color:#27ae60}
+    .rpt-item-icon.thr{color:var(--danger)}
+    .rpt-item-icon.trn{color:var(--info)}
+    .rpt-item-icon.act{color:var(--gold-dim)}
+
+    /* ── Enquiries panel ── */
+    .enq-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+    .enq-stat{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:14px 18px;text-align:center}
+    .enq-stat-num{font-size:26px;font-weight:700;color:var(--green)}
+    .enq-stat-lbl{font-size:11px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
+    .enq-table{width:100%;border-collapse:collapse;font-size:13px}
+    .enq-table th{
+      background:var(--gbg);padding:9px 12px;text-align:left;
+      font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+      color:var(--txt3);border-bottom:1px solid var(--bdr);white-space:nowrap;
+    }
+    .enq-table td{padding:10px 12px;border-bottom:1px solid var(--bdr);color:var(--txt);vertical-align:top}
+    .enq-table tr:last-child td{border-bottom:none}
+    .enq-table tr:hover td{background:var(--gbg)}
+    .enq-expand{background:none;border:none;cursor:pointer;color:var(--green);font-size:11px;font-weight:600;padding:0}
+    .enq-detail{display:none;font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.6}
+    .enq-detail.open{display:block}
+    .enq-product-tag{
+      display:inline-block;background:rgba(27,107,58,.08);
+      border:1px solid rgba(27,107,58,.2);border-radius:20px;
+      padding:2px 9px;font-size:11px;font-weight:600;color:var(--green);
+    }
   </style>
 </head>
 <body>
@@ -573,6 +623,14 @@
       <div class="nav-item" data-panel="currency" onclick="showPanel('currency',this)">
         <i class="fa-solid fa-coins"></i> Currency Monitor
         <span class="badge info" id="nav-cur-alerts" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-panel="reports" onclick="showPanel('reports',this)">
+        <i class="fa-solid fa-file-chart-column"></i> Reports
+        <span class="badge info" id="nav-reports-count" style="display:none"></span>
+      </div>
+      <div class="nav-item" data-panel="enquiries" onclick="showPanel('enquiries',this)">
+        <i class="fa-solid fa-inbox"></i> Enquiries
+        <span class="badge" id="nav-enq-count" style="display:none"></span>
       </div>
       <div class="nav-item" onclick="toggleClaudia()" style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:14px">
         <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold)"></i> Chat with CLAUDIA
@@ -848,6 +906,46 @@
 
       </div><!-- /panel-currency -->
 
+      <!-- ── Reports ── -->
+      <div class="panel" id="panel-reports">
+        <div class="rpt-generate">
+          <div>
+            <h2 style="font-size:16px;font-weight:700;color:var(--txt);margin:0">Market Intelligence Reports</h2>
+            <div style="font-size:12px;color:var(--txt3);margin-top:2px">AI-generated briefings from news analysis scans</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="loadReports()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            <button class="btn btn-primary btn-sm" onclick="generateReport()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Report</button>
+          </div>
+        </div>
+        <div id="rpt-list" class="rpt-list">
+          <div class="empty"><i class="fa-solid fa-file-circle-xmark"></i> No reports yet — run a scan first</div>
+        </div>
+      </div><!-- /panel-reports -->
+
+      <!-- ── Enquiries ── -->
+      <div class="panel" id="panel-enquiries">
+        <div class="rpt-generate">
+          <div>
+            <h2 style="font-size:16px;font-weight:700;color:var(--txt);margin:0">Web Enquiries</h2>
+            <div style="font-size:12px;color:var(--txt3);margin-top:2px">Submissions from the Vantyx enquiry form</div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="loadEnquiries()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        </div>
+        <div class="enq-stats">
+          <div class="enq-stat"><div class="enq-stat-num" id="enq-total">—</div><div class="enq-stat-lbl">Total Enquiries</div></div>
+          <div class="enq-stat"><div class="enq-stat-num" id="enq-week">—</div><div class="enq-stat-lbl">This Week</div></div>
+          <div class="enq-stat"><div class="enq-stat-num" id="enq-products">—</div><div class="enq-stat-lbl">Product Types</div></div>
+        </div>
+        <div class="card">
+          <div class="card-body np">
+            <div id="enq-table-wrap">
+              <div class="empty"><i class="fa-solid fa-inbox"></i> No enquiries received yet</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /panel-enquiries -->
+
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
@@ -1052,7 +1150,8 @@ const API = '';  // same-origin
 const PANEL_TITLES = {
   overview:'Overview', marketing:'Marketing Agent',
   pricing:'Pricing Agent', surveillance:'Market Analysis',
-  leads:'Lead Management', currency:'Currency Monitor'
+  leads:'Lead Management', currency:'Currency Monitor',
+  reports:'Intelligence Reports', enquiries:'Web Enquiries'
 };
 function showPanel(name, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -2106,12 +2205,155 @@ function drawHistoryChart(svg, data) {
   `;
 }
 
+// ── Reports ─────────────────────────────────────────────────────────────
+async function loadReports() {
+  const el = document.getElementById('rpt-list');
+  try {
+    const reports = await fetch('/api/reports').then(r => r.json());
+    const cnt = document.getElementById('nav-reports-count');
+    if (reports.length > 0) {
+      cnt.style.display = '';
+      cnt.textContent = reports.length;
+    } else {
+      cnt.style.display = 'none';
+    }
+    if (!reports.length) {
+      el.innerHTML = '<div class="empty"><i class="fa-solid fa-file-circle-xmark"></i> No reports yet — run a scan first</div>';
+      return;
+    }
+    el.innerHTML = reports.map((r, i) => {
+      const dt = new Date(r.generated_at);
+      const dateStr = dt.toLocaleDateString('en-AU', {day:'numeric',month:'short',year:'numeric'});
+      const timeStr = dt.toLocaleTimeString('en-AU', {hour:'2-digit',minute:'2-digit'});
+      const preview = (r.executive_summary || '').split('\n')[0].slice(0, 160);
+      const opps = (r.opportunities || []).map(o =>
+        `<div class="rpt-item"><i class="fa-solid fa-circle-arrow-up rpt-item-icon opp"></i><span>${escHtml(o)}</span></div>`).join('');
+      const thrs = (r.threats || []).map(t =>
+        `<div class="rpt-item"><i class="fa-solid fa-triangle-exclamation rpt-item-icon thr"></i><span>${escHtml(t)}</span></div>`).join('');
+      const trns = (r.key_trends || []).map(t =>
+        `<div class="rpt-item"><i class="fa-solid fa-chart-line rpt-item-icon trn"></i><span>${escHtml(t)}</span></div>`).join('');
+      const acts = (r.action_items || []).map(a =>
+        `<div class="rpt-item"><i class="fa-solid fa-bolt rpt-item-icon act"></i><span>${escHtml(a)}</span></div>`).join('');
+      return `
+        <div class="rpt-card" id="rpt-${i}">
+          <div class="rpt-card-head" onclick="toggleReport(${i})">
+            <div>
+              <div class="rpt-date">${dateStr} &nbsp;·&nbsp; ${timeStr}</div>
+              <div class="rpt-title">${escHtml(preview)}…</div>
+            </div>
+            <div class="rpt-meta">${r.items_analysed} items analysed</div>
+            <i class="fa-solid fa-chevron-down rpt-chevron"></i>
+          </div>
+          <div class="rpt-body">
+            <div class="rpt-section">
+              <div class="rpt-section-title">Executive Summary</div>
+              <div class="rpt-exec">${escHtml(r.executive_summary || '')}</div>
+            </div>
+            ${opps ? `<div class="rpt-section"><div class="rpt-section-title">Opportunities</div><div class="rpt-items">${opps}</div></div>` : ''}
+            ${thrs ? `<div class="rpt-section"><div class="rpt-section-title">Threats &amp; Risks</div><div class="rpt-items">${thrs}</div></div>` : ''}
+            ${trns ? `<div class="rpt-section"><div class="rpt-section-title">Key Trends</div><div class="rpt-items">${trns}</div></div>` : ''}
+            ${acts ? `<div class="rpt-section"><div class="rpt-section-title">Action Items for Sam</div><div class="rpt-items">${acts}</div></div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="empty"><i class="fa-solid fa-circle-exclamation"></i> Could not load reports</div>';
+  }
+}
+
+function toggleReport(i) {
+  document.getElementById('rpt-' + i).classList.toggle('open');
+}
+
+async function generateReport() {
+  const btn = event.currentTarget;
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span style="opacity:.6">Generating…</span>';
+  try {
+    await fetch('/api/surveillance/scan', { method: 'POST' });
+    await loadReports();
+  } catch(e) {
+    alert('Failed to generate report — is the server running?');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = orig;
+  }
+}
+
+// ── Enquiries ───────────────────────────────────────────────────────────
+async function loadEnquiries() {
+  const wrap = document.getElementById('enq-table-wrap');
+  try {
+    const enqs = await fetch('/api/enquiries').then(r => r.json());
+    document.getElementById('enq-total').textContent = enqs.length;
+    const weekAgo = new Date(Date.now() - 7 * 86400000);
+    const thisWeek = enqs.filter(e => new Date(e.received_at) > weekAgo).length;
+    document.getElementById('enq-week').textContent = thisWeek;
+    const products = new Set(enqs.map(e => e.product_type).filter(Boolean));
+    document.getElementById('enq-products').textContent = products.size || '—';
+
+    const cnt = document.getElementById('nav-enq-count');
+    if (enqs.length > 0) { cnt.style.display = ''; cnt.textContent = enqs.length; }
+
+    if (!enqs.length) {
+      wrap.innerHTML = '<div class="empty"><i class="fa-solid fa-inbox"></i> No enquiries received yet</div>';
+      return;
+    }
+    wrap.innerHTML = `
+      <table class="enq-table">
+        <thead>
+          <tr>
+            <th>Date</th><th>Name</th><th>Business</th><th>Product</th><th>Volume</th><th>Contact</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${enqs.map((e, i) => {
+            const dt = new Date(e.received_at);
+            const dateStr = dt.toLocaleDateString('en-AU', {day:'numeric',month:'short'});
+            return `
+              <tr>
+                <td style="white-space:nowrap;color:var(--txt3)">${dateStr}</td>
+                <td><strong>${escHtml(e.full_name || '—')}</strong></td>
+                <td>${escHtml(e.business_name || '—')}</td>
+                <td>${e.product_type ? `<span class="enq-product-tag">${escHtml(e.product_type)}</span>` : '—'}</td>
+                <td>${escHtml(e.annual_volume || '—')}</td>
+                <td>
+                  ${e.email ? `<a href="mailto:${escHtml(e.email)}" style="color:var(--green);font-size:12px">${escHtml(e.email)}</a>` : ''}
+                  ${e.phone ? `<br><a href="tel:${escHtml(e.phone)}" style="color:var(--txt3);font-size:11px">${escHtml(e.phone)}</a>` : ''}
+                </td>
+                <td>
+                  <button class="enq-expand" onclick="toggleEnqDetail(${i})">Details ▾</button>
+                  <div class="enq-detail" id="enq-d-${i}">
+                    ${e.delivery_address ? `<div><strong>Delivery:</strong> ${escHtml(e.delivery_address)}</div>` : ''}
+                    ${e.delivery_schedule ? `<div><strong>Schedule:</strong> ${escHtml(e.delivery_schedule)}</div>` : ''}
+                    ${e.primary_application ? `<div><strong>Application:</strong> ${escHtml(e.primary_application)}</div>` : ''}
+                    ${e.farm_size ? `<div><strong>Farm size:</strong> ${escHtml(e.farm_size)}</div>` : ''}
+                    ${e.abn ? `<div><strong>ABN:</strong> ${escHtml(e.abn)}</div>` : ''}
+                    ${e.additional_notes ? `<div style="margin-top:4px;padding:6px 8px;background:var(--gbg);border-radius:6px;font-style:italic">${escHtml(e.additional_notes)}</div>` : ''}
+                  </div>
+                </td>
+              </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+  } catch(e) {
+    wrap.innerHTML = '<div class="empty"><i class="fa-solid fa-circle-exclamation"></i> Could not load enquiries — server offline?</div>';
+  }
+}
+
+function toggleEnqDetail(i) {
+  document.getElementById('enq-d-' + i).classList.toggle('open');
+}
+
 // ── Boot ────────────────────────────────────────────────────────────────
 (async () => {
   initCurrencyPanel();
   await refreshAll();
   await loadStrategyBox();
   await loadInitialReport();
+  loadReports();
+  loadEnquiries();
   // Auto-refresh every 60 seconds
   setInterval(refreshAll, 60000);
 })();
