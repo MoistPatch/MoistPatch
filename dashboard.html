@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Center — Neural Hardware</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-base:       #070a08;
+  --bg-surface:    #0d1210;
+  --bg-panel:      #111815;
+  --bg-elevated:   #172019;
+  --bg-hover:      #1c2a1e;
+  --border:        rgba(0,220,100,0.1);
+  --border-bright: rgba(0,220,100,0.22);
+  --border-card:   rgba(0,220,100,0.14);
+  --green:         #00dc64;
+  --green-dim:     rgba(0,220,100,0.55);
+  --green-glow:    rgba(0,220,100,0.08);
+  --amber:         #e8a020;
+  --amber-dim:     rgba(232,160,32,0.6);
+  --red:           #e05252;
+  --red-dim:       rgba(224,82,82,0.6);
+  --cyan:          #00c8b4;
+  --text:          #cde0cc;
+  --text-dim:      rgba(205,224,204,0.55);
+  --text-muted:    rgba(205,224,204,0.28);
+  --font-head:     'Barlow Condensed', sans-serif;
+  --font-body:     'Barlow', sans-serif;
+  --font-mono:     'Fira Code', monospace;
+  --r:             3px;
+}
+
+html { height: 100%; }
+
+body {
+  min-height: 100%;
+  background: var(--bg-base);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Grid backdrop */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,220,100,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,220,100,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.025) 2px,
+    rgba(0,0,0,0.025) 3px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 40px;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 52px;
+  background: rgba(7,10,8,0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--green);
+  border: 1px solid var(--border-bright);
+  padding: 2px 7px;
+  letter-spacing: 0.04em;
+}
+
+.header-title {
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.header-sep {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin: 0 2px;
+}
+
+.header-sub {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.conn-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+.conn-dot.error { background: var(--red); box-shadow: 0 0 8px var(--red); animation: none; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.header-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+
+/* ── Metrics strip ────────────────────────────────────────── */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+
+.metric {
+  padding: 14px 28px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.metric:last-child { border-right: none; }
+
+.metric::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--green-glow);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.metric:hover::before { opacity: 1; }
+
+.metric-label {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+}
+.metric-value.green { color: var(--green); }
+.metric-value.amber { color: var(--amber); }
+
+/* ── Main layout ──────────────────────────────────────────── */
+.content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  grid-template-rows: auto auto;
+  gap: 0;
+}
+
+/* ── Panel base ───────────────────────────────────────────── */
+.panel {
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 12px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+
+.panel-title {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.panel-title span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: 8px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border: 1px solid var(--border-bright);
+  background: transparent;
+  color: var(--green);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: background 0.15s, color 0.15s;
+}
+.btn:hover { background: var(--green); color: var(--bg-base); }
+.btn:active { opacity: 0.8; }
+
+.btn-ghost {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-ghost:hover { background: var(--bg-hover); border-color: var(--border-bright); color: var(--text); }
+
+.btn-danger {
+  border-color: rgba(224,82,82,0.3);
+  color: var(--red-dim);
+}
+.btn-danger:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+.btn-trigger {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border: 1px solid var(--green-dim);
+  background: rgba(0,220,100,0.06);
+  color: var(--green);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: background 0.15s;
+  width: 100%;
+}
+.btn-trigger:hover { background: rgba(0,220,100,0.15); }
+.btn-trigger:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: not-allowed;
+}
+
+.btn-stop {
+  border-color: rgba(232,160,32,0.4);
+  color: var(--amber);
+  background: rgba(232,160,32,0.06);
+}
+.btn-stop:hover { background: var(--amber); color: var(--bg-base); }
+
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.08em;
+}
+.live-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Websites panel ───────────────────────────────────────── */
+.websites-panel { grid-column: 1; }
+
+.websites-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.websites-table th {
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 9px 20px 9px;
+  border-bottom: 1px solid var(--border);
+}
+.websites-table th:first-child { padding-left: 24px; }
+
+.websites-table td {
+  padding: 11px 20px;
+  border-bottom: 1px solid rgba(0,220,100,0.05);
+  vertical-align: middle;
+}
+.websites-table td:first-child { padding-left: 24px; }
+
+.websites-table tr:last-child td { border-bottom: none; }
+.websites-table tr:hover td { background: var(--bg-hover); }
+
+.site-name {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--text);
+  font-size: 13px;
+}
+.site-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.site-url {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.status-pill::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-active  { color: var(--green); background: rgba(0,220,100,0.1);  border: 1px solid rgba(0,220,100,0.2); }
+.status-active::before { background: var(--green); box-shadow: 0 0 5px var(--green); }
+.status-paused  { color: var(--text-dim); background: rgba(205,224,204,0.05); border: 1px solid var(--border); }
+.status-paused::before { background: var(--text-muted); }
+.status-error   { color: var(--red); background: rgba(224,82,82,0.1); border: 1px solid rgba(224,82,82,0.2); }
+.status-error::before { background: var(--red); }
+.status-running { color: var(--amber); background: rgba(232,160,32,0.1); border: 1px solid rgba(232,160,32,0.25); }
+.status-running::before { background: var(--amber); animation: pulse 1s ease-in-out infinite; }
+.status-idle    { color: var(--text-dim); background: rgba(205,224,204,0.05); border: 1px solid var(--border); }
+.status-idle::before { background: var(--text-muted); }
+.status-completed { color: var(--cyan); background: rgba(0,200,180,0.08); border: 1px solid rgba(0,200,180,0.2); }
+.status-completed::before { background: var(--cyan); }
+
+.row-actions { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state {
+  padding: 48px 24px;
+  text-align: center;
+}
+.empty-icon {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--border-bright);
+  margin-bottom: 12px;
+}
+.empty-label {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.empty-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Agents panel ─────────────────────────────────────────── */
+.agents-panel {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.agents-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agent-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-card);
+  border-radius: 4px;
+  padding: 16px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.agent-card:hover { border-color: var(--border-bright); }
+.agent-card.running { border-color: rgba(232,160,32,0.3); }
+.agent-card.error   { border-color: rgba(224,82,82,0.3); }
+
+.agent-card-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 4px 0 0 4px;
+  background: var(--border-bright);
+}
+.agent-card.running .agent-card-accent { background: var(--amber); }
+.agent-card.error   .agent-card-accent { background: var(--red); }
+.agent-card.completed .agent-card-accent { background: var(--cyan); }
+
+.agent-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.agent-name {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.agent-type {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+.agent-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.agent-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+
+.agent-meta-row {
+  display: flex;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.agent-meta-key { color: var(--text-muted); }
+.agent-meta-val { color: var(--text-dim); }
+
+.agent-last-result {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 10px;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--border);
+  border-radius: 0 2px 2px 0;
+  line-height: 1.4;
+}
+
+.agent-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* ── Activity panel ───────────────────────────────────────── */
+.activity-panel {
+  grid-column: 1;
+  border-right: 1px solid var(--border);
+  border-bottom: none;
+}
+
+.activity-feed {
+  height: 240px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.activity-feed::-webkit-scrollbar { width: 4px; }
+.activity-feed::-webkit-scrollbar-track { background: transparent; }
+.activity-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.activity-item {
+  display: grid;
+  grid-template-columns: 90px 70px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 24px;
+  border-bottom: 1px solid rgba(0,220,100,0.04);
+  transition: background 0.1s;
+}
+.activity-item:hover { background: var(--bg-hover); }
+
+.activity-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.activity-entity {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+.entity-website { color: var(--cyan); background: rgba(0,200,180,0.08); border: 1px solid rgba(0,200,180,0.2); }
+.entity-agent   { color: var(--green); background: rgba(0,220,100,0.08); border: 1px solid rgba(0,220,100,0.15); }
+
+.activity-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-action {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.activity-empty {
+  padding: 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Loading skeleton ─────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg,
+    rgba(0,220,100,0.04) 25%,
+    rgba(0,220,100,0.08) 50%,
+    rgba(0,220,100,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 2px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.skeleton-row { height: 44px; margin: 1px 0; }
+.skeleton-card { height: 160px; border-radius: 4px; margin: 10px 12px; }
+
+/* ── Modal ────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  width: 460px;
+  max-width: 90vw;
+  transform: translateY(16px);
+  transition: transform 0.25s;
+  position: relative;
+  z-index: 1001;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 60px rgba(0,220,100,0.04);
+}
+.modal-backdrop.open .modal { transform: translateY(0); }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px;
+  transition: color 0.15s;
+}
+.modal-close:hover { color: var(--text); }
+
+.modal-body { padding: 20px; }
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Form fields ──────────────────────────────────────────── */
+.field { margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--text-muted); }
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--border-bright); box-shadow: 0 0 0 2px rgba(0,220,100,0.08); }
+.field select { cursor: pointer; }
+.field textarea { resize: vertical; min-height: 60px; font-family: var(--font-body); }
+
+/* ── Toast ────────────────────────────────────────────────── */
+.toast-area {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.toast {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-bright);
+  color: var(--green);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  animation: toast-in 0.25s ease, toast-out 0.25s ease 2.75s forwards;
+}
+.toast.error { color: var(--red); border-color: rgba(224,82,82,0.4); }
+
+@keyframes toast-in  { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+@keyframes toast-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ── Misc ─────────────────────────────────────────────────── */
+.refresh-indicator {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ── Scrollbars ───────────────────────────────────────────── */
+.agents-list::-webkit-scrollbar { width: 4px; }
+.agents-list::-webkit-scrollbar-track { background: transparent; }
+.agents-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .content { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .agents-panel { grid-column: 1; grid-row: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .activity-panel { border-right: none; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metric:nth-child(2) { border-right: none; }
+}
+@media (max-width: 540px) {
+  .header-sub { display: none; }
+  .header-sep { display: none; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .header { padding: 0 16px; }
+  .panel-header { padding: 10px 16px; }
+  .websites-table td { padding: 10px 12px; }
+  .websites-table th { padding: 8px 12px; }
+  .activity-item { grid-template-columns: 80px 60px 1fr; }
+  .activity-action { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-brand">
+      <span class="header-logo">[NH]</span>
+      <span class="header-title">Control Center</span>
+      <span class="header-sep">//</span>
+      <span class="header-sub">Neural Hardware</span>
+    </div>
+    <div class="header-right">
+      <span class="refresh-indicator" id="refresh-countdown"></span>
+      <div class="conn-dot" id="conn-dot"></div>
+      <span class="header-time" id="header-time"></span>
+    </div>
+  </header>
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Websites</div>
+      <div class="metric-value" id="metric-websites">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Agents</div>
+      <div class="metric-value" id="metric-agents">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Running</div>
+      <div class="metric-value amber" id="metric-running">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Log Entries</div>
+      <div class="metric-value green" id="metric-events">—</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Websites panel -->
+    <section class="panel websites-panel">
+      <div class="panel-header">
+        <div class="panel-title">Websites <span id="website-count"></span></div>
+        <button class="btn" id="add-website-btn">+ Add Site</button>
+      </div>
+      <div id="websites-container">
+        <div class="skeleton skeleton-row" style="margin:8px 24px;width:calc(100% - 48px)"></div>
+        <div class="skeleton skeleton-row" style="margin:8px 24px;width:calc(100% - 48px)"></div>
+      </div>
+    </section>
+
+    <!-- Agents panel -->
+    <section class="panel agents-panel">
+      <div class="panel-header">
+        <div class="panel-title">Agents <span id="agent-count"></span></div>
+        <button class="btn" id="add-agent-btn">+ New</button>
+      </div>
+      <div class="agents-list" id="agents-container">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+    </section>
+
+    <!-- Activity panel -->
+    <section class="panel activity-panel">
+      <div class="panel-header">
+        <div class="panel-title">Activity Log</div>
+        <span class="live-badge">LIVE</span>
+      </div>
+      <div class="activity-feed" id="activity-feed">
+        <div class="activity-empty">Loading activity…</div>
+      </div>
+    </section>
+
+  </div><!-- .content -->
+</div><!-- .shell -->
+
+<!-- Toast area -->
+<div class="toast-area" id="toast-area"></div>
+
+<!-- Add Website Modal -->
+<div class="modal-backdrop" id="website-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="wm-title">
+    <div class="modal-header">
+      <span class="modal-title" id="wm-title">Add Website</span>
+      <button class="modal-close" data-close="website-modal">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label" for="wm-name">Site Name</label>
+        <input type="text" id="wm-name" placeholder="Neural Hardware Store" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="field-label" for="wm-url">URL</label>
+        <input type="url" id="wm-url" placeholder="https://example.netlify.app" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="field-label" for="wm-desc">Description <span style="opacity:.5;font-weight:400">(optional)</span></label>
+        <textarea id="wm-desc" placeholder="Brief description of this site…"></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label" for="wm-status">Status</label>
+        <select id="wm-status">
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" data-close="website-modal">Cancel</button>
+      <button class="btn" id="wm-save">Save Site</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Agent Modal -->
+<div class="modal-backdrop" id="agent-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="am-title">
+    <div class="modal-header">
+      <span class="modal-title" id="am-title">Register Agent</span>
+      <button class="modal-close" data-close="agent-modal">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label" for="am-name">Agent Name</label>
+        <input type="text" id="am-name" placeholder="My New Agent" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="field-label" for="am-slug">Slug <span style="opacity:.5;font-weight:400">(auto)</span></label>
+        <input type="text" id="am-slug" placeholder="my-new-agent" autocomplete="off" style="font-family:var(--font-mono)">
+      </div>
+      <div class="field">
+        <label class="field-label" for="am-type">Type</label>
+        <select id="am-type">
+          <option value="price_intelligence">Price Intelligence</option>
+          <option value="pricing_optimisation">Pricing Optimisation</option>
+          <option value="reporting">Reporting</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="am-desc">Description <span style="opacity:.5;font-weight:400">(optional)</span></label>
+        <textarea id="am-desc" placeholder="What does this agent do?"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" data-close="agent-modal">Cancel</button>
+      <button class="btn" id="am-save">Register Agent</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Website Modal -->
+<div class="modal-backdrop" id="edit-website-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ewm-title">
+    <div class="modal-header">
+      <span class="modal-title" id="ewm-title">Edit Website</span>
+      <button class="modal-close" data-close="edit-website-modal">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ewm-id">
+      <div class="field">
+        <label class="field-label" for="ewm-name">Site Name</label>
+        <input type="text" id="ewm-name" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="field-label" for="ewm-url">URL</label>
+        <input type="url" id="ewm-url" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="field-label" for="ewm-desc">Description</label>
+        <textarea id="ewm-desc"></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label" for="ewm-status">Status</label>
+        <select id="ewm-status">
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+          <option value="error">Error</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" data-close="edit-website-modal">Cancel</button>
+      <button class="btn" id="ewm-save">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────
+const state = {
+  websites: [],
+  agents: [],
+  events: [],
+  loading: true,
+};
+
+let refreshTimer = null;
+let countdownValue = 30;
+
+// ── API ────────────────────────────────────────────────────
+async function api(url, opts = {}) {
+  const r = await fetch(url, {
+    headers: { 'Content-Type': 'application/json' },
+    ...opts,
+  });
+  if (r.status === 204) return null;
+  const data = await r.json().catch(() => null);
+  if (!r.ok) throw new Error(data?.error ?? `HTTP ${r.status}`);
+  return data;
+}
+
+const API = {
+  websites:  () => api('/api/websites'),
+  createSite: b => api('/api/websites', { method: 'POST', body: JSON.stringify(b) }),
+  updateSite: (id, b) => api(`/api/websites/${id}`, { method: 'PATCH', body: JSON.stringify(b) }),
+  deleteSite: id => api(`/api/websites/${id}`, { method: 'DELETE' }),
+
+  agents:       () => api('/api/agents'),
+  createAgent:  b  => api('/api/agents', { method: 'POST', body: JSON.stringify(b) }),
+  triggerAgent: id => api(`/api/agents/${id}/trigger`, { method: 'POST' }),
+  deleteAgent:  id => api(`/api/agents/${id}`, { method: 'DELETE' }),
+
+  activity: () => api('/api/activity?limit=100'),
+};
+
+// ── Seed defaults ──────────────────────────────────────────
+async function seedDefaults() {
+  await API.createSite({
+    name: 'Neural Hardware',
+    url: 'https://neuralhardware.netlify.app',
+    description: 'Main e-commerce storefront — GPU & AI hardware for Australian market',
+    status: 'active',
+  });
+  await API.createAgent({
+    name: 'Price Intelligence',
+    slug: 'price-intelligence',
+    type: 'price_intelligence',
+    description: 'Scrapes 19 Australian competitor retailers (Centre Com, PLE, Scorptec, Mwave…) for real-time price data on current SKUs.',
+    status: 'idle',
+  });
+  await API.createAgent({
+    name: 'Pricing Optimisation',
+    slug: 'pricing-optimisation',
+    type: 'pricing_optimisation',
+    description: 'Applies competitive floor, match-cheapest, and margin-target strategies. Changes >5% queued for human approval.',
+    status: 'idle',
+  });
+  await API.createAgent({
+    name: 'Daily Reporting',
+    slug: 'daily-reporting',
+    type: 'reporting',
+    description: 'Compiles KPIs, price changes, anomalies, and scrape health into a daily email digest.',
+    status: 'idle',
+  });
+}
+
+// ── Render helpers ─────────────────────────────────────────
+function statusPill(s) {
+  const labels = { active:'Live', paused:'Paused', error:'Error', idle:'Idle', running:'Running', completed:'Done' };
+  return `<span class="status-pill status-${s}">${labels[s] ?? s}</span>`;
+}
+
+function relTime(ts) {
+  if (!ts) return 'never';
+  const d = Math.floor((Date.now() - new Date(ts)) / 1000);
+  if (d < 60) return `${d}s ago`;
+  if (d < 3600) return `${Math.floor(d/60)}m ago`;
+  if (d < 86400) return `${Math.floor(d/3600)}h ago`;
+  return `${Math.floor(d/86400)}d ago`;
+}
+
+function fmtTime(ts) {
+  if (!ts) return '—';
+  return new Date(ts).toLocaleTimeString('en-AU', { hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
+}
+
+function truncUrl(url, max = 34) {
+  try {
+    const u = new URL(url);
+    const s = u.hostname + u.pathname;
+    return s.length > max ? s.slice(0, max) + '…' : s;
+  } catch {
+    return url.length > max ? url.slice(0, max) + '…' : url;
+  }
+}
+
+function agentTypeLabel(t) {
+  const m = { price_intelligence:'price_intelligence', pricing_optimisation:'pricing_opt', reporting:'reporting', custom:'custom' };
+  return m[t] ?? t;
+}
+
+// ── Render websites ────────────────────────────────────────
+function renderWebsites(list) {
+  const el = document.getElementById('websites-container');
+  document.getElementById('website-count').textContent = `(${list.length})`;
+
+  if (!list.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">[ ]</div>
+        <div class="empty-label">No sites registered</div>
+        <div class="empty-hint">Click "+ Add Site" to register a website</div>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <table class="websites-table">
+      <thead>
+        <tr>
+          <th>Site</th>
+          <th>URL</th>
+          <th>Status</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map(s => `
+          <tr data-id="${s.id}">
+            <td>
+              <div class="site-name">${esc(s.name)}</div>
+              ${s.description ? `<div class="site-desc">${esc(s.description)}</div>` : ''}
+            </td>
+            <td>
+              <span class="site-url" title="${esc(s.url)}">${truncUrl(s.url)}</span>
+            </td>
+            <td>${statusPill(s.status)}</td>
+            <td>
+              <div class="row-actions">
+                <a href="${esc(s.url)}" target="_blank" rel="noopener" class="btn-ghost" title="Visit site">↗</a>
+                <button class="btn-ghost" onclick="openEditWebsite(${s.id})">Edit</button>
+                <button class="btn-ghost btn-danger" onclick="confirmDeleteSite(${s.id}, '${esc(s.name)}')">Remove</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+// ── Render agents ──────────────────────────────────────────
+function renderAgents(list) {
+  const el = document.getElementById('agents-container');
+  document.getElementById('agent-count').textContent = `(${list.length})`;
+
+  if (!list.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">[ ]</div>
+        <div class="empty-label">No agents registered</div>
+        <div class="empty-hint">Click "+ New" to add an agent</div>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(a => {
+    const isRunning   = a.status === 'running';
+    const isIdle      = a.status === 'idle' || a.status === 'completed';
+    const cardClass   = `agent-card ${a.status}`;
+    const btnClass    = isRunning ? 'btn-trigger btn-stop' : 'btn-trigger';
+    const btnLabel    = isRunning ? '■ Running…' : '▶ Trigger';
+
+    return `
+      <div class="${cardClass}" data-id="${a.id}">
+        <div class="agent-card-accent"></div>
+        <div class="agent-top">
+          <div>
+            <div class="agent-name">${esc(a.name)}</div>
+            <div class="agent-type">${agentTypeLabel(a.type)}</div>
+          </div>
+          ${statusPill(a.status)}
+        </div>
+        ${a.description ? `<div class="agent-desc">${esc(a.description)}</div>` : ''}
+        <div class="agent-meta">
+          <div class="agent-meta-row">
+            <span class="agent-meta-key">last_run</span>
+            <span class="agent-meta-val">${relTime(a.lastRun)}</span>
+          </div>
+        </div>
+        ${a.lastResult ? `<div class="agent-last-result">${esc(a.lastResult)}</div>` : ''}
+        <div class="agent-actions">
+          <button class="${btnClass}" ${isRunning ? 'disabled' : ''} onclick="handleTrigger(${a.id})">
+            ${btnLabel}
+          </button>
+          <button class="btn-ghost btn-danger" onclick="confirmDeleteAgent(${a.id}, '${esc(a.name)}')" title="Remove agent">✕</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Render activity ────────────────────────────────────────
+function renderActivity(events) {
+  const el = document.getElementById('activity-feed');
+
+  if (!events.length) {
+    el.innerHTML = '<div class="activity-empty">No activity yet</div>';
+    return;
+  }
+
+  el.innerHTML = events.map(e => `
+    <div class="activity-item">
+      <span class="activity-time">${fmtTime(e.createdAt)}</span>
+      <span class="activity-entity entity-${e.entityType}">${e.entityType}</span>
+      <span class="activity-text">${esc(e.entityName ?? '—')}</span>
+      <span class="activity-action">${esc(e.action)}</span>
+    </div>`).join('');
+}
+
+// ── Update metrics ─────────────────────────────────────────
+function updateMetrics() {
+  const running = state.agents.filter(a => a.status === 'running').length;
+  document.getElementById('metric-websites').textContent = state.websites.length;
+  document.getElementById('metric-agents').textContent   = state.agents.length;
+  document.getElementById('metric-running').textContent  = running;
+  document.getElementById('metric-events').textContent   = state.events.length;
+}
+
+// ── Load all data ──────────────────────────────────────────
+async function loadAll(seed = false) {
+  try {
+    const [sites, agents, events] = await Promise.all([
+      API.websites(),
+      API.agents(),
+      API.activity(),
+    ]);
+
+    if (seed && sites.length === 0 && agents.length === 0) {
+      await seedDefaults();
+      return loadAll(false);
+    }
+
+    state.websites = sites;
+    state.agents   = agents;
+    state.events   = events;
+
+    renderWebsites(state.websites);
+    renderAgents(state.agents);
+    renderActivity(state.events);
+    updateMetrics();
+
+    document.getElementById('conn-dot').className = 'conn-dot';
+  } catch (err) {
+    document.getElementById('conn-dot').className = 'conn-dot error';
+    toast('Load error: ' + err.message, true);
+  }
+}
+
+// ── Auto-refresh countdown ─────────────────────────────────
+function startRefreshCycle() {
+  clearInterval(refreshTimer);
+  countdownValue = 30;
+  const el = document.getElementById('refresh-countdown');
+  refreshTimer = setInterval(() => {
+    countdownValue--;
+    el.textContent = `refresh in ${countdownValue}s`;
+    if (countdownValue <= 0) {
+      countdownValue = 30;
+      loadAll(false);
+    }
+  }, 1000);
+}
+
+// ── Clock ──────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('header-time').textContent =
+    now.toLocaleTimeString('en-AU', { hour12: false, timeZone: 'UTC' }) + ' UTC';
+}
+
+// ── Trigger agent ──────────────────────────────────────────
+async function handleTrigger(id) {
+  try {
+    const result = await API.triggerAgent(id);
+    toast(`${result.agent.name} triggered`);
+    await loadAll(false);
+    startRefreshCycle();
+  } catch (err) {
+    toast(err.message, true);
+  }
+}
+
+// ── Delete website ─────────────────────────────────────────
+async function confirmDeleteSite(id, name) {
+  if (!confirm(`Remove "${name}" from the dashboard?`)) return;
+  try {
+    await API.deleteSite(id);
+    toast(`${name} removed`);
+    await loadAll(false);
+  } catch (err) {
+    toast(err.message, true);
+  }
+}
+
+// ── Delete agent ───────────────────────────────────────────
+async function confirmDeleteAgent(id, name) {
+  if (!confirm(`Remove agent "${name}"?`)) return;
+  try {
+    await API.deleteAgent(id);
+    toast(`Agent ${name} removed`);
+    await loadAll(false);
+  } catch (err) {
+    toast(err.message, true);
+  }
+}
+
+// ── Edit website ───────────────────────────────────────────
+function openEditWebsite(id) {
+  const site = state.websites.find(s => s.id === id);
+  if (!site) return;
+  document.getElementById('ewm-id').value      = site.id;
+  document.getElementById('ewm-name').value    = site.name;
+  document.getElementById('ewm-url').value     = site.url;
+  document.getElementById('ewm-desc').value    = site.description ?? '';
+  document.getElementById('ewm-status').value  = site.status;
+  openModal('edit-website-modal');
+}
+
+document.getElementById('ewm-save').addEventListener('click', async () => {
+  const id   = parseInt(document.getElementById('ewm-id').value);
+  const name = document.getElementById('ewm-name').value.trim();
+  const url  = document.getElementById('ewm-url').value.trim();
+  if (!name || !url) { toast('Name and URL required', true); return; }
+  try {
+    await API.updateSite(id, {
+      name,
+      url,
+      description: document.getElementById('ewm-desc').value.trim() || null,
+      status: document.getElementById('ewm-status').value,
+    });
+    closeModal('edit-website-modal');
+    toast('Site updated');
+    await loadAll(false);
+  } catch (err) {
+    toast(err.message, true);
+  }
+});
+
+// ── Modal helpers ──────────────────────────────────────────
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+});
+
+document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) closeModal(backdrop.id);
+  });
+});
+
+// ── Add website ────────────────────────────────────────────
+document.getElementById('add-website-btn').addEventListener('click', () => {
+  document.getElementById('wm-name').value   = '';
+  document.getElementById('wm-url').value    = '';
+  document.getElementById('wm-desc').value   = '';
+  document.getElementById('wm-status').value = 'active';
+  openModal('website-modal');
+});
+
+document.getElementById('wm-save').addEventListener('click', async () => {
+  const name = document.getElementById('wm-name').value.trim();
+  const url  = document.getElementById('wm-url').value.trim();
+  if (!name || !url) { toast('Name and URL required', true); return; }
+  try {
+    await API.createSite({
+      name,
+      url,
+      description: document.getElementById('wm-desc').value.trim() || null,
+      status: document.getElementById('wm-status').value,
+    });
+    closeModal('website-modal');
+    toast('Site added');
+    await loadAll(false);
+  } catch (err) {
+    toast(err.message, true);
+  }
+});
+
+// ── Add agent ──────────────────────────────────────────────
+document.getElementById('add-agent-btn').addEventListener('click', () => {
+  document.getElementById('am-name').value = '';
+  document.getElementById('am-slug').value = '';
+  document.getElementById('am-desc').value = '';
+  document.getElementById('am-type').value = 'custom';
+  openModal('agent-modal');
+});
+
+document.getElementById('am-name').addEventListener('input', e => {
+  const slug = e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  document.getElementById('am-slug').value = slug;
+});
+
+document.getElementById('am-save').addEventListener('click', async () => {
+  const name = document.getElementById('am-name').value.trim();
+  const slug = document.getElementById('am-slug').value.trim();
+  const type = document.getElementById('am-type').value;
+  if (!name || !slug) { toast('Name and slug required', true); return; }
+  try {
+    await API.createAgent({
+      name,
+      slug,
+      type,
+      description: document.getElementById('am-desc').value.trim() || null,
+    });
+    closeModal('agent-modal');
+    toast('Agent registered');
+    await loadAll(false);
+  } catch (err) {
+    toast(err.message, true);
+  }
+});
+
+// ── Toast ──────────────────────────────────────────────────
+function toast(msg, isError = false) {
+  const area = document.getElementById('toast-area');
+  const el   = document.createElement('div');
+  el.className = 'toast' + (isError ? ' error' : '');
+  el.textContent = msg;
+  area.appendChild(el);
+  setTimeout(() => el.remove(), 3100);
+}
+
+// ── Escape HTML ────────────────────────────────────────────
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Boot ───────────────────────────────────────────────────
+updateClock();
+setInterval(updateClock, 1000);
+startRefreshCycle();
+loadAll(true);
+</script>
+</body>
+</html>
